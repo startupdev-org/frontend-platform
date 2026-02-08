@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Social icons hover tooltip + sliding background
+	 Inspired by the provided design: tooltip on hover and a sliding
+	 background fill from bottom to top. Uses CSS custom property --bg
+	 to set brand color or gradient per icon. */
+.social {
+	display: flex;
+	justify-content: center;
+	flex-flow: wrap;
+	gap: 0.5rem;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.social li {
+	position: relative;
+	flex-basis: 3.25rem;
+}
+
+.social li::after {
+	/* tooltip labels removed: hide pseudo-element */
+	display: none;
+}
+
+.social a {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 3.25rem;
+	height: 3.25rem;
+	font-size: 1.1rem;
+	color: #111111;
+	border: none;
+	border-radius: 9999px;
+	text-decoration: none;
+	outline: none;
+	overflow: hidden;
+	transition: color 0.28s ease-in-out;
+}
+
+.social a > i {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.social a > i svg {
+	width: 1.2rem;
+	height: 1.2rem;
+	display: block;
+}
+
+.social a::after {
+	position: absolute;
+	content: "";
+	inset: 0;
+	transform: translateY(100%);
+	background: var(--bg, #070707);
+	pointer-events: none;
+	transition: transform 0.28s ease-in-out;
+	border-radius: inherit;
+	z-index: 0;
+}
+
+.social a > i { z-index: 1; position: relative; }
+
+.social a:hover,
+.social a:focus-visible {
+	color: #fff;
+	border-color: rgba(0,0,0,0.08);
+}
+
+.social a:hover::after,
+.social a:focus-visible::after {
+	transform: translateY(0%);
+}
+
+/* Default state: show the hover appearance by adding the `default` class
+	 to the `.social` list. This makes icons appear filled (good for light
+	 backgrounds) without requiring hover. */
+.social.default a {
+	color: #fff;
+}
+
+.social.default a::after {
+	transform: translateY(0%);
+}
+
+/* Apply the brand background directly for the default state so the
+	 circle is visibly filled even if pseudo-element transforms fail. */
+.social.default a {
+	background: var(--bg, #070707);
+	border-color: transparent;
+}
+
+.social a {
+	background: transparent;
+}
+
+.social.default li::after {
+	display: none;
+}
+
+/* Left-aligned, smaller circles variant (use by adding `left` class)
+	 Keeps sliding background and removes labels but reduces circle size
+	 and aligns icons to the left. */
+.social.left {
+	justify-content: flex-start;
+	gap: 0.5rem;
+}
+
+.social.left li {
+	flex-basis: 2.25rem;
+}
+
+.social.left a {
+	width: 2.25rem;
+	height: 2.25rem;
+	font-size: 0.95rem;
+	border: none;
+}
+
+.social.left a > i svg {
+	width: 0.95rem;
+	height: 0.95rem;
+}
+
+.social.left a::after {
+	inset: 100% 0 0;
+}
+
