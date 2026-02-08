@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import ServiceList from '../../components/business/ServiceList';
 import EmployeeCard from '../../components/business/EmployeeCard';
 import ReviewList from '../../components/business/ReviewList';
-import Button from '../../components/ui/Button';
 import { Business } from '../../types/business';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
 import { Review, RatingBreakdown } from '../../types/review';
+import { health } from '../../services/health.service';
 
 const mockBusiness: Business = {
   id: 'luxe-001',
@@ -176,6 +176,11 @@ const mockRatingBreakdown: RatingBreakdown = {
 export default function BusinessTestPage() {
   const [activeTab, setActiveTab] = useState<'activity' | 'projects' | 'team' | 'reviews'>('activity');
 
+  console.log('Running the method')
+  const reponse = health();
+
+
+
   return (
     <div className="app-content-wrapper py-5 bg-light min-vh-100">
 
@@ -190,7 +195,7 @@ export default function BusinessTestPage() {
                 }}
               />
 
-              
+
               <div className="profile-cover-actions" />
             </div>
             <div className="profile-header-bottom position-relative d-flex justify-content-between align-items-end mx-4 pb-4 flex-wrap gap-3">
@@ -338,9 +343,9 @@ export default function BusinessTestPage() {
                   <div className="col-12">
                     <div className="card shadow-custom rounded-custom">
                       <div className="card-body p-4">
-                          <h4 className="fw-semibold mb-4">Home</h4>
+                        <h4 className="fw-semibold mb-4">Home</h4>
                         <ReviewList reviews={mockReviews} businessName={mockBusiness.name} businessAvatar={mockBusiness.logo_url} />
-                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
