@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ServiceList from '../../components/business/ServiceList';
-import EmployeeCard from '../../components/business/EmployeeCard';
+import { Helmet } from 'react-helmet-async';
+import {
+  CalendarDaysIcon,
+  ClockIcon,
+  LinkIcon,
+  EnvelopeIcon,
+  MapPinIcon,
+  PhoneIcon,
+  StarIcon,
+} from '@heroicons/react/24/outline';
 import ReviewList from '../../components/business/ReviewList';
+import RatingStars from '../../components/business/RatingStars';
 import { Business } from '../../types/business';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
 import { Review, RatingBreakdown } from '../../types/review';
-import { health } from '../../services/health.service';
+
+const LUXE_PHOTOS = [
+  'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1600&q=80',
+  'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1600&q=80',
+] as const;
 
 const mockBusiness: Business = {
   id: 'luxe-001',
@@ -15,7 +30,7 @@ const mockBusiness: Business = {
   slug: 'luxe-beauty-studio',
   subdomain: null,
   description:
-    'Luxe Beauty Studio is a premium salon located in central Chișinău providing brows, facials and professional styling. We prioritise hygiene, modern techniques and personalised care.',
+    'Luxe Beauty Studio este un salon premium situat în centrul Chișinăului, specializat în sprâncene, tratamente faciale și coafare profesională. Punem pe primul loc igiena, tehnicile moderne și grija personalizată.',
   logo_url: 'https://images.squarespace-cdn.com/content/v1/54390f2ee4b0a3191f9d5ab8/1574985068143-Y4C7Y4E9X2W1D7EA923S/Eyebrow-Tattoo.jpg?format=2500w',
   phone: '+373 (22) 555-019',
   email: 'hello@luxebeauty.md',
@@ -23,7 +38,7 @@ const mockBusiness: Business = {
   city: 'Chișinău, Moldova',
   latitude: 47.0105,
   longitude: 28.8638,
-  category: 'Beauty Salon',
+  category: 'Salon de înfrumusețare',
   price_range: 3,
   working_hours: {
     monday: { open: '09:00', close: '18:00' },
@@ -45,8 +60,8 @@ const mockServices: Service[] = [
   {
     id: 's1',
     business_id: mockBusiness.id,
-    name: 'Signature Facial',
-    description: 'Deep-cleansing facial tailored to your skin type',
+    name: 'Tratament facial Signature',
+    description: 'Curățare profundă și îngrijire adaptată tipului tău de ten',
     price: 85,
     duration_minutes: 60,
     is_active: true,
@@ -55,8 +70,8 @@ const mockServices: Service[] = [
   {
     id: 's2',
     business_id: mockBusiness.id,
-    name: 'Microblading (Initial)',
-    description: 'Semi-permanent eyebrow microblading — initial session',
+    name: 'Microblading (inițial)',
+    description: 'Microblading semipermanent pentru sprâncene — ședința inițială',
     price: 350,
     duration_minutes: 150,
     is_active: true,
@@ -65,8 +80,8 @@ const mockServices: Service[] = [
   {
     id: 's3',
     business_id: mockBusiness.id,
-    name: 'Eyebrow Shaping',
-    description: 'Waxing and shaping for a polished brow',
+    name: 'Stilizare sprâncene',
+    description: 'Pensat și conturare pentru un aspect definit',
     price: 40,
     duration_minutes: 30,
     is_active: true,
@@ -75,8 +90,8 @@ const mockServices: Service[] = [
   {
     id: 's4',
     business_id: mockBusiness.id,
-    name: 'Haircut & Style',
-    description: 'Precision cut and professional blow-dry',
+    name: 'Tuns & coafat',
+    description: 'Tuns precis și coafare profesională',
     price: 65,
     duration_minutes: 60,
     is_active: true,
@@ -84,9 +99,18 @@ const mockServices: Service[] = [
   },
 ];
 
-/* connections removed - replaced by Reviews tab */
+const minServicePrice: number | null = (() => {
+  const prices = mockServices.map((s) => s.price).filter((n) => typeof n === 'number' && Number.isFinite(n));
+  if (prices.length === 0) return null;
+  return Math.min(...prices);
+})();
 
-/* followers removed */
+const servicesByCategory: Record<'featured' | 'brows' | 'facials' | 'hair', Service[]> = {
+  featured: mockServices,
+  brows: mockServices.filter((s) => /brow|microblading/i.test(s.name)),
+  facials: mockServices.filter((s) => /facial/i.test(s.name)),
+  hair: mockServices.filter((s) => /hair|cut|style/i.test(s.name)),
+};
 
 const mockEmployees: Employee[] = [
   {
@@ -94,8 +118,8 @@ const mockEmployees: Employee[] = [
     business_id: mockBusiness.id,
     name: 'Maria Popa',
     photo_url: 'https://randomuser.me/api/portraits/women/68.jpg',
-    position: 'Senior Aesthetician',
-    bio: 'Specialist in microblading and corrective brow shaping with 8 years experience in Chișinău.',
+    position: 'Estetician senior',
+    bio: 'Specialistă în microblading și corecție de sprâncene, cu 8 ani experiență în Chișinău.',
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -104,8 +128,8 @@ const mockEmployees: Employee[] = [
     business_id: mockBusiness.id,
     name: 'Ion Drăgan',
     photo_url: 'https://randomuser.me/api/portraits/men/32.jpg',
-    position: 'Lead Stylist',
-    bio: 'Experienced stylist focusing on precision cuts and contemporary colour techniques.',
+    position: 'Stilist principal',
+    bio: 'Stilist cu experiență, orientat spre tunsori precise și tehnici moderne de culoare.',
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -114,8 +138,8 @@ const mockEmployees: Employee[] = [
     business_id: mockBusiness.id,
     name: 'Ana Rusu',
     photo_url: 'https://randomuser.me/api/portraits/women/65.jpg',
-    position: 'Aesthetician',
-    bio: 'Provides restorative facials and skin maintenance plans.',
+    position: 'Estetician',
+    bio: 'Oferă tratamente faciale de regenerare și planuri de întreținere a tenului.',
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -131,7 +155,7 @@ const mockReviews: Review[] = [
     rating_cleanliness: 5,
     rating_service: 5,
     rating_price: 4,
-    comment: 'Very professional team and excellent microblading results — highly recommended.',
+    comment: 'Echipă foarte profesionistă și rezultate excelente la microblading — recomand cu încredere.',
     reply: 'Mulțumim, Mihai! Ne bucurăm că sunteți mulțumit.',
     is_verified: true,
     created_at: new Date().toISOString(),
@@ -145,7 +169,7 @@ const mockReviews: Review[] = [
     rating_cleanliness: 5,
     rating_service: 5,
     rating_price: 5,
-    comment: 'Excellent haircut and styling — my hair looks beautiful.',
+    comment: 'Tuns și coafat excelent — părul arată impecabil.',
     reply: null,
     is_verified: true,
     created_at: new Date().toISOString(),
@@ -159,7 +183,7 @@ const mockReviews: Review[] = [
     rating_cleanliness: 4,
     rating_service: 4,
     rating_price: 4,
-    comment: 'Relaxing facial — noticeable improvement after the first session.',
+    comment: 'Tratament facial relaxant — îmbunătățire vizibilă după prima ședință.',
     reply: null,
     is_verified: true,
     created_at: new Date().toISOString(),
@@ -174,228 +198,582 @@ const mockRatingBreakdown: RatingBreakdown = {
 };
 
 export default function BusinessTestPage() {
-  const [activeTab, setActiveTab] = useState<'activity' | 'projects' | 'team' | 'reviews'>('activity');
+  const [activeServiceCategory, setActiveServiceCategory] = useState<'featured' | 'brows' | 'facials' | 'hair'>(
+    'featured',
+  );
+  const [selectedPhotoIdx, setSelectedPhotoIdx] = useState(0);
+  const [transitionPhotoIdx, setTransitionPhotoIdx] = useState<number | null>(null);
+  const [fadeIn, setFadeIn] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [activeNavSection, setActiveNavSection] = useState('services');
 
-  console.log('Running the method')
-  const reponse = health();
+  const photos = LUXE_PHOTOS;
+  const visibleServices = servicesByCategory[activeServiceCategory];
 
+  const startPhotoTransition = (nextIdx: number) => {
+    if (nextIdx === selectedPhotoIdx) return;
+    // If we're mid-transition, ignore additional triggers.
+    if (transitionPhotoIdx !== null) return;
+    setTransitionPhotoIdx(nextIdx);
+    setFadeIn(false);
+  };
 
+  // Preload images to avoid flicker.
+  useEffect(() => {
+    photos.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [photos]);
+
+  // Cross-fade when a new photo is queued.
+  useEffect(() => {
+    if (transitionPhotoIdx === null) return;
+
+    const raf = window.requestAnimationFrame(() => setFadeIn(true));
+    const t = window.setTimeout(() => {
+      setSelectedPhotoIdx(transitionPhotoIdx);
+      setTransitionPhotoIdx(null);
+      setFadeIn(false);
+    }, 650);
+
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(t);
+    };
+  }, [transitionPhotoIdx]);
+
+  useEffect(() => {
+    if (photos.length <= 1) return;
+
+    const interval = window.setInterval(() => {
+      const next = (selectedPhotoIdx + 1) % photos.length;
+      startPhotoTransition(next);
+    }, 4500);
+
+    return () => window.clearInterval(interval);
+  }, [photos.length, selectedPhotoIdx, transitionPhotoIdx]);
+
+  const dayKeys = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
+  const todayKey = dayKeys[new Date().getDay()];
+  const hoursToday = mockBusiness.working_hours?.[todayKey];
+  const openStatus = (() => {
+    const open = hoursToday?.open;
+    const close = hoursToday?.close;
+    if (!open || !close) return { label: 'Închis astăzi', sublabel: 'Vezi programul', tone: 'muted' as const };
+    return { label: `Deschis până la ${close}`, sublabel: `Astăzi ${open}–${close}`, tone: 'good' as const };
+  })();
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    setActiveNavSection(id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const copyLink = async () => {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1200);
+    } catch {
+      // no-op: clipboard may be unavailable
+    }
+  };
 
   return (
-    <div className="app-content-wrapper py-5 bg-light min-vh-100">
+    <>
+      <Helmet>
+        <title>{mockBusiness.name} - BookBeauty</title>
+        <meta name="description" content={mockBusiness.description || `Programează-te la ${mockBusiness.name}`} />
+      </Helmet>
 
-      <div className="container mx-auto max-w-7xl">
-        <div className="page-content">
-          <div className="profile-header card-bg shadow-custom rounded-custom position-relative overflow-hidden mb-6">
-            <div className="profile-cover-wrapper">
-              <div
-                className="profile-cover-img"
-                style={{
-                  backgroundImage: `url('https://media.istockphoto.com/id/1856117770/photo/modern-beauty-salon.jpg?s=612x612&w=0&k=20&c=dVZtsePk2pgbqDXwVkMm-yIw5imnZ2rnkAruR7zf8EA=')`,
-                }}
-              />
-
-
-              <div className="profile-cover-actions" />
-            </div>
-            <div className="profile-header-bottom position-relative d-flex justify-content-between align-items-end mx-4 pb-4 flex-wrap gap-3">
-              <div className="profile-avatar-wrapper d-flex align-items-end gap-3 flex-wrap">
-                <div className="profile-avatar flex-shrink-0">
-                  <img src="https://images.squarespace-cdn.com/content/v1/54390f2ee4b0a3191f9d5ab8/1574985068143-Y4C7Y4E9X2W1D7EA923S/Eyebrow-Tattoo.jpg?format=2500w" alt="Profile" />
-                </div>
-                <div className="profile-info pb-3">
-                  <h3 className="h3 fw-semibold mb-1">{mockBusiness.name}</h3>
-                  <div className="profile-meta">
-                    <span>{mockBusiness.category}</span>
-                    <span>{mockBusiness.city}</span>
-                    <span>{mockBusiness.review_count} Reviews</span>
+      <div className="min-h-screen flex flex-col bg-gray-50">
+        <main className="flex-1">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            {/* Header */}
+            <section className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+              {/* Banner full width */}
+              <div className="relative aspect-[16/10] lg:aspect-[4/1] bg-gray-100">
+                <img
+                  src={photos[selectedPhotoIdx]}
+                  alt={`${mockBusiness.name} photo ${selectedPhotoIdx + 1}`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="eager"
+                />
+                {transitionPhotoIdx !== null ? (
+                  <img
+                    src={photos[transitionPhotoIdx]}
+                    alt=""
+                    className={[
+                      'absolute inset-0 h-full w-full object-cover',
+                      'transition-opacity duration-700 ease-out',
+                      fadeIn ? 'opacity-100' : 'opacity-0',
+                    ].join(' ')}
+                    loading="eager"
+                    aria-hidden="true"
+                  />
+                ) : null}
+                <div className="absolute inset-x-0 bottom-0 p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      {photos.map((_, idx) => (
+                        <span
+                          key={idx}
+                          className={[
+                            'h-1.5 w-1.5 rounded-full transition',
+                            idx === (transitionPhotoIdx ?? selectedPhotoIdx) ? 'bg-white' : 'bg-white/50',
+                          ].join(' ')}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs font-semibold text-white/90 bg-black/35 backdrop-blur px-2 py-1 rounded-md">
+                      {(transitionPhotoIdx ?? selectedPhotoIdx) + 1}/{photos.length}
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div className="profile-avatar-buttons d-flex align-items-center pb-3 gap-2">
-                <button className="btn btn-custom-secondary">Send message</button>
-                <Link to={`/book/${mockBusiness.slug}`} className="btn btn-primary">Book Now</Link>
-              </div>
-            </div>
+              {/* Content under banner */}
+              <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-5 sm:pt-6">
+                <div className="lg:flex lg:items-start lg:justify-between lg:gap-8">
+                  {/* Left: title, meta, about */}
+                  <div className="min-w-0 flex-1">
+                    <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 truncate">
+                      {mockBusiness.name}
+                    </h1>
+                    <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-gray-700">
+                      <span className="inline-flex items-center gap-2">
+                        <RatingStars rating={mockBusiness.average_rating ?? 0} size="sm" />
+                        <span className="font-semibold text-gray-900">
+                          {(mockBusiness.average_rating ?? 0).toFixed(1)}
+                        </span>
+                        <span className="text-gray-500">({mockBusiness.review_count})</span>
+                      </span>
+                      <span className="text-gray-300">•</span>
+                      <span className={openStatus.tone === 'good' ? 'text-emerald-700 font-medium' : 'text-gray-600'}>
+                        {openStatus.label}
+                      </span>
+                      <span className="text-gray-300">•</span>
+                      <span className="inline-flex items-center gap-1">
+                        <MapPinIcon className="h-4 w-4 text-gray-500" />
+                        {mockBusiness.city}
+                      </span>
+                    </div>
 
-            <div className="profile-nav mx-4">
-              <ul className="nav nav-tabs">
-                <li className="nav-item">
-                  <button type="button" className={`nav-link ${activeTab === 'activity' ? 'active' : ''}`} onClick={() => setActiveTab('activity')}>Home</button>
-                </li>
-                <li className="nav-item">
-                  <button type="button" className={`nav-link ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveTab('projects')}>Services</button>
-                </li>
-                <li className="nav-item">
-                  <button type="button" className={`nav-link ${activeTab === 'team' ? 'active' : ''}`} onClick={() => setActiveTab('team')}>Team</button>
-                </li>
-                <li className="nav-item">
-                  <button type="button" className={`nav-link ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => setActiveTab('reviews')}>Reviews</button>
-                </li>
-                {/* Followers tab removed */}
-              </ul>
-            </div>
-          </div>
+                    <div className="mt-3 text-sm text-gray-600">
+                      <p className="truncate">{mockBusiness.category}</p>
+                    </div>
 
-          <div className="row gy-5">
-            <div className="col-lg-4">
-              <div className="card shadow-custom rounded-custom mb-5">
-                <div className="card-body px-4 pt-4 pb-4">
-                  <p className="fw-medium mb-2 text-custom-body">Business Info</p>
-                  <div className="profile-info d-flex flex-column gap-3">
-                    <div className="profile-info-item d-flex align-items-center">
-                      <span className="profile-info-label">Name: </span>
-                      <span className="profile-info-content">{mockBusiness.name}</span>
+                    <div className="mt-5 rounded-xl border border-gray-200 bg-gray-50 p-4">
+                      <p className="text-sm font-semibold text-gray-900">Despre</p>
+                      <p className="mt-2 text-sm text-gray-700 leading-relaxed">{mockBusiness.description}</p>
                     </div>
-                    <div className="profile-info-item d-flex align-items-center">
-                      <span className="profile-info-label">Category: </span>
-                      <span className="profile-info-content">{mockBusiness.category}</span>
+                  </div>
+
+                  {/* Right: primary actions */}
+                  <div className="mt-5 lg:mt-0 w-full lg:max-w-xs flex-shrink-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+                      <Link
+                        to={`/book/${mockBusiness.slug}`}
+                        className="inline-flex items-center justify-center rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white hover:bg-gray-800"
+                      >
+                        <CalendarDaysIcon className="h-5 w-5 mr-2" />
+                        Programează-te
+                      </Link>
+                      <a
+                        href={`tel:${mockBusiness.phone}`}
+                        className="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50"
+                      >
+                        <PhoneIcon className="h-5 w-5 mr-2" />
+                        Sună
+                      </a>
                     </div>
-                    <div className="profile-info-item d-flex align-items-center">
-                      <span className="profile-info-label">Address: </span>
-                      <span className="profile-info-content">{mockBusiness.address}</span>
+
+                    <div className="mt-4 flex items-center justify-between text-xs text-gray-600">
+                      <span className="inline-flex items-center gap-1">
+                        <ClockIcon className="h-4 w-4" />
+                        {openStatus.sublabel}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={copyLink}
+                        className="inline-flex items-center gap-1 rounded-md px-2 py-1 font-semibold text-gray-700 hover:bg-gray-100"
+                      >
+                        <LinkIcon className="h-4 w-4" />
+                        {copied ? 'Copiat' : 'Copiază linkul'}
+                      </button>
                     </div>
-                    <div className="profile-info-item d-flex align-items-center">
-                      <span className="profile-info-label">Phone: </span>
-                      <span className="profile-info-content">{mockBusiness.phone}</span>
+
+                    <div className="mt-4 flex items-center gap-3">
+                      <a href="https://tiktok.com/@luxebeauty.md" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-gray-900" aria-label="TikTok">
+                        <svg className="h-5 w-5" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.656 1.029c1.637-0.025 3.262-0.012 4.886-0.025 0.054 2.031 0.878 3.859 2.189 5.213l-0.002-0.002c1.411 1.271 3.247 2.095 5.271 2.235l0.028 0.002v5.036c-1.912-0.048-3.71-0.489-5.331-1.247l0.082 0.034c-0.784-0.377-1.447-0.764-2.077-1.196l0.052 0.034c-0.012 3.649 0.012 7.298-0.025 10.934-0.103 1.853-0.719 3.543-1.707 4.954l0.020-0.031c-1.652 2.366-4.328 3.919-7.371 4.011l-0.014 0c-0.123 0.006-0.268 0.009-0.414 0.009-1.73 0-3.347-0.482-4.725-1.319l0.040 0.023c-2.508-1.509-4.238-4.091-4.558-7.094l-0.004-0.041c-0.025-0.625-0.037-1.25-0.012-1.862 0.49-4.779 4.494-8.476 9.361-8.476 0.547 0 1.083 0.047 1.604 0.136l-0.056-0.008c0.025 1.849-0.050 3.699-0.050 5.548-0.423-0.153-0.911-0.242-1.42-0.242-1.868 0-3.457 1.194-4.045 2.861l-0.009 0.030c-0.133 0.427-0.21 0.918-0.21 1.426 0 0.206 0.013 0.41 0.037 0.61l-0.002-0.024c0.332 2.046 2.086 3.59 4.201 3.59 0.061 0 0.121-0.001 0.181-0.004l-0.009 0c1.463-0.044 2.733-0.831 3.451-1.994l0.010-0.018c0.267-0.372 0.45-0.822 0.511-1.311l0.001-0.014c0.125-2.237 0.075-4.461 0.087-6.698 0.012-5.036-0.012-10.060 0.025-15.083z"/></svg>
+                      </a>
+                      <a href="https://instagram.com/luxebeauty.md" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-gray-900" aria-label="Instagram">
+                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                      </a>
+                      <a href="https://facebook.com/luxebeauty.md" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-gray-900" aria-label="Facebook">
+                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
+            </section>
 
-              <div className="card shadow-custom rounded-custom">
-                <div className="card-body p-4">
-                  <h4 className="fw-semibold mb-3">Contact</h4>
-                  <div className="profile-info d-flex flex-column gap-2">
-                    <div className="profile-info-item d-flex align-items-center">
-                      <span className="profile-info-label">Email: </span>
-                      <span className="profile-info-content">{mockBusiness.email}</span>
+            <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Main */}
+              <div className="lg:col-span-8 space-y-6">
+                <section id="services" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="p-5 sm:p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900">Servicii</h2>
+                        <p className="mt-1 text-sm text-gray-600">Alege un tratament și rezervă instant.</p>
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        De la <span className="font-semibold text-gray-900">{minServicePrice != null ? `${minServicePrice} MDL` : '—'}</span>
+                      </div>
                     </div>
-                    <div className="profile-info-item d-flex align-items-center">
-                      <span className="profile-info-label">City: </span>
-                      <span className="profile-info-content">{mockBusiness.city}</span>
+
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {(
+                        [
+                          { id: 'featured', label: 'Recomandate' },
+                          { id: 'brows', label: 'Sprâncene' },
+                          { id: 'facials', label: 'Tratamente faciale' },
+                          { id: 'hair', label: 'Păr' },
+                        ] as const
+                      ).map((c) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => setActiveServiceCategory(c.id)}
+                          className={[
+                            'px-3 py-2 rounded-full text-sm font-semibold border',
+                            activeServiceCategory === c.id
+                              ? 'bg-gray-900 text-white border-gray-900'
+                              : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50',
+                          ].join(' ')}
+                        >
+                          {c.label}
+                        </button>
+                      ))}
                     </div>
-                    <div className="profile-info-item d-flex flex-column mt-3">
-                      <span className="profile-info-label mb-2">Social:</span>
-                      <ul className="social default left" aria-label="Business social links">
-                        <li data-tooltip="Telegram" style={{ ['--bg' as any]: '#26A5E4' }}>
-                          <a href="https://t.me/luxebeauty" target="_blank" rel="noreferrer" aria-label="Telegram">
-                            <i className="fa-brands fa-telegram" aria-hidden="true" />
-                          </a>
-                        </li>
 
-                        <li data-tooltip="Viber" style={{ ['--bg' as any]: '#59267C' }}>
-                          <a href="viber://chat?number=%2B37322555019" target="_blank" rel="noreferrer" aria-label="Viber">
-                            <i className="fa-brands fa-viber" aria-hidden="true" />
-                          </a>
-                        </li>
+                    <div className="mt-5 space-y-3">
+                      {visibleServices.map((s) => (
+                        <div
+                          key={s.id}
+                          className="rounded-xl border border-gray-200 bg-white p-4 hover:border-gray-300 transition-colors"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                            <div className="min-w-0">
+                              <p className="text-base font-semibold text-gray-900">{s.name}</p>
+                              {s.description ? (
+                                <p className="mt-1 text-sm text-gray-600">{s.description}</p>
+                              ) : null}
+                              <div className="mt-2 text-sm text-gray-600 inline-flex items-center gap-2">
+                                <ClockIcon className="h-4 w-4" />
+                                <span>{s.duration_minutes} min</span>
+                              </div>
+                            </div>
 
-                        <li data-tooltip="Instagram" style={{ ['--bg' as any]: 'linear-gradient(-45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)' }}>
-                          <a href="https://instagram.com/luxebeauty.md" aria-label="Instagram" target="_blank" rel="noopener">
-                            <i>
-                              <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M24 4.32c6.41 0 7.17.03 9.7.14 2.34.1 3.6.5 4.45.83 1.11.43 1.92.95 2.75 1.79a7.38 7.38 0 0 1 1.8 2.75c.32.85.72 2.12.82 4.46.11 2.53.14 3.29.14 9.7 0 6.4-.03 7.16-.14 9.68-.1 2.35-.5 3.61-.83 4.46a7.42 7.42 0 0 1-1.79 2.75 7.38 7.38 0 0 1-2.75 1.8c-.85.32-2.12.72-4.46.82-2.53.11-3.29.14-9.69.14-6.41 0-7.17-.03-9.7-.14-2.34-.1-3.6-.5-4.45-.83a7.42 7.42 0 0 1-2.75-1.79 7.38 7.38 0 0 1-1.8-2.75 13.2 13.2 0 0 1-.82-4.46c-.11-2.53-.14-3.29-.14-9.69 0-6.41.03-7.17.14-9.7.1-2.34.5-3.6.83-4.45A7.42 7.42 0 0 1 7.1 7.08a7.38 7.38 0 0 1 2.75-1.8 13.2 13.2 0 0 1 4.46-.82c2.52-.11 3.28-.14 9.69-.14ZM24 0c-6.52 0-7.33.03-9.9.14-2.54.11-4.3.53-5.81 1.12a11.71 11.71 0 0 0-4.26 2.77 11.76 11.76 0 0 0-2.77 4.25C.66 9.8.26 11.55.14 14.1A176.6 176.6 0 0 0 0 24c0 6.52.03 7.33.14 9.9.11 2.54.53 4.3 1.12 5.81a11.71 11.71 0 0 0 2.77 4.26 11.73 11.73 0 0 0 4.25 2.76c1.53.6 3.27 1 5.82 1.12 2.56.11 3.38.14 9.9.14 6.5 0 7.32-.03 9.88-.14 2.55-.11 4.3-.52 5.82-1.12 1.58-.6 2.92-1.43 4.25-2.76a11.73 11.73 0 0 0 2.77-4.25c.59-1.53 1-3.27 1.11-5.82.11-2.56.14-3.38.14-9.9 0-6.5-.03-7.32-.14-9.88-.11-2.55-.52-4.3-1.11-5.82-.6-1.6-1.41-2.94-2.75-4.27a11.73 11.73 0 0 0-4.25-2.76C38.2.67 36.45.27 33.9.15 31.33.03 30.52 0 24 0Z" fill="currentColor"></path>
-                                <path d="M24 11.67a12.33 12.33 0 1 0 0 24.66 12.33 12.33 0 0 0 0-24.66ZM24 32a8 8 0 1 1 0-16 8 8 0 0 1 0 16ZM39.7 11.18a2.88 2.88 0 1 1-5.76 0 2.88 2.88 0 0 1 5.75 0Z" fill="currentColor"></path>
-                              </svg>
-                            </i>
-                          </a>
-                        </li>
-
-                        <li data-tooltip="Facebook" style={{ ['--bg' as any]: '#1877F2' }}>
-                          <a href="https://facebook.com/luxebeauty.md" target="_blank" rel="noreferrer" aria-label="Facebook">
-                            <i>
-                              <svg className="h-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <title>Facebook</title>
-                                <path fill="currentColor" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                              </svg>
-                            </i>
-                          </a>
-                        </li>
-                      </ul>
+                            <div className="flex items-center justify-between sm:justify-end gap-4">
+                              <p className="text-lg font-semibold text-gray-900">{s.price} MDL</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="card shadow-custom rounded-custom mt-4">
-                <div className="card-body p-0">
-                  <h4 className="fw-semibold mb-3 px-4 pt-3">Location</h4>
-                  <div className="px-4 pb-3">
-                    <div className="map-embed" style={{ width: '100%', height: 250, overflow: 'hidden', borderRadius: 6 }}>
-                      <iframe
-                        title="Business location"
-                        src={`https://www.google.com/maps?q=${mockBusiness.latitude},${mockBusiness.longitude}&z=15&output=embed`}
-                        width="100%"
-                        height="250"
-                        style={{ border: 0 }}
-                        loading="lazy"
+                </section>
+
+                <section id="photos" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-end justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900">Fotografii</h2>
+                        <p className="mt-1 text-sm text-gray-600">O privire rapidă în studio.</p>
+                      </div>
+                      <span className="text-sm text-gray-600">{photos.length} fotografii</span>
+                    </div>
+                    <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {photos.map((p, idx) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => startPhotoTransition(idx)}
+                          className="relative overflow-hidden rounded-xl border border-gray-200 hover:border-gray-300"
+                          aria-label={`Deschide fotografia ${idx + 1}`}
+                        >
+                          <img src={p} alt="" className="h-32 w-full object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section id="team" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-end justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900">Echipă</h2>
+                        <p className="mt-1 text-sm text-gray-600">Cunoaște specialiștii.</p>
+                      </div>
+                      <span className="text-sm text-gray-600">{mockEmployees.length} persoane</span>
+                    </div>
+
+                    <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {mockEmployees.map((e) => (
+                        <div key={e.id} className="rounded-xl border border-gray-200 p-4">
+                          <div className="flex items-start gap-3">
+                            {e.photo_url ? (
+                              <img src={e.photo_url} alt={e.name} className="h-12 w-12 rounded-xl object-cover" />
+                            ) : (
+                              <div className="h-12 w-12 rounded-xl bg-gray-100 grid place-items-center font-semibold text-gray-900">
+                                {e.name.slice(0, 1).toUpperCase()}
+                              </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                              <p className="font-semibold text-gray-900 truncate">{e.name}</p>
+                              {e.position ? <p className="text-sm text-gray-600">{e.position}</p> : null}
+                              {e.bio ? <p className="mt-2 text-sm text-gray-700 line-clamp-3">{e.bio}</p> : null}
+                              <div className="mt-2 flex items-center gap-2 text-sm text-gray-700">
+                                <StarIcon className="h-4 w-4 text-yellow-500" />
+                                <span className="font-medium">Foarte apreciat</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section id="reviews" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="p-5 sm:p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900">Recenzii</h2>
+                        <p className="mt-1 text-sm text-gray-600">Feedback verificat de la clienți.</p>
+                      </div>
+                      <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-sm">
+                        <RatingStars rating={mockRatingBreakdown.overall} size="sm" />
+                        <span className="font-semibold text-gray-900">{mockRatingBreakdown.overall.toFixed(1)}</span>
+                        <span className="text-gray-600">({mockBusiness.review_count})</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-6">
+                      <ReviewList
+                        reviews={mockReviews}
+                        businessName={mockBusiness.name}
+                        businessAvatar={mockBusiness.logo_url}
                       />
                     </div>
-                    <div className="mt-2"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mockBusiness.address + ', ' + mockBusiness.city)}`} target="_blank" rel="noreferrer">Open in Google Maps</a></div>
                   </div>
-                </div>
-              </div>
-            </div>
+                </section>
 
-            <div className="col-lg-8">
-              <div className="row gy-5">
-                {activeTab === 'activity' && (
-                  <div className="col-12">
-                    <div className="card shadow-custom rounded-custom">
-                      <div className="card-body p-4">
-                        <h4 className="fw-semibold mb-4">Home</h4>
-                        <ReviewList reviews={mockReviews} businessName={mockBusiness.name} businessAvatar={mockBusiness.logo_url} />
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <section id="about" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                  <div className="p-5 sm:p-6">
+                    <h2 className="text-xl font-semibold text-gray-900">Despre</h2>
+                    <p className="mt-3 text-sm text-gray-700 leading-relaxed">{mockBusiness.description}</p>
 
-                {activeTab === 'projects' && (
-                  <div className="col-12">
-                    <div className="card shadow-custom rounded-custom">
-                      <div className="card-body p-4">
-                        <h4 className="fw-semibold mb-4">Services</h4>
-                        <ServiceList services={mockServices} />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'team' && (
-                  <div className="col-12">
-                    <div className="card shadow-custom rounded-custom">
-                      <div className="card-body p-4">
-                        <h4 className="fw-semibold mb-4">Team</h4>
-                        <div className="d-flex flex-column gap-3">
-                          {mockEmployees.map((emp) => (
-                            <div key={emp.id} className="d-flex align-items-center">
-                              <EmployeeCard employee={emp} />
+                    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="rounded-xl border border-gray-200 p-4">
+                        <p className="text-sm font-semibold text-gray-900">Program</p>
+                        <div className="mt-3 space-y-2 text-sm text-gray-700">
+                          {(
+                            [
+                              ['Luni', mockBusiness.working_hours.monday],
+                              ['Marți', mockBusiness.working_hours.tuesday],
+                              ['Miercuri', mockBusiness.working_hours.wednesday],
+                              ['Joi', mockBusiness.working_hours.thursday],
+                              ['Vineri', mockBusiness.working_hours.friday],
+                              ['Sâmbătă', mockBusiness.working_hours.saturday],
+                              ['Duminică', mockBusiness.working_hours.sunday],
+                            ] as const
+                          ).map(([label, h]) => (
+                            <div key={label} className="flex items-center justify-between gap-3">
+                              <span className="text-gray-600">{label}</span>
+                              <span className="font-medium text-gray-900">
+                                {h.open && h.close ? `${h.open}–${h.close}` : 'Închis'}
+                              </span>
                             </div>
                           ))}
                         </div>
                       </div>
-                    </div>
-                  </div>
-                )}
 
-                {activeTab === 'reviews' && (
-                  <div className="col-12">
-                    <div className="card shadow-custom rounded-custom">
-                      <div className="card-body p-4">
-                        <h4 className="fw-semibold mb-4">Reviews</h4>
-                        <ReviewList reviews={mockReviews} />
+                      <div className="rounded-xl border border-gray-200 p-4">
+                        <p className="text-sm font-semibold text-gray-900">Informații suplimentare</p>
+                        <ul className="mt-3 space-y-2 text-sm text-gray-700">
+                          <li className="flex items-start gap-2">
+                            <span className="mt-0.5 text-emerald-700">●</span>
+                            Confirmare instantă
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="mt-0.5 text-emerald-700">●</span>
+                            Produse profesionale
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="mt-0.5 text-emerald-700">●</span>
+                            Instrucțiuni de îngrijire incluse
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
-                )}
-
-                {/* followers removed */}
+                </section>
               </div>
+
+              {/* Sidebar */}
+              <aside className="lg:col-span-4 space-y-6">
+                <div className="sticky top-6 space-y-6">
+                  <nav
+                    className="flex flex-wrap gap-2 rounded-2xl bg-white border border-gray-200 shadow-sm p-2"
+                    aria-label="Secțiuni pagină"
+                  >
+                    {[
+                      { id: 'services', label: 'Servicii' },
+                      { id: 'team', label: 'Echipă' },
+                      { id: 'reviews', label: 'Recenzii' },
+                      { id: 'about', label: 'Despre' },
+                    ].map((t) => (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => scrollToSection(t.id)}
+                        className={[
+                          'rounded-full px-3 py-2 text-sm font-medium transition-all duration-200',
+                          activeNavSection === t.id
+                            ? 'bg-gray-900 text-white shadow-sm'
+                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
+                        ].join(' ')}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </nav>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p className="text-sm font-semibold text-gray-900">Rezervă acum</p>
+                    <p className="mt-1 text-sm text-gray-600">Alege o oră potrivită pentru tine.</p>
+                    <Link
+                      to={`/book/${mockBusiness.slug}`}
+                      className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white hover:bg-gray-800"
+                    >
+                      <CalendarDaysIcon className="h-5 w-5 mr-2" />
+                      Programează-te
+                    </Link>
+                    <div className="mt-4 grid grid-cols-3 gap-2">
+                      {['10:00', '12:30', '17:00'].map((t) => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => scrollToSection('services')}
+                          className="rounded-lg border border-gray-200 bg-white px-2 py-2 text-xs font-semibold text-gray-900 hover:bg-gray-50"
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="p-5">
+                      <p className="text-sm font-semibold text-gray-900">Locație</p>
+                      <p className="mt-2 text-sm text-gray-700">{mockBusiness.address}</p>
+                      <p className="text-sm text-gray-600">{mockBusiness.city}</p>
+                    </div>
+                    <div className="px-5 pb-5">
+                      <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                        <iframe
+                          title="Locația salonului"
+                          src={`https://www.google.com/maps?q=${mockBusiness.latitude},${mockBusiness.longitude}&z=15&output=embed`}
+                          width="100%"
+                          height="220"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                        />
+                      </div>
+                      <a
+                        className="mt-3 inline-flex items-center text-sm font-semibold text-gray-900 hover:underline"
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          `${mockBusiness.address}, ${mockBusiness.city}`,
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Direcții →
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
+                    <p className="text-sm font-semibold text-gray-900">Contact</p>
+                    <div className="mt-3 space-y-3 text-sm text-gray-700">
+                      <a className="flex items-center gap-2 hover:underline" href={`tel:${mockBusiness.phone}`}>
+                        <PhoneIcon className="h-4 w-4 text-gray-500" />
+                        {mockBusiness.phone}
+                      </a>
+                      <a className="flex items-center gap-2 hover:underline" href={`mailto:${mockBusiness.email}`}>
+                        <EnvelopeIcon className="h-4 w-4 text-gray-500" />
+                        {mockBusiness.email}
+                      </a>
+                      <button
+                        type="button"
+                        onClick={copyLink}
+                        className="flex items-center gap-2 text-left hover:underline"
+                      >
+                        <LinkIcon className="h-4 w-4 text-gray-500" />
+                        {copied ? 'Link copiat' : 'Copiază linkul'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </aside>
             </div>
           </div>
-        </div>
-      </div>
+        </main>
 
-    </div>
+        <footer className="mt-16 border-t border-gray-200 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">BookBeauty</h3>
+                <p className="text-sm text-gray-600">
+                  Platforma ta de încredere pentru programări la servicii de beauty și barber.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Linkuri rapide</h3>
+                <ul className="space-y-2 text-sm">
+                  <li>
+                    <a href="/" className="text-gray-600 hover:text-gray-900 transition-colors">
+                      Piață
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/admin/login" className="text-gray-600 hover:text-gray-900 transition-colors">
+                      Autentificare business
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Contact</h3>
+                <p className="text-sm text-gray-600">Email: info@bookbeauty.md</p>
+                <p className="text-sm text-gray-600">Telefon: +373 69 000 000</p>
+              </div>
+            </div>
+            <div className="border-t border-gray-200 mt-8 pt-8 text-center text-sm text-gray-500">
+              <p>&copy; {new Date().getFullYear()} BookBeauty. Toate drepturile rezervate.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }

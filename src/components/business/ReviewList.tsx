@@ -19,7 +19,7 @@ export default function ReviewList({ reviews, businessName, businessAvatar }: Re
   return (
     <>
       {reviews.length === 0 ? (
-        <p className="text-center text-gray-500 py-8">No reviews yet</p>
+        <p className="text-center text-gray-500 py-8">Încă nu există recenzii</p>
       ) : (
         <div className="space-y-6">
           {reviews.map((review) => (
@@ -44,12 +44,12 @@ export default function ReviewList({ reviews, businessName, businessAvatar }: Re
               {review.reply && (
                 <div className="ml-4 p-3 bg-blue-50 rounded-lg flex items-start gap-3">
                   {businessAvatar ? (
-                    <img src={businessAvatar} alt={businessName ?? 'Business'} className="w-8 h-8 rounded-full object-cover" />
+                    <img src={businessAvatar} alt={businessName ?? 'Salon'} className="w-8 h-8 rounded-full object-cover" />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-medium">{(businessName || 'B').slice(0,1).toUpperCase()}</div>
                   )}
                   <div>
-                    <p className="text-sm font-medium text-gray-900 mb-1">{businessName ?? 'Business Response'}</p>
+                    <p className="text-sm font-medium text-gray-900 mb-1">{businessName ?? 'Răspunsul salonului'}</p>
                     <p className="text-sm text-gray-700">{review.reply}</p>
                   </div>
                 </div>
