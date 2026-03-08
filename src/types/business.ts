@@ -5,6 +5,7 @@ export interface Business {
   subdomain: string | null;
   description: string | null;
   logo_url: string | null;
+  cover_image_url?: string | null;
   phone: string | null;
   email: string | null;
   address: string | null;

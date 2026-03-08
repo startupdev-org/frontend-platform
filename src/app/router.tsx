@@ -16,14 +16,14 @@ import NotFoundPage from '../pages/marketplace/NotFoundPage';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/luxe-beauty-studio" replace />,
-  },
-  {
-    path: '/luxe-beauty-studio',
-    element: <BusinessTestPage />,
+    element: <Navigate to="/business/glowbeautystudio" replace />,
   },
   {
     path: '/business/:slug',
+    element: <BusinessTestPage />,
+  },
+  {
+    path: '/business-legacy/:slug',
     element: <BusinessDetailsPage />,
   },
   {

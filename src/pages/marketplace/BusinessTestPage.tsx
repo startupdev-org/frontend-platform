@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
   BanknotesIcon,
@@ -21,221 +21,34 @@ import { FaShare } from 'react-icons/fa';
 import { BiSolidPhoneCall } from 'react-icons/bi';
 import ReviewList from '../../components/business/ReviewList';
 import RatingStars from '../../components/business/RatingStars';
-import { Business } from '../../types/business';
+import Spinner from '../../components/ui/Spinner';
+import { useBusiness } from '../../hooks/useBusiness';
+import { supabase } from '../../services/api';
+import { reviewService } from '../../services/review.service';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
 import { Review, RatingBreakdown } from '../../types/review';
 
-const LUXE_PHOTOS = [
+const DEFAULT_PHOTOS = [
   'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=1600&q=80',
   'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1600&q=80',
 ] as const;
 
-const mockBusiness: Business = {
-  id: 'luxe-001',
-  name: 'Luxe Beauty Studio',
-  slug: 'luxe-beauty-studio',
-  subdomain: null,
-  description:
-    'Luxe Beauty Studio este un salon premium situat în centrul Chișinăului, specializat în sprâncene, tratamente faciale și coafare profesională. Punem pe primul loc igiena, tehnicile moderne și grija personalizată.',
-  logo_url: 'https://images.squarespace-cdn.com/content/v1/54390f2ee4b0a3191f9d5ab8/1574985068143-Y4C7Y4E9X2W1D7EA923S/Eyebrow-Tattoo.jpg?format=2500w',
-  phone: '+373 (22) 555-019',
-  email: 'hello@luxebeauty.md',
-  address: 'Strada 31 August 1989 80',
-  city: 'Chișinău, Moldova',
-  latitude: 47.0105,
-  longitude: 28.8638,
-  category: 'Salon de înfrumusețare',
-  price_range: 3,
-  working_hours: {
-    monday: { open: '09:00', close: '18:00' },
-    tuesday: { open: '09:00', close: '18:00' },
-    wednesday: { open: '09:00', close: '18:00' },
-    thursday: { open: '10:00', close: '20:00' },
-    friday: { open: '10:00', close: '20:00' },
-    saturday: { open: '09:00', close: '16:00' },
-    sunday: { open: null, close: null },
-  },
-  is_active: true,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  average_rating: 4.8,
-  review_count: 124,
-};
-
-const mockServices: Service[] = [
-  {
-    id: 's1',
-    business_id: mockBusiness.id,
-    name: 'Tratament facial Signature',
-    description: 'Curățare profundă și îngrijire adaptată tipului tău de ten',
-    price: 85,
-    duration_minutes: 60,
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 's2',
-    business_id: mockBusiness.id,
-    name: 'Microblading (inițial)',
-    description: 'Microblading semipermanent pentru sprâncene — ședința inițială',
-    price: 350,
-    duration_minutes: 150,
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 's3',
-    business_id: mockBusiness.id,
-    name: 'Stilizare sprâncene',
-    description: 'Pensat și conturare pentru un aspect definit',
-    price: 40,
-    duration_minutes: 30,
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 's4',
-    business_id: mockBusiness.id,
-    name: 'Tuns & coafat',
-    description: 'Tuns precis și coafare profesională',
-    price: 65,
-    duration_minutes: 60,
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-];
-
-const minServicePrice: number | null = (() => {
-  const prices = mockServices.map((s) => s.price).filter((n) => typeof n === 'number' && Number.isFinite(n));
-  if (prices.length === 0) return null;
-  return Math.min(...prices);
-})();
-
-const servicesByCategory: Record<'featured' | 'brows' | 'facials' | 'hair', Service[]> = {
-  featured: mockServices,
-  brows: mockServices.filter((s) => /brow|microblading/i.test(s.name)),
-  facials: mockServices.filter((s) => /facial/i.test(s.name)),
-  hair: mockServices.filter((s) => /hair|cut|style/i.test(s.name)),
-};
-
-const mockEmployees: Employee[] = [
-  {
-    id: 'e1',
-    business_id: mockBusiness.id,
-    name: 'Maria Popa',
-    photo_url: 'https://randomuser.me/api/portraits/women/68.jpg',
-    position: 'Estetician senior',
-    bio: 'Specialistă în microblading și corecție de sprâncene, cu 8 ani experiență în Chișinău.',
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'e2',
-    business_id: mockBusiness.id,
-    name: 'Ion Drăgan',
-    photo_url: 'https://randomuser.me/api/portraits/men/32.jpg',
-    position: 'Stilist principal',
-    bio: 'Stilist cu experiență, orientat spre tunsori precise și tehnici moderne de culoare.',
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'e3',
-    business_id: mockBusiness.id,
-    name: 'Ana Rusu',
-    photo_url: 'https://randomuser.me/api/portraits/women/65.jpg',
-    position: 'Estetician',
-    bio: 'Oferă tratamente faciale de regenerare și planuri de întreținere a tenului.',
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'e4',
-    business_id: mockBusiness.id,
-    name: 'Elena Munteanu',
-    photo_url: 'https://randomuser.me/api/portraits/women/44.jpg',
-    position: 'Coafor',
-    bio: 'Specialistă în vopsit și balayage.',
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'e5',
-    business_id: mockBusiness.id,
-    name: 'Andrei Cojocaru',
-    photo_url: 'https://randomuser.me/api/portraits/men/67.jpg',
-    position: 'Barber',
-    bio: 'Tunsori clasice și moderne pentru bărbați.',
-    is_active: true,
-    created_at: new Date().toISOString(),
-  },
-];
-
-// Mock review counts for each employee
-const employeeReviewCounts = {
-  'e1': 45,
-  'e2': 67,
-  'e3': 38,
-  'e4': 52,
-  'e5': 29,
-};
-
-const mockReviews: Review[] = [
-  {
-    id: 'r1',
-    business_id: mockBusiness.id,
-    booking_id: null,
-    customer_name: 'Mihai C.',
-    rating_overall: 5,
-    rating_cleanliness: 5,
-    rating_service: 5,
-    rating_price: 4,
-    comment: 'Echipă foarte profesionistă și rezultate excelente la microblading — recomand cu încredere.',
-    reply: 'Mulțumim, Mihai! Ne bucurăm că sunteți mulțumit.',
-    is_verified: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'r2',
-    business_id: mockBusiness.id,
-    booking_id: null,
-    customer_name: 'Ana P.',
-    rating_overall: 5,
-    rating_cleanliness: 5,
-    rating_service: 5,
-    rating_price: 5,
-    comment: 'Tuns și coafat excelent — părul arată impecabil.',
-    reply: null,
-    is_verified: true,
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'r3',
-    business_id: mockBusiness.id,
-    booking_id: null,
-    customer_name: 'Victor B.',
-    rating_overall: 4,
-    rating_cleanliness: 4,
-    rating_service: 4,
-    rating_price: 4,
-    comment: 'Tratament facial relaxant — îmbunătățire vizibilă după prima ședință.',
-    reply: null,
-    is_verified: true,
-    created_at: new Date().toISOString(),
-  },
-];
-
-const mockRatingBreakdown: RatingBreakdown = {
-  overall: 4.8,
-  cleanliness: 4.9,
-  service: 4.8,
-  price: 4.4,
-};
-
 export default function BusinessTestPage() {
+  const { slug } = useParams<{ slug: string }>();
+  const { business, isLoading } = useBusiness(slug);
+  const [services, setServices] = useState<Service[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [ratingBreakdown, setRatingBreakdown] = useState<RatingBreakdown>({
+    overall: 0,
+    cleanliness: 0,
+    service: 0,
+    price: 0,
+  });
+
   const [activeServiceCategory, setActiveServiceCategory] = useState<'featured' | 'brows' | 'facials' | 'hair'>(
     'featured',
   );
@@ -245,18 +58,68 @@ export default function BusinessTestPage() {
   const [copied, setCopied] = useState(false);
   const [activeNavSection, setActiveNavSection] = useState('services');
 
-  const photos = LUXE_PHOTOS;
+  useEffect(() => {
+    if (!business?.id) return;
+    const load = async () => {
+      const [svcRes, empRes] = await Promise.all([
+        supabase.from('services').select('*').eq('business_id', business.id).order('name'),
+        supabase.from('employees').select('*').eq('business_id', business.id).order('name'),
+      ]);
+      if (!svcRes.error && svcRes.data) setServices((svcRes.data as Service[]).filter((s) => s.is_active !== false));
+      if (!empRes.error && empRes.data) setEmployees((empRes.data as Employee[]).filter((e) => e.is_active !== false));
+      try {
+        const revs = await reviewService.getByBusiness(business.id);
+        setReviews(revs);
+        const breakdown = await reviewService.getRatingBreakdown(business.id);
+        setRatingBreakdown(breakdown);
+      } catch {
+        setReviews([]);
+      }
+    };
+    load();
+  }, [business?.id]);
+
+  const photos = useMemo(() => {
+    if (!business) return [...DEFAULT_PHOTOS];
+    const urls: string[] = [];
+    if (business.cover_image_url) urls.push(business.cover_image_url);
+    if (business.logo_url) urls.push(business.logo_url);
+    return urls.length > 0 ? urls : [...DEFAULT_PHOTOS];
+  }, [business]);
+
+  const minServicePrice = useMemo(() => {
+    const prices = services.map((s) => s.price).filter((n) => typeof n === 'number' && Number.isFinite(n));
+    return prices.length === 0 ? null : Math.min(...prices);
+  }, [services]);
+
+  const servicesByCategory = useMemo(
+    () => ({
+      featured: services,
+      brows: services.filter((s) => /brow|microblading|sprâncene/i.test(s.name)),
+      facials: services.filter((s) => /facial/i.test(s.name)),
+      hair: services.filter((s) => /hair|tuns|coafat|păr/i.test(s.name)),
+    }),
+    [services]
+  );
+
+  const employeeReviewCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    employees.forEach((e) => {
+      counts[e.id] = reviews.filter((r) => (r as Review & { employee_id?: string }).employee_id === e.id).length;
+    });
+    return counts;
+  }, [employees, reviews]);
+
   const visibleServices = servicesByCategory[activeServiceCategory];
 
   const startPhotoTransition = (nextIdx: number) => {
     if (nextIdx === selectedPhotoIdx) return;
-    // If we're mid-transition, ignore additional triggers.
     if (transitionPhotoIdx !== null) return;
     setTransitionPhotoIdx(nextIdx);
     setFadeIn(false);
   };
 
-  // Preload images to avoid flicker.
+  // Preload images - runs every time photos change (no early return before this)
   useEffect(() => {
     photos.forEach((src) => {
       const img = new Image();
@@ -264,17 +127,14 @@ export default function BusinessTestPage() {
     });
   }, [photos]);
 
-  // Cross-fade when a new photo is queued.
   useEffect(() => {
     if (transitionPhotoIdx === null) return;
-
     const raf = window.requestAnimationFrame(() => setFadeIn(true));
     const t = window.setTimeout(() => {
       setSelectedPhotoIdx(transitionPhotoIdx);
       setTransitionPhotoIdx(null);
       setFadeIn(false);
     }, 650);
-
     return () => {
       window.cancelAnimationFrame(raf);
       window.clearTimeout(t);
@@ -283,18 +143,42 @@ export default function BusinessTestPage() {
 
   useEffect(() => {
     if (photos.length <= 1) return;
-
     const interval = window.setInterval(() => {
       const next = (selectedPhotoIdx + 1) % photos.length;
       startPhotoTransition(next);
     }, 4500);
-
     return () => window.clearInterval(interval);
   }, [photos.length, selectedPhotoIdx, transitionPhotoIdx]);
 
+  if (!slug) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">Lipsește identificatorul business-ului.</p>
+      </div>
+    );
+  }
+
+  if (isLoading || !business) {
+    if (isLoading) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <Spinner size="lg" />
+        </div>
+      );
+    }
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 gap-4">
+        <h1 className="text-xl font-semibold text-gray-900">Business negăsit</h1>
+        <Link to="/" className="text-blue-600 hover:underline">
+          Înapoi la piață
+        </Link>
+      </div>
+    );
+  }
+
   const dayKeys = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
   const todayKey = dayKeys[new Date().getDay()];
-  const hoursToday = mockBusiness.working_hours?.[todayKey];
+  const hoursToday = business.working_hours?.[todayKey];
   const openStatus = (() => {
     const open = hoursToday?.open;
     const close = hoursToday?.close;
@@ -340,8 +224,8 @@ export default function BusinessTestPage() {
   return (
     <>
       <Helmet>
-        <title>{mockBusiness.name} - BookBeauty</title>
-        <meta name="description" content={mockBusiness.description || `Programează-te la ${mockBusiness.name}`} />
+        <title>{business.name} - BookBeauty</title>
+        <meta name="description" content={business.description || `Programează-te la ${business.name}`} />
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gray-50">
@@ -383,11 +267,11 @@ export default function BusinessTestPage() {
                   <div className="flex items-center min-w-0 whitespace-nowrap">
                     <Link to="/" className="hover:text-gray-700">Acasă</Link>
                     <span className="mx-1.5">›</span>
-                    <span className="text-gray-400 truncate">{mockBusiness.category}</span>
+                    <span className="text-gray-400 truncate">{business.category}</span>
                     <span className="mx-1.5 flex-shrink-0">›</span>
-                    <span className="text-gray-400 truncate">{mockBusiness.city}</span>
+                    <span className="text-gray-400 truncate">{business.city}</span>
                     <span className="mx-1.5 flex-shrink-0">›</span>
-                    <span className="text-gray-900 font-medium truncate">{mockBusiness.name}</span>
+                    <span className="text-gray-900 font-medium truncate">{business.name}</span>
                   </div>
                 </nav>
 
@@ -395,27 +279,27 @@ export default function BusinessTestPage() {
                 <div className="mt-4 flex flex-col gap-4 lg:mt-8 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
                   <div className="min-w-0">
                     <h1 className="text-2xl font-bold text-gray-900 tracking-tight mb-3 sm:text-4xl sm:mb-4 lg:text-5xl">
-                      {mockBusiness.name}
+                      {business.name}
                     </h1>
                     {/* Meta: stacked on mobile, single line on desktop */}
                     <div className="flex flex-col gap-1.5 text-sm text-gray-600 lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-2 lg:gap-y-1">
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="font-semibold text-gray-900">{(mockBusiness.average_rating ?? 0).toFixed(1)}</span>
-                        <RatingStars rating={mockBusiness.average_rating ?? 0} size="sm" />
-                        <span className="text-gray-500">({mockBusiness.review_count})</span>
+                        <span className="font-semibold text-gray-900">{(business.average_rating ?? 0).toFixed(1)}</span>
+                        <RatingStars rating={business.average_rating ?? 0} size="sm" />
+                        <span className="text-gray-500">({business.review_count})</span>
                       </span>
                       <span className="hidden lg:inline text-gray-300">•</span>
                       <span className={openStatus.tone === 'good' ? 'text-emerald-600 font-medium' : 'text-gray-600'}>
                         {openStatus.label}
                       </span>
                       <span className="hidden lg:inline text-gray-300">•</span>
-                      <span className="text-gray-700">{mockBusiness.address}, {mockBusiness.city}</span>
+                      <span className="text-gray-700">{business.address}, {business.city}</span>
                       <span className="hidden lg:inline text-gray-300">•</span>
                       <a
-                        href={`tel:${mockBusiness.phone}`}
+                        href={`tel:${business.phone}`}
                         className="text-blue-600 hover:text-blue-700 font-medium"
                       >
-                        {mockBusiness.phone}
+                        {business.phone}
                       </a>
                     </div>
                   </div>
@@ -466,14 +350,14 @@ export default function BusinessTestPage() {
                 <p className="mt-1 text-sm text-gray-600">Alege o oră potrivită pentru tine.</p>
                 <div className="mt-4 flex flex-col gap-2">
                   <a
-                    href={`tel:${mockBusiness.phone}`}
+                    href={`tel:${business.phone}`}
                     className="inline-flex w-full items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50"
                   >
                     <BiSolidPhoneCall className="h-5 w-5 mr-2" />
-                    {mockBusiness.phone}
+                    {business.phone}
                   </a>
                   <Link
-                    to={`/book/${mockBusiness.slug}`}
+                    to={`/book/${business.slug}`}
                     className="inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white hover:bg-gray-800"
                   >
                     <CalendarDaysIcon className="h-5 w-5 mr-2" />
@@ -500,7 +384,7 @@ export default function BusinessTestPage() {
                 <div className="relative aspect-[4/3] lg:aspect-auto lg:col-span-2 lg:row-span-2 lg:min-h-[260px] rounded-xl overflow-hidden bg-gray-100 col-span-2">
                   <img
                     src={photos[selectedPhotoIdx]}
-                    alt={`${mockBusiness.name}`}
+                    alt={`${business.name}`}
                     className="absolute inset-0 h-full w-full object-cover"
                     loading="eager"
                   />
@@ -613,7 +497,7 @@ export default function BusinessTestPage() {
                               <div className="flex flex-shrink-0 items-center justify-between gap-3 pl-12 lg:ml-auto lg:pl-0 lg:justify-end">
                                 <span className="text-sm font-semibold text-gray-900 tabular-nums">{s.price} MDL</span>
                                 <Link
-                                  to={`/book/${mockBusiness.slug}?service=${s.id}`}
+                                  to={`/book/${business.slug}?service=${s.id}`}
                                   className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors lg:flex-shrink-0"
                                 >
                                   Selectează
@@ -634,12 +518,12 @@ export default function BusinessTestPage() {
                         <h2 className="text-xl font-semibold text-gray-900">Echipă</h2>
                         <p className="mt-1 text-sm text-gray-600">Cunoaște specialiștii.</p>
                       </div>
-                      <span className="text-sm text-gray-600">{mockEmployees.length} persoane</span>
+                      <span className="text-sm text-gray-600">{employees.length} persoane</span>
                     </div>
 
                     <div className="mt-6 -mx-5 sm:-mx-6 px-5 sm:px-6">
                       <div className="flex gap-6 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth">
-                        {mockEmployees.map((e) => (
+                        {employees.map((e) => (
                           <div
                             key={e.id}
                             className="flex flex-shrink-0 flex-col items-center text-center snap-center min-w-[100px]"
@@ -712,17 +596,17 @@ export default function BusinessTestPage() {
                         <p className="mt-1 text-sm text-gray-600">Feedback verificat de la clienți.</p>
                       </div>
                       <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-sm">
-                        <RatingStars rating={mockRatingBreakdown.overall} size="sm" />
-                        <span className="font-semibold text-gray-900">{mockRatingBreakdown.overall.toFixed(1)}</span>
-                        <span className="text-gray-600">({mockBusiness.review_count})</span>
+                        <RatingStars rating={ratingBreakdown.overall} size="sm" />
+                        <span className="font-semibold text-gray-900">{ratingBreakdown.overall.toFixed(1)}</span>
+                        <span className="text-gray-600">({business.review_count})</span>
                       </div>
                     </div>
 
                     <div className="mt-6">
                       <ReviewList
-                        reviews={mockReviews}
-                        businessName={mockBusiness.name}
-                        businessAvatar={mockBusiness.logo_url}
+                        reviews={reviews}
+                        businessName={business.name}
+                        businessAvatar={business.logo_url}
                       />
                     </div>
                   </div>
@@ -732,7 +616,7 @@ export default function BusinessTestPage() {
                   <div className="p-5 sm:p-6">
                     <h2 className="text-xl font-semibold text-gray-900">Despre</h2>
                     <p className="mt-3 text-gray-700 leading-relaxed max-w-2xl">
-                      {mockBusiness.description}
+                      {business.description}
                     </p>
 
                     <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -744,13 +628,13 @@ export default function BusinessTestPage() {
                         <dl className="mt-4 space-y-2.5">
                           {(
                             [
-                              ['Luni', 'monday', mockBusiness.working_hours.monday],
-                              ['Marți', 'tuesday', mockBusiness.working_hours.tuesday],
-                              ['Miercuri', 'wednesday', mockBusiness.working_hours.wednesday],
-                              ['Joi', 'thursday', mockBusiness.working_hours.thursday],
-                              ['Vineri', 'friday', mockBusiness.working_hours.friday],
-                              ['Sâmbătă', 'saturday', mockBusiness.working_hours.saturday],
-                              ['Duminică', 'sunday', mockBusiness.working_hours.sunday],
+                              ['Luni', 'monday', business.working_hours.monday],
+                              ['Marți', 'tuesday', business.working_hours.tuesday],
+                              ['Miercuri', 'wednesday', business.working_hours.wednesday],
+                              ['Joi', 'thursday', business.working_hours.thursday],
+                              ['Vineri', 'friday', business.working_hours.friday],
+                              ['Sâmbătă', 'saturday', business.working_hours.saturday],
+                              ['Duminică', 'sunday', business.working_hours.sunday],
                             ] as const
                           ).map(([label, key, h]) => {
                             const isToday = key === todayKey;
@@ -836,14 +720,14 @@ export default function BusinessTestPage() {
                     <p className="mt-1 text-sm text-gray-600">Alege o oră potrivită pentru tine.</p>
                     <div className="mt-4 flex flex-col gap-2">
                       <a
-                        href={`tel:${mockBusiness.phone}`}
+                        href={`tel:${business.phone}`}
                         className="inline-flex w-full items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50"
                       >
                         <BiSolidPhoneCall className="h-5 w-5 mr-2" />
-                        {mockBusiness.phone}
+                        {business.phone}
                       </a>
                       <Link
-                        to={`/book/${mockBusiness.slug}`}
+                        to={`/book/${business.slug}`}
                         className="inline-flex w-full items-center justify-center rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white hover:bg-gray-800"
                       >
                         <CalendarDaysIcon className="h-5 w-5 mr-2" />
@@ -873,7 +757,7 @@ export default function BusinessTestPage() {
                     <div className="px-5 pb-5 space-y-4">
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                          `${mockBusiness.address}, ${mockBusiness.city}`,
+                          `${business.address}, ${business.city}`,
                         )}`}
                         target="_blank"
                         rel="noreferrer"
@@ -883,14 +767,14 @@ export default function BusinessTestPage() {
                           <MapPinIcon className="h-4 w-4 text-gray-600" />
                         </span>
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-gray-900">{mockBusiness.address}</p>
-                          <p className="mt-0.5 text-sm text-gray-600">{mockBusiness.city}</p>
+                          <p className="text-sm font-medium text-gray-900">{business.address}</p>
+                          <p className="mt-0.5 text-sm text-gray-600">{business.city}</p>
                         </div>
                       </a>
                       <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
                         <iframe
                           title="Locația salonului"
-                          src={`https://www.google.com/maps?q=${mockBusiness.latitude},${mockBusiness.longitude}&z=15&output=embed`}
+                          src={`https://www.google.com/maps?q=${business.latitude},${business.longitude}&z=15&output=embed`}
                           width="100%"
                           height="200"
                           style={{ border: 0 }}
@@ -899,7 +783,7 @@ export default function BusinessTestPage() {
                       </div>
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                          `${mockBusiness.address}, ${mockBusiness.city}`,
+                          `${business.address}, ${business.city}`,
                         )}`}
                         target="_blank"
                         rel="noreferrer"
@@ -920,22 +804,22 @@ export default function BusinessTestPage() {
                     </div>
                     <div className="px-5 pb-5 space-y-2">
                       <a
-                        href={`tel:${mockBusiness.phone}`}
+                        href={`tel:${business.phone}`}
                         className="flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 transition-colors"
                       >
                         <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white border border-gray-200">
                           <PhoneIcon className="h-4 w-4 text-gray-600" />
                         </span>
-                        {mockBusiness.phone}
+                        {business.phone}
                       </a>
                       <a
-                        href={`mailto:${mockBusiness.email}`}
+                        href={`mailto:${business.email}`}
                         className="flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 transition-colors"
                       >
                         <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white border border-gray-200">
                           <EnvelopeIcon className="h-4 w-4 text-gray-600" />
                         </span>
-                        <span className="truncate">{mockBusiness.email}</span>
+                        <span className="truncate">{business.email}</span>
                       </a>
                       <button
                         type="button"
