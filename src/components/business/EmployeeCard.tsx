@@ -8,9 +8,9 @@ export default function EmployeeCard({ employee }: EmployeeCardProps) {
   return (
     <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-blue-500 transition-all">
       <div className="flex items-center space-x-4">
-        {employee.photo_url ? (
+        {employee.photoUrl ? (
           <img
-            src={employee.photo_url}
+            src={employee.photoUrl}
             alt={employee.name}
             className="w-16 h-16 rounded-full object-cover"
           />

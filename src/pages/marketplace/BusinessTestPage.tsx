@@ -28,6 +28,7 @@ import { reviewService } from '../../services/review.service';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
 import { Review, RatingBreakdown } from '../../types/review';
+import { useServices } from '../../hooks/useProvidedService';
 
 const DEFAULT_PHOTOS = [
   'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1600&q=80',
@@ -58,58 +59,9 @@ export default function BusinessTestPage() {
   const [copied, setCopied] = useState(false);
   const [activeNavSection, setActiveNavSection] = useState('services');
 
-  useEffect(() => {
-    if (!business?.id) return;
-    const load = async () => {
-      const [svcRes, empRes] = await Promise.all([
-        supabase.from('services').select('*').eq('business_id', business.id).order('name'),
-        supabase.from('employees').select('*').eq('business_id', business.id).order('name'),
-      ]);
-      if (!svcRes.error && svcRes.data) setServices((svcRes.data as Service[]).filter((s) => s.is_active !== false));
-      if (!empRes.error && empRes.data) setEmployees((empRes.data as Employee[]).filter((e) => e.is_active !== false));
-      try {
-        const revs = await reviewService.getByBusiness(business.id);
-        setReviews(revs);
-        const breakdown = await reviewService.getRatingBreakdown(business.id);
-        setRatingBreakdown(breakdown);
-      } catch {
-        setReviews([]);
-      }
-    };
-    load();
-  }, [business?.id]);
+  const { services, isLoading, error } = useServices();
 
-  const photos = useMemo(() => {
-    if (!business) return [...DEFAULT_PHOTOS];
-    const urls: string[] = [];
-    if (business.cover_image_url) urls.push(business.cover_image_url);
-    if (business.logo_url) urls.push(business.logo_url);
-    return urls.length > 0 ? urls : [...DEFAULT_PHOTOS];
-  }, [business]);
-
-  const minServicePrice = useMemo(() => {
-    const prices = services.map((s) => s.price).filter((n) => typeof n === 'number' && Number.isFinite(n));
-    return prices.length === 0 ? null : Math.min(...prices);
-  }, [services]);
-
-  const servicesByCategory = useMemo(
-    () => ({
-      featured: services,
-      brows: services.filter((s) => /brow|microblading|sprâncene/i.test(s.name)),
-      facials: services.filter((s) => /facial/i.test(s.name)),
-      hair: services.filter((s) => /hair|tuns|coafat|păr/i.test(s.name)),
-    }),
-    [services]
-  );
-
-  const employeeReviewCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    employees.forEach((e) => {
-      counts[e.id] = reviews.filter((r) => (r as Review & { employee_id?: string }).employee_id === e.id).length;
-    });
-    return counts;
-  }, [employees, reviews]);
-
+  const photos = LUXE_PHOTOS;
   const visibleServices = servicesByCategory[activeServiceCategory];
 
   const startPhotoTransition = (nextIdx: number) => {
@@ -320,7 +272,7 @@ export default function BusinessTestPage() {
                       className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                       aria-label="TikTok"
                     >
-                      <svg className="h-5 w-5" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.656 1.029c1.637-0.025 3.262-0.012 4.886-0.025 0.054 2.031 0.878 3.859 2.189 5.213l-0.002-0.002c1.411 1.271 3.247 2.095 5.271 2.235l0.028 0.002v5.036c-1.912-0.048-3.71-0.489-5.331-1.247l0.082 0.034c-0.784-0.377-1.447-0.764-2.077-1.196l0.052 0.034c-0.012 3.649 0.012 7.298-0.025 10.934-0.103 1.853-0.719 3.543-1.707 4.954l0.020-0.031c-1.652 2.366-4.328 3.919-7.371 4.011l-0.014 0c-0.123 0.006-0.268 0.009-0.414 0.009-1.73 0-3.347-0.482-4.725-1.319l0.040 0.023c-2.508-1.509-4.238-4.091-4.558-7.094l-0.004-0.041c-0.025-0.625-0.037-1.25-0.012-1.862 0.49-4.779 4.494-8.476 9.361-8.476 0.547 0 1.083 0.047 1.604 0.136l-0.056-0.008c0.025 1.849-0.050 3.699-0.050 5.548-0.423-0.153-0.911-0.242-1.42-0.242-1.868 0-3.457 1.194-4.045 2.861l-0.009 0.030c-0.133 0.427-0.21 0.918-0.21 1.426 0 0.206 0.013 0.41 0.037 0.61l-0.002-0.024c0.332 2.046 2.086 3.59 4.201 3.59 0.061 0 0.121-0.001 0.181-0.004l-0.009 0c1.463-0.044 2.733-0.831 3.451-1.994l0.010-0.018c0.267-0.372 0.45-0.822 0.511-1.311l0.001-0.014c0.125-2.237 0.075-4.461 0.087-6.698 0.012-5.036-0.012-10.060 0.025-15.083z"/></svg>
+                      <svg className="h-5 w-5" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M16.656 1.029c1.637-0.025 3.262-0.012 4.886-0.025 0.054 2.031 0.878 3.859 2.189 5.213l-0.002-0.002c1.411 1.271 3.247 2.095 5.271 2.235l0.028 0.002v5.036c-1.912-0.048-3.71-0.489-5.331-1.247l0.082 0.034c-0.784-0.377-1.447-0.764-2.077-1.196l0.052 0.034c-0.012 3.649 0.012 7.298-0.025 10.934-0.103 1.853-0.719 3.543-1.707 4.954l0.020-0.031c-1.652 2.366-4.328 3.919-7.371 4.011l-0.014 0c-0.123 0.006-0.268 0.009-0.414 0.009-1.73 0-3.347-0.482-4.725-1.319l0.040 0.023c-2.508-1.509-4.238-4.091-4.558-7.094l-0.004-0.041c-0.025-0.625-0.037-1.25-0.012-1.862 0.49-4.779 4.494-8.476 9.361-8.476 0.547 0 1.083 0.047 1.604 0.136l-0.056-0.008c0.025 1.849-0.050 3.699-0.050 5.548-0.423-0.153-0.911-0.242-1.42-0.242-1.868 0-3.457 1.194-4.045 2.861l-0.009 0.030c-0.133 0.427-0.21 0.918-0.21 1.426 0 0.206 0.013 0.41 0.037 0.61l-0.002-0.024c0.332 2.046 2.086 3.59 4.201 3.59 0.061 0 0.121-0.001 0.181-0.004l-0.009 0c1.463-0.044 2.733-0.831 3.451-1.994l0.010-0.018c0.267-0.372 0.45-0.822 0.511-1.311l0.001-0.014c0.125-2.237 0.075-4.461 0.087-6.698 0.012-5.036-0.012-10.060 0.025-15.083z" /></svg>
                     </a>
                     <a
                       href="https://instagram.com/luxebeauty.md"
@@ -329,7 +281,7 @@ export default function BusinessTestPage() {
                       className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                       aria-label="Instagram"
                     >
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
                     </a>
                     <a
                       href="https://facebook.com/luxebeauty.md"
@@ -338,7 +290,7 @@ export default function BusinessTestPage() {
                       className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                       aria-label="Facebook"
                     >
-                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
                     </a>
                   </div>
                 </div>
@@ -433,82 +385,100 @@ export default function BusinessTestPage() {
               <div className="lg:col-span-8 space-y-6">
                 <section id="services" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                   <div className="p-5 sm:p-6">
+                    {/* Header row */}
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
                       <div>
                         <h2 className="text-xl font-semibold text-gray-900">Servicii</h2>
                         <p className="mt-1 text-sm text-gray-600">Alege un tratament și rezervă instant.</p>
                       </div>
                       <div className="text-sm text-gray-600 lg:block">
-                        De la <span className="font-semibold text-gray-900">{minServicePrice != null ? `${minServicePrice} MDL` : '—'}</span>
+                        De la <span className="font-semibold text-gray-900">
+                          {minServicePrice != null ? `${minServicePrice} MDL` : '—'}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Category pills: horizontal scroll on mobile, wrap on desktop */}
-                    <div className="mt-4 -mx-5 px-5 lg:mx-0 lg:mt-5 lg:px-0">
-                      <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-wrap lg:overflow-visible lg:pb-0">
-                        {(
-                          [
-                            { id: 'featured', label: 'Recomandate' },
-                            { id: 'brows', label: 'Sprâncene' },
-                            { id: 'facials', label: 'Tratamente faciale' },
-                            { id: 'hair', label: 'Păr' },
-                          ] as const
-                        ).map((c) => (
-                          <button
-                            key={c.id}
-                            type="button"
-                            onClick={() => setActiveServiceCategory(c.id)}
-                            className={[
-                              'flex-shrink-0 px-3 py-2 rounded-full text-sm font-semibold border',
-                              activeServiceCategory === c.id
-                                ? 'bg-gray-900 text-white border-gray-900'
-                                : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50',
-                            ].join(' ')}
-                          >
-                            {c.label}
-                          </button>
+                    {/* Services list — outside the header row */}
+                    {isLoading ? (
+                      <p className="mt-4 text-sm text-gray-500">Se încarcă serviciile...</p>
+                    ) : error ? (
+                      <p className="mt-4 text-sm text-red-500">{error}</p>
+                    ) : (
+                      <ul className="mt-4 divide-y divide-gray-100">
+                        {services.map((s) => (
+                          <li key={s.id}>
+                            {s.name} | {s.description} | {s.price}
+                          </li>
                         ))}
-                      </div>
-                    </div>
+                      </ul>
+                    )}
+                  </div>
 
-                    <ul className="mt-4 divide-y divide-gray-100 lg:mt-5">
-                      {visibleServices.map((s) => {
-                        const Icon =
-                          /brow|microblading|sprâncene|stilizare/i.test(s.name)
-                            ? EyeIcon
-                            : /hair|tuns|coafat|păr/i.test(s.name)
-                              ? ScissorsIcon
-                              : SparklesIcon;
-                        return (
-                          <li key={s.id} className="py-4 first:pt-0 last:pb-0">
-                            <div className="flex flex-col gap-3 lg:flex-row lg:gap-3 lg:items-center">
-                              <div className="flex gap-3 min-w-0">
-                                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-600">
-                                  <Icon className="h-5 w-5" />
-                                </span>
-                                <div className="min-w-0 flex-1 flex flex-col gap-1">
-                                  <span className="font-medium text-gray-900">{s.name}</span>
-                                  {s.description ? (
-                                    <p className="text-sm text-gray-500">{s.description}</p>
-                                  ) : null}
-                                  <span className="text-xs text-gray-400">{s.duration_minutes} min</span>
-                                </div>
-                              </div>
-                              <div className="flex flex-shrink-0 items-center justify-between gap-3 pl-12 lg:ml-auto lg:pl-0 lg:justify-end">
-                                <span className="text-sm font-semibold text-gray-900 tabular-nums">{s.price} MDL</span>
-                                <Link
-                                  to={`/book/${business.slug}?service=${s.id}`}
-                                  className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors lg:flex-shrink-0"
-                                >
-                                  Selectează
-                                </Link>
+                  {/* Category pills: horizontal scroll on mobile, wrap on desktop */}
+                  <div className="mt-4 -mx-5 px-5 lg:mx-0 lg:mt-5 lg:px-0">
+                    <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-wrap lg:overflow-visible lg:pb-0">
+                      {(
+                        [
+                          { id: 'featured', label: 'Recomandate' },
+                          { id: 'brows', label: 'Sprâncene' },
+                          { id: 'facials', label: 'Tratamente faciale' },
+                          { id: 'hair', label: 'Păr' },
+                        ] as const
+                      ).map((c) => (
+                        <button
+                          key={c.id}
+                          type="button"
+                          onClick={() => setActiveServiceCategory(c.id)}
+                          className={[
+                            'flex-shrink-0 px-3 py-2 rounded-full text-sm font-semibold border',
+                            activeServiceCategory === c.id
+                              ? 'bg-gray-900 text-white border-gray-900'
+                              : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50',
+                          ].join(' ')}
+                        >
+                          {c.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {/* 
+                  <ul className="mt-4 divide-y divide-gray-100 lg:mt-5">
+                    {visibleServices.map((s) => {
+                      const Icon =
+                        /brow|microblading|sprâncene|stilizare/i.test(s.name)
+                          ? EyeIcon
+                          : /hair|tuns|coafat|păr/i.test(s.name)
+                            ? ScissorsIcon
+                            : SparklesIcon;
+                      return (
+                        <li key={s.id} className="py-4 first:pt-0 last:pb-0">
+                          <div className="flex flex-col gap-3 lg:flex-row lg:gap-3 lg:items-center">
+                            <div className="flex gap-3 min-w-0">
+                              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-600">
+                                <Icon className="h-5 w-5" />
+                              </span>
+                              <div className="min-w-0 flex-1 flex flex-col gap-1">
+                                <span className="font-medium text-gray-900">{s.name}</span>
+                                {s.description ? (
+                                  <p className="text-sm text-gray-500">{s.description}</p>
+                                ) : null}
+                                <span className="text-xs text-gray-400">{s.duration_minutes} min</span>
                               </div>
                             </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
+                            <div className="flex flex-shrink-0 items-center justify-between gap-3 pl-12 lg:ml-auto lg:pl-0 lg:justify-end">
+                              <span className="text-sm font-semibold text-gray-900 tabular-nums">{s.price} MDL</span>
+                              <Link
+                                to={`/book/${mockBusiness.slug}?service=${s.id}`}
+                                className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50 transition-colors lg:flex-shrink-0"
+                              >
+                                Selectează
+                              </Link>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul> */}
                 </section>
 
                 <section id="team" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
@@ -836,8 +806,8 @@ export default function BusinessTestPage() {
                 </div>
               </aside>
             </div>
-          </div>
-        </main>
+          </div >
+        </main >
 
         <footer className="mt-16 border-t border-gray-100 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -846,7 +816,7 @@ export default function BusinessTestPage() {
             </p>
           </div>
         </footer>
-      </div>
+      </div >
     </>
   );
 }

@@ -19,6 +19,10 @@ export const router = createBrowserRouter([
     element: <Navigate to="/business/glowbeautystudio" replace />,
   },
   {
+    path: '/businesses',
+    element: <MarketplacePage />,
+  },
+  {
     path: '/business/:slug',
     element: <BusinessTestPage />,
   },
@@ -26,14 +30,14 @@ export const router = createBrowserRouter([
     path: '/business-legacy/:slug',
     element: <BusinessDetailsPage />,
   },
-  {
-    path: '/book/:businessSlug',
-    element: <BookingPage />,
-  },
-  {
-    path: '/booking-success/:bookingId',
-    element: <BookingSuccessPage />,
-  },
+  // {
+  //   path: '/book/:businessSlug',
+  //   element: <BookingPage />,
+  // },
+  // {
+  //   path: '/booking-success/:bookingId',
+  //   element: <BookingSuccessPage />,
+  // },
   {
     path: '/admin',
     element: <Navigate to="/admin/login" replace />,

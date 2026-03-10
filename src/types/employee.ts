@@ -2,7 +2,7 @@ export interface Employee {
   id: string;
   business_id: string;
   name: string;
-  photo_url: string | null;
+  photoUrl: string | null;
   position: string | null;
   bio: string | null;
   is_active: boolean;
