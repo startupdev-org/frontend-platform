@@ -10,9 +10,8 @@ export interface Employee {
 }
 
 export interface CreateEmployeeDto {
-  business_id: string;
   name: string;
-  photo_url?: string;
+  photoUrl?: string;
   position?: string;
   bio?: string;
   is_active?: boolean;

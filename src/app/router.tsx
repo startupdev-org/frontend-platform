@@ -2,8 +2,6 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import MarketplacePage from '../pages/marketplace/MarketplacePage';
 import BusinessTestPage from '../pages/marketplace/BusinessTestPage';
 import BusinessDetailsPage from '../pages/marketplace/BusinessDetailsPage';
-import BookingPage from '../pages/booking/BookingPage';
-import BookingSuccessPage from '../pages/booking/BookingSuccessPage';
 import LoginPage from '../pages/admin/LoginPage';
 import DashboardPage from '../pages/admin/DashboardPage';
 import ServicesPage from '../pages/admin/ServicesPage';
@@ -12,6 +10,7 @@ import BookingsPage from '../pages/admin/BookingsPage';
 import ReviewsPage from '../pages/admin/ReviewsPage';
 import SettingsPage from '../pages/admin/SettingsPage';
 import NotFoundPage from '../pages/marketplace/NotFoundPage';
+import CreateEmployeePage from '../pages/CreateEmployeePage';
 
 export const router = createBrowserRouter([
   {
@@ -22,13 +21,17 @@ export const router = createBrowserRouter([
     path: '/businesses',
     element: <MarketplacePage />,
   },
-  {
-    path: '/business/:slug',
-    element: <BusinessTestPage />,
-  },
+  // {
+  //   path: '/business/:slug',
+  //   element: <BusinessTestPage />,
+  // },
   {
     path: '/business-legacy/:slug',
     element: <BusinessDetailsPage />,
+  },
+  {
+    path: '/mock/create-employee',
+    element: <CreateEmployeePage />
   },
   // {
   //   path: '/book/:businessSlug',
