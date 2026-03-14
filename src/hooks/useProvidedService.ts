@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { getAllProvidedServices } from '../services/provided.services.service';
+import { Service } from '../types/service';
 
-export interface Service {
-    id: string;
-    name: string;
-    description?: string;
-    price?: number;
-    [key: string]: unknown;
-}
+// export interface Service {
+//     id: string;
+//     name: string;
+//     description?: string;
+//     price?: number;
+//     [key: string]: unknown;
+// }
 
 export const useServices = () => {
     const [services, setServices] = useState<Service[]>([]);
