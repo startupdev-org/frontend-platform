@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { User } from '@supabase/supabase-js';
-import { supabase } from '../services/api';
 import { adminService } from '../services/admin.service';
 
 export const useAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -14,16 +12,6 @@ export const useAuth = () => {
     }).catch(() => {
       setIsLoading(false);
     });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        (async () => {
-          setUser(session?.user ?? null);
-        })();
-      }
-    );
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {

@@ -1,83 +1,51 @@
-import { supabase } from './api';
+import axios from 'axios';
 import { Booking, CreateBookingDto, UpdateBookingDto } from '../types/booking';
+
+const HOSTNAME = import.meta.env.VITE_BACKEND_HOSTNAME || 'http://localhost:8080';
+const REST_API_BASE_URL = `${HOSTNAME}/api/booking`;
 
 export const bookingService = {
   async create(booking: CreateBookingDto): Promise<Booking> {
-    const { data, error } = await supabase
-      .from('bookings')
-      .insert(booking)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
+    const response = await axios.post<Booking>(REST_API_BASE_URL, booking);
+    return response.data;
   },
 
   async getByBusiness(businessId: string): Promise<Booking[]> {
-    const { data, error } = await supabase
-      .from('bookings')
-      .select(`
-        *,
-        service:services(*),
-        employee:employees(*)
-      `)
-      .eq('business_id', businessId)
-      .order('booking_date', { ascending: false })
-      .order('booking_time', { ascending: false });
-
-    if (error) throw error;
-    return data || [];
+    const response = await axios.get<Booking[]>(`${REST_API_BASE_URL}/business/${businessId}`);
+    return response.data ?? [];
   },
 
   async getById(id: string): Promise<Booking | null> {
-    const { data, error } = await supabase
-      .from('bookings')
-      .select(`
-        *,
-        service:services(*),
-        employee:employees(*),
-        business:businesses(*)
-      `)
-      .eq('id', id)
-      .maybeSingle();
-
-    if (error) throw error;
-    return data;
+    const response = await axios.get<Booking | null>(`${REST_API_BASE_URL}/${id}`);
+    return response.data ?? null;
   },
 
   async update(id: string, updates: UpdateBookingDto): Promise<Booking> {
-    const { data, error } = await supabase
-      .from('bookings')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
+    const response = await axios.patch<Booking>(`${REST_API_BASE_URL}/${id}/status`, updates);
+    return response.data;
   },
 
   async getBookedSlots(
     employeeId: string,
     date: string
   ): Promise<string[]> {
-    const { data, error } = await supabase
-      .from('bookings')
-      .select('booking_time')
-      .eq('employee_id', employeeId)
-      .eq('booking_date', date)
-      .in('status', ['pending', 'confirmed']);
+    const response = await axios.get<Booking[]>(
+      `${REST_API_BASE_URL}/employee/${employeeId}/range`,
+      {
+        params: {
+          from: date,
+          to: date,
+        },
+      }
+    );
 
-    if (error) throw error;
-    return (data || []).map((b) => b.booking_time);
+    const data = response.data ?? [];
+    return data
+      .filter((b) => b.booking_date === date && (b.status === 'pending' || b.status === 'confirmed'))
+      .map((b) => b.booking_time);
   },
 
   async cancel(id: string): Promise<void> {
-    const { error } = await supabase
-      .from('bookings')
-      .update({ status: 'cancelled' })
-      .eq('id', id);
-
-    if (error) throw error;
+    await axios.patch(`${REST_API_BASE_URL}/${id}/status`, { status: 'cancelled' });
   },
 };

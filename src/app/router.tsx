@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import PlatformHomePage from '../pages/marketing/PlatformHomePage';
 import MarketplacePage from '../pages/marketplace/MarketplacePage';
 import BusinessTestPage from '../pages/marketplace/BusinessTestPage';
 import BusinessDetailsPage from '../pages/marketplace/BusinessDetailsPage';
@@ -16,7 +17,7 @@ import NotFoundPage from '../pages/marketplace/NotFoundPage';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/business/glowbeautystudio" replace />,
+    element: <PlatformHomePage />,
   },
   {
     path: '/businesses',

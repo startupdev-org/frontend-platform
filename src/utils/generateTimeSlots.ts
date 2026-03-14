@@ -1,4 +1,5 @@
 import { TimeSlot } from '../types/booking';
+import type { WorkingHours, DaySchedule } from '../types/business';
 
 export const generateTimeSlots = (
   openTime: string,
@@ -41,9 +42,17 @@ export const isBusinessOpen = (
 };
 
 export const getCurrentDaySchedule = (
-  workingHours: Record<string, { open: string | null; close: string | null }>
-): { open: string | null; close: string | null } => {
-  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  workingHours: WorkingHours
+): DaySchedule => {
+  const days: (keyof WorkingHours)[] = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ];
   const today = days[new Date().getDay()];
   return workingHours[today];
 };

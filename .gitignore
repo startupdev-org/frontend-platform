@@ -1,5 +1,6 @@
 # Ignore template folder (upload templates and build artifacts)
 template/
+lexendhtml-40/
 logs
 *.log
 npm-debug.log*

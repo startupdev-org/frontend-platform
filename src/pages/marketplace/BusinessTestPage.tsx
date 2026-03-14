@@ -10,10 +10,8 @@ import {
   ClockIcon,
   EnvelopeIcon,
   LinkIcon,
-  EyeIcon,
   MapPinIcon,
   PhoneIcon,
-  ScissorsIcon,
   SparklesIcon,
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
@@ -23,12 +21,9 @@ import ReviewList from '../../components/business/ReviewList';
 import RatingStars from '../../components/business/RatingStars';
 import Spinner from '../../components/ui/Spinner';
 import { useBusiness } from '../../hooks/useBusiness';
-import { supabase } from '../../services/api';
-import { reviewService } from '../../services/review.service';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
 import { Review, RatingBreakdown } from '../../types/review';
-import { useServices } from '../../hooks/useProvidedService';
 
 const DEFAULT_PHOTOS = [
   'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1600&q=80',
@@ -40,15 +35,15 @@ const DEFAULT_PHOTOS = [
 export default function BusinessTestPage() {
   const { slug } = useParams<{ slug: string }>();
   const { business, isLoading } = useBusiness(slug);
-  const [services, setServices] = useState<Service[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [ratingBreakdown, setRatingBreakdown] = useState<RatingBreakdown>({
+  const services: Service[] = [];
+  const employees: Employee[] = [];
+  const reviews: Review[] = [];
+  const ratingBreakdown: RatingBreakdown = {
     overall: 0,
     cleanliness: 0,
     service: 0,
     price: 0,
-  });
+  };
 
   const [activeServiceCategory, setActiveServiceCategory] = useState<'featured' | 'brows' | 'facials' | 'hair'>(
     'featured',
@@ -59,10 +54,20 @@ export default function BusinessTestPage() {
   const [copied, setCopied] = useState(false);
   const [activeNavSection, setActiveNavSection] = useState('services');
 
-  const { services, isLoading, error } = useServices();
+  const photos = DEFAULT_PHOTOS;
 
-  const photos = LUXE_PHOTOS;
-  const visibleServices = servicesByCategory[activeServiceCategory];
+  const minServicePrice = useMemo(() => {
+    const prices = services.map((s) => s.price).filter((n) => typeof n === 'number' && Number.isFinite(n));
+    return prices.length === 0 ? null : Math.min(...prices);
+  }, [services]);
+
+  const employeeReviewCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    employees.forEach((e) => {
+      counts[e.id] = 0;
+    });
+    return counts;
+  }, [employees]);
 
   const startPhotoTransition = (nextIdx: number) => {
     if (nextIdx === selectedPhotoIdx) return;
@@ -399,10 +404,8 @@ export default function BusinessTestPage() {
                     </div>
 
                     {/* Services list — outside the header row */}
-                    {isLoading ? (
-                      <p className="mt-4 text-sm text-gray-500">Se încarcă serviciile...</p>
-                    ) : error ? (
-                      <p className="mt-4 text-sm text-red-500">{error}</p>
+                    {services.length === 0 ? (
+                      <p className="mt-4 text-sm text-gray-500">Momentan nu sunt servicii configurate.</p>
                     ) : (
                       <ul className="mt-4 divide-y divide-gray-100">
                         {services.map((s) => (
@@ -502,9 +505,9 @@ export default function BusinessTestPage() {
                               className="relative flex-shrink-0 rounded-full overflow-hidden border-2 border-gray-200"
                               style={{ width: 80, height: 80 }}
                             >
-                              {e.photo_url ? (
+                              {e.photoUrl ? (
                                 <img
-                                  src={e.photo_url}
+                                  src={e.photoUrl}
                                   alt={e.name}
                                   className="block object-cover"
                                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}

@@ -1,0 +1,92 @@
+@keyframes navbar-enter {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.uc-navbar-container.navbar-animate-in {
+  animation: navbar-enter 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropdown-slide-top-small {
+  from {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.uc-dropbar-wrapper.dropdown-animate-in .uc-dropbar,
+.uc-navbar-dropdown.dropdown-animate-in {
+  animation: dropdown-slide-top-small 0.15s ease-out forwards;
+}
+
+@keyframes sticky-slide-top {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.uc-header.uc-navbar-sticky .uc-navbar-container {
+  animation: sticky-slide-top 0.2s ease-out;
+}
+
+.uc-header.uc-navbar-transparent .uc-navbar-container {
+  background: transparent;
+}
+.uc-header.uc-navbar-sticky .uc-navbar-container,
+.uc-header.uc-navbar-solid .uc-navbar-container {
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+.uc-dark .uc-header.uc-navbar-sticky .uc-navbar-container,
+.uc-dark .uc-header.uc-navbar-solid .uc-navbar-container {
+  background: #111;
+}
+
+.uc-navbar-nav > li {
+  position: relative;
+}
+.uc-navbar-nav > li > a,
+.uc-navbar-nav > li > button {
+  position: relative;
+  transition: color 0.15s ease;
+}
+.uc-navbar-nav > li > a::before,
+.uc-navbar-nav > li > button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-primary, #0F8465), var(--color-tertiary, #87D038));
+  transform: scaleX(0);
+  transition: transform 0.2s ease-out;
+  transform-origin: center;
+}
+.uc-navbar-nav > li > a:hover::before,
+.uc-navbar-nav > li > a:focus-visible::before,
+.uc-navbar-nav > li > button:hover::before,
+.uc-navbar-nav > li > button:focus-visible::before {
+  transform: scaleX(1);
+}
+.uc-navbar-nav > li > a:hover,
+.uc-navbar-nav > li > button:hover {
+  color: var(--color-primary, #0F8465);
+}
+.uc-dark .uc-navbar-nav > li > a:hover::before,
+.uc-dark .uc-navbar-nav > li > button:hover::before {
+  background: linear-gradient(to right, var(--color-primary), var(--color-tertiary));
+}

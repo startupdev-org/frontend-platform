@@ -1,129 +1,41 @@
-import { supabase } from './api';
-import { Business, BusinessFilters } from '../types/business';
+import axios from 'axios';
+import { Business, BusinessFilters, PaginatedResponse } from '../types/business';
+
+const HOSTNAME = import.meta.env.VITE_BACKEND_HOSTNAME || 'http://localhost:8080';
+const REST_API_BASE_URL = `${HOSTNAME}/api/business`;
 
 export const businessService = {
-  async getAll(filters?: BusinessFilters): Promise<Business[]> {
-    let query = supabase
-      .from('businesses')
-      .select('*')
-      .eq('is_active', true);
+  async getAll(filters: BusinessFilters): Promise<PaginatedResponse<Business>> {
+    const params: Record<string, unknown> = {
+      page: filters.page,
+      size: filters.size,
+    };
 
-    if (filters?.search) {
-      query = query.ilike('name', `%${filters.search}%`);
-    }
+    if (filters.search) params.search = filters.search;
+    if (filters.category) params.category = filters.category;
+    if (filters.minPrice != null) params.minPrice = filters.minPrice;
+    if (filters.maxPrice != null) params.maxPrice = filters.maxPrice;
+    if (filters.city) params.city = filters.city;
+    if (filters.minRating != null) params.minRating = filters.minRating;
 
-    if (filters?.category) {
-      query = query.eq('category', filters.category);
-    }
+    const response = await axios.get<PaginatedResponse<Business>>(REST_API_BASE_URL, {
+      params,
+    });
 
-    if (filters?.minPrice) {
-      query = query.gte('price_range', filters.minPrice);
-    }
-
-    if (filters?.maxPrice) {
-      query = query.lte('price_range', filters.maxPrice);
-    }
-
-    const { data, error } = await query.order('name');
-
-    if (error) throw error;
-
-    const businessesWithRatings = await Promise.all(
-      (data || []).map(async (business) => {
-        const { data: reviews } = await supabase
-          .from('reviews')
-          .select('rating_overall')
-          .eq('business_id', business.id)
-          .eq('is_verified', true);
-
-        const avgRating = reviews && reviews.length > 0
-          ? reviews.reduce((acc, r) => acc + r.rating_overall, 0) / reviews.length
-          : 0;
-
-        return {
-          ...business,
-          average_rating: avgRating,
-          review_count: reviews?.length || 0,
-        };
-      })
-    );
-
-    if (filters?.minRating) {
-      return businessesWithRatings.filter(
-        (b) => (b.average_rating || 0) >= filters.minRating!
-      );
-    }
-
-    return businessesWithRatings;
+    return response.data;
   },
 
   async getBySlug(slug: string): Promise<Business | null> {
-    const { data, error } = await supabase
-      .from('businesses')
-      .select('*')
-      .eq('slug', slug)
-      .eq('is_active', true)
-      .maybeSingle();
-
-    if (error) throw error;
-    if (!data) return null;
-
-    const { data: reviews } = await supabase
-      .from('reviews')
-      .select('rating_overall')
-      .eq('business_id', data.id)
-      .eq('is_verified', true);
-
-    const avgRating = reviews && reviews.length > 0
-      ? reviews.reduce((acc, r) => acc + r.rating_overall, 0) / reviews.length
-      : 0;
-
-    return {
-      ...data,
-      average_rating: avgRating,
-      review_count: reviews?.length || 0,
-    };
+    const response = await axios.get<Business>(`${REST_API_BASE_URL}/slug/${slug}`);
+    return response.data ?? null;
   },
 
-  async getBySubdomain(subdomain: string): Promise<Business | null> {
-    const { data, error } = await supabase
-      .from('businesses')
-      .select('*')
-      .eq('subdomain', subdomain)
-      .eq('is_active', true)
-      .maybeSingle();
-
-    if (error) throw error;
-    if (!data) return null;
-
-    const { data: reviews } = await supabase
-      .from('reviews')
-      .select('rating_overall')
-      .eq('business_id', data.id)
-      .eq('is_verified', true);
-
-    const avgRating = reviews && reviews.length > 0
-      ? reviews.reduce((acc, r) => acc + r.rating_overall, 0) / reviews.length
-      : 0;
-
-    return {
-      ...data,
-      average_rating: avgRating,
-      review_count: reviews?.length || 0,
-    };
+  async getBySubdomain(_subdomain: string): Promise<Business | null> {
+    return null;
   },
 
   async update(id: string, updates: Partial<Business>): Promise<Business> {
-    const { data, error } = await supabase
-      .from('businesses')
-      .update({ ...updates, updated_at: new Date().toISOString() })
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  }
-}
-
-export const businessService = new BusinessService();
+    const response = await axios.put<Business>(`${REST_API_BASE_URL}/${id}`, updates);
+    return response.data;
+  },
+};

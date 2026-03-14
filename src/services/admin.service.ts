@@ -1,116 +1,108 @@
-import { supabase } from './api';
+import axios from 'axios';
 import { Service, CreateServiceDto, UpdateServiceDto } from '../types/service';
 import { Employee, CreateEmployeeDto, UpdateEmployeeDto } from '../types/employee';
 
+const HOSTNAME = import.meta.env.VITE_BACKEND_HOSTNAME || 'http://localhost:8080';
+const AUTH_BASE_URL = `${HOSTNAME}/api/auth`;
+const BUSINESS_BASE_URL = `${HOSTNAME}/api/business`;
+
 export const adminService = {
   async login(email: string, password: string) {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const response = await axios.post(`${AUTH_BASE_URL}/login`, {
       email,
       password,
     });
-
-    if (error) throw error;
-    return data;
+    return response.data;
   },
 
   async logout() {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    return;
+  },
+
+  async register(email: string, password: string, name?: string) {
+    const response = await axios.post(`${AUTH_BASE_URL}/register`, {
+      email,
+      password,
+      name: name ?? email.split('@')[0],
+    });
+    return response.data;
+  },
+
+  async forgotPassword(email: string) {
+    const response = await axios.post(`${AUTH_BASE_URL}/forgot-password`, {
+      email,
+    });
+    return response.data;
   },
 
   async getCurrentUser() {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error) throw error;
-    return user;
+    const response = await axios.get(`${HOSTNAME}/api/users/whoami`);
+    return response.data;
   },
 
   services: {
     async getAll(businessId: string): Promise<Service[]> {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .eq('business_id', businessId)
-        .order('name');
-
-      if (error) throw error;
-      return data || [];
+      const response = await axios.get<Service[]>(
+        `${BUSINESS_BASE_URL}/${businessId}/service`
+      );
+      return response.data ?? [];
     },
 
     async create(service: CreateServiceDto): Promise<Service> {
-      const { data, error } = await supabase
-        .from('services')
-        .insert(service)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
+      const response = await axios.post<Service>(
+        `${BUSINESS_BASE_URL}/${service.business_id}/service`,
+        service
+      );
+      return response.data;
     },
 
     async update(id: string, updates: UpdateServiceDto): Promise<Service> {
-      const { data, error } = await supabase
-        .from('services')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
+      const { business_id, ...rest } = updates as UpdateServiceDto & {
+        business_id: string;
+      };
 
-      if (error) throw error;
-      return data;
+      const response = await axios.put<Service>(
+        `${BUSINESS_BASE_URL}/${business_id}/service/${id}`,
+        rest
+      );
+      return response.data;
     },
 
     async delete(id: string): Promise<void> {
-      const { error } = await supabase
-        .from('services')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
+      throw new Error('delete service requires business_id in REST implementation');
     },
   },
 
   employees: {
     async getAll(businessId: string): Promise<Employee[]> {
-      const { data, error } = await supabase
-        .from('employees')
-        .select('*')
-        .eq('business_id', businessId)
-        .order('name');
-
-      if (error) throw error;
-      return data || [];
+      const response = await axios.get<Employee[]>(
+        `${BUSINESS_BASE_URL}/${businessId}/employee`
+      );
+      return response.data ?? [];
     },
 
     async create(employee: CreateEmployeeDto): Promise<Employee> {
-      const { data, error } = await supabase
-        .from('employees')
-        .insert(employee)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
+      const response = await axios.post<Employee>(
+        `${BUSINESS_BASE_URL}/${employee.business_id}/employee`,
+        employee
+      );
+      return response.data;
     },
 
     async update(id: string, updates: UpdateEmployeeDto): Promise<Employee> {
-      const { data, error } = await supabase
-        .from('employees')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
+      const { business_id, ...rest } = updates as UpdateEmployeeDto & {
+        business_id: string;
+      };
 
-      if (error) throw error;
-      return data;
+      const response = await axios.put<Employee>(
+        `${BUSINESS_BASE_URL}/${business_id}/employee/${id}`,
+        rest
+      );
+      return response.data;
     },
 
     async delete(id: string): Promise<void> {
-      const { error } = await supabase
-        .from('employees')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
+      throw new Error('delete employee requires business_id in REST implementation');
     },
   },
 };
