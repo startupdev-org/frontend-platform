@@ -1,8 +1,4 @@
-/**
- * Shape of a row from public.businesses in Supabase.
- * Matches: id, address, city, cover_image_url, created_at, description, logo_url,
- * name, phone, rating_overall, slug, updated_at, website, owner_id, service_delivery_type
- */
+
 export interface SupabaseBusinessRow {
   id: string;
   address: string;

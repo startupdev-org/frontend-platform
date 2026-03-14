@@ -14,7 +14,6 @@ import TimeSlotPicker from '../../components/booking/TimeSlotPicker';
 import { useBusiness } from '../../hooks/useBusiness';
 import { useBooking } from '../../hooks/useBooking';
 import { useToastStore } from '../../app/store';
-import { supabase } from '../../services/api';
 import { bookingService } from '../../services/booking.service';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
@@ -74,27 +73,15 @@ export default function BookingPage() {
   const fetchServices = async () => {
     if (!business) return;
 
-    const { data } = await supabase
-      .from('services')
-      .select('*')
-      .eq('business_id', business.id)
-      .eq('is_active', true)
-      .order('name');
-
-    if (data) setServices(data);
+    const servicesData = await adminService.services.getAll(business.id);
+    setServices(servicesData);
   };
 
   const fetchEmployees = async () => {
     if (!business) return;
 
-    const { data } = await supabase
-      .from('employees')
-      .select('*')
-      .eq('business_id', business.id)
-      .eq('is_active', true)
-      .order('name');
-
-    if (data) setEmployees(data);
+    const employeesData = await adminService.employees.getAll(business.id);
+    setEmployees(employeesData);
   };
 
   const fetchTimeSlots = async () => {

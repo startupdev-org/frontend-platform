@@ -16,7 +16,7 @@ export default function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'font-medium rounded-lg transition-all duration-200 inline-flex items-center justify-center';
+  const baseStyles = 'font-medium transition-all duration-200 inline-flex items-center justify-center';
 
   const variants = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300',

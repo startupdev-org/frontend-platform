@@ -47,7 +47,16 @@ export interface DaySchedule {
 export interface BusinessFilters {
   page: number;
   size: number;
+  /** Free-text search by business name */
+  search?: string;
+  /** Category filter (e.g. 'Salon de înfrumusețare') */
+  category?: string;
+  /** Price range (e.g. 1–4) */
+  minPrice?: number;
+  maxPrice?: number;
+  /** City slug or name filter */
   city?: string;
+  /** Minimum average rating */
   minRating?: number;
 }
 

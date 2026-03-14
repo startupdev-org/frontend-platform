@@ -1,76 +1,48 @@
-import { supabase } from './api';
+import axios from 'axios';
 import { Review, CreateReviewDto, ReviewReplyDto, RatingBreakdown } from '../types/review';
+
+const HOSTNAME = import.meta.env.VITE_BACKEND_HOSTNAME || 'http://localhost:8080';
+const REST_API_BASE_URL = `${HOSTNAME}/api/review`;
 
 export const reviewService = {
   async getByBusiness(businessId: string): Promise<Review[]> {
-    const { data, error } = await supabase
-      .from('reviews')
-      .select('*')
-      .eq('business_id', businessId)
-      .eq('is_verified', true)
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-    return data || [];
+    const response = await axios.get<Review[]>(`${REST_API_BASE_URL}/business/${businessId}`);
+    return response.data ?? [];
   },
 
   async create(review: CreateReviewDto): Promise<Review> {
-    const { data, error } = await supabase
-      .from('reviews')
-      .insert(review)
-      .select()
-      .single();
+    if (!review.booking_id) {
+      throw new Error('booking_id is required to create a review');
+    }
 
-    if (error) throw error;
-    return data;
+    const { booking_id, ...payload } = review;
+    const response = await axios.post<Review>(
+      `${REST_API_BASE_URL}/booking/${booking_id}`,
+      payload
+    );
+    return response.data;
   },
 
   async reply(reviewId: string, reply: ReviewReplyDto): Promise<Review> {
-    const { data, error } = await supabase
-      .from('reviews')
-      .update({ reply: reply.reply })
-      .eq('id', reviewId)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
+    const response = await axios.patch<Review>(
+      `${REST_API_BASE_URL}/${reviewId}/reply`,
+      reply
+    );
+    return response.data;
   },
 
   async getRatingBreakdown(businessId: string): Promise<RatingBreakdown> {
-    const { data, error } = await supabase
-      .from('reviews')
-      .select('rating_overall, rating_cleanliness, rating_service, rating_price')
-      .eq('business_id', businessId)
-      .eq('is_verified', true);
-
-    if (error) throw error;
-
-    if (!data || data.length === 0) {
-      return {
-        overall: 0,
-        cleanliness: 0,
-        service: 0,
-        price: 0,
-      };
-    }
-
-    const count = data.length;
-    const sum = data.reduce(
-      (acc, review) => ({
-        overall: acc.overall + review.rating_overall,
-        cleanliness: acc.cleanliness + (review.rating_cleanliness || 0),
-        service: acc.service + (review.rating_service || 0),
-        price: acc.price + (review.rating_price || 0),
-      }),
-      { overall: 0, cleanliness: 0, service: 0, price: 0 }
+    const response = await axios.get<RatingBreakdown>(
+      `${REST_API_BASE_URL}/business/${businessId}/average`
     );
 
+    const data = response.data;
+
     return {
-      overall: sum.overall / count,
-      cleanliness: sum.cleanliness / count,
-      service: sum.service / count,
-      price: sum.price / count,
+      overall: data.overall ?? 0,
+      cleanliness: data.cleanliness ?? 0,
+      service: data.service ?? 0,
+      price: data.price ?? 0,
     };
   },
 };

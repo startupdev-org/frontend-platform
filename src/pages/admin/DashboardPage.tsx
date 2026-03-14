@@ -11,7 +11,8 @@ import AdminSidebar from '../../components/layout/AdminSidebar';
 import StatsCard from '../../components/dashboard/StatsCard';
 import Spinner from '../../components/ui/Spinner';
 import { useAuth } from '../../hooks/useAuth';
-import { supabase } from '../../services/api';
+import { bookingService } from '../../services/booking.service';
+import { reviewService } from '../../services/review.service';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -37,15 +38,8 @@ export default function DashboardPage() {
   }, [user]);
 
   const fetchStats = async () => {
-    const { data: bookings } = await supabase
-      .from('bookings')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    const { data: reviews } = await supabase
-      .from('reviews')
-      .select('rating_overall')
-      .eq('is_verified', true);
+    const allBookings = await bookingService.getByBusiness(user.businessId);
+    const reviews = await reviewService.getByBusiness(user.businessId);
 
     const avgRating =
       reviews && reviews.length > 0
@@ -53,7 +47,7 @@ export default function DashboardPage() {
         : 0;
 
     setStats({
-      totalBookings: bookings?.length || 0,
+      totalBookings: allBookings.length || 0,
       averageRating: Math.round(avgRating * 10) / 10,
       repeatClients: 0,
       popularService: 'Haircut',

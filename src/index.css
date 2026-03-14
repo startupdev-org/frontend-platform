@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Social icons hover tooltip + sliding background
-	 Inspired by the provided design: tooltip on hover and a sliding
-	 background fill from bottom to top. Uses CSS custom property --bg
-	 to set brand color or gradient per icon. */
 .social {
 	display: flex;
 	justify-content: center;
@@ -22,7 +18,6 @@
 }
 
 .social li::after {
-	/* tooltip labels removed: hide pseudo-element */
 	display: none;
 }
 
@@ -82,9 +77,6 @@
 	transform: translateY(0%);
 }
 
-/* Default state: show the hover appearance by adding the `default` class
-	 to the `.social` list. This makes icons appear filled (good for light
-	 backgrounds) without requiring hover. */
 .social.default a {
 	color: #fff;
 }
@@ -93,8 +85,6 @@
 	transform: translateY(0%);
 }
 
-/* Apply the brand background directly for the default state so the
-	 circle is visibly filled even if pseudo-element transforms fail. */
 .social.default a {
 	background: var(--bg, #070707);
 	border-color: transparent;
@@ -108,9 +98,6 @@
 	display: none;
 }
 
-/* Left-aligned, smaller circles variant (use by adding `left` class)
-	 Keeps sliding background and removes labels but reduces circle size
-	 and aligns icons to the left. */
 .social.left {
 	justify-content: flex-start;
 	gap: 0.5rem;
@@ -135,4 +122,3 @@
 .social.left a::after {
 	inset: 100% 0 0;
 }
-

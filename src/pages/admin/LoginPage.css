@@ -1,0 +1,66 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-page__content {
+  flex: 1 1 0%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-page__card {
+  width: 70%;
+  min-width: 18rem;
+  max-width: 38rem;
+  height: auto;
+  display: block;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.login-page__card form {
+  display: block;
+}
+
+.login-page__card form > * + * {
+  margin-top: 1.25rem;
+}
+
+.login-page__card .login-page__title {
+  font-size: 1.875rem !important;
+  line-height: 1.5;
+}
+@media (min-width: 640px) {
+  .login-page__card .login-page__title {
+    font-size: 2.25rem !important;
+  }
+}
+
+.login-page__card input[type="email"],
+.login-page__card input[type="password"],
+.login-page__card input[type="text"] {
+  height: 3.25rem !important;
+  min-height: 3.25rem !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  box-sizing: border-box;
+  border-radius: 9999px !important;
+}
+
+.login-page__card .login-page__submit-btn {
+  min-height: 3.25rem !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  border-radius: 9999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
