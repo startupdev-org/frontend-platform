@@ -1,5 +1,3 @@
-import { StarIcon } from '@heroicons/react/24/solid';
-
 interface RatingFilterProps {
   value: number;
   onChange: (rating: number) => void;
@@ -11,16 +9,16 @@ export default function RatingFilter({ value, onChange }: RatingFilterProps) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
-        Minimum Rating
+        Rating minim
       </label>
       <select
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        onChange={(e) => onChange(Number((e.target as HTMLSelectElement).value))}
+        className="custom-dropdown-select text-dark bg-white rounded-2 sm:rounded px-3 py-2 fs-6 w-full border-0"
       >
         {ratings.map((rating) => (
           <option key={rating} value={rating}>
-            {rating === 0 ? 'All Ratings' : `${rating}+ Stars`}
+            {rating === 0 ? 'Toate ratingurile' : `${rating}+ stele`}
           </option>
         ))}
       </select>

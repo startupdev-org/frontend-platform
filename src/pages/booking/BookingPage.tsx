@@ -7,7 +7,6 @@ import { z } from 'zod';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import Input from '../../components/ui/Input';
-import Select from '../../components/ui/Select';
 import Button from '../../components/ui/Button';
 import Spinner from '../../components/ui/Spinner';
 import TimeSlotPicker from '../../components/booking/TimeSlotPicker';
@@ -15,6 +14,7 @@ import { useBusiness } from '../../hooks/useBusiness';
 import { useBooking } from '../../hooks/useBooking';
 import { useToastStore } from '../../app/store';
 import { bookingService } from '../../services/booking.service';
+import { adminService } from '../../services/admin.service';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
 import { TimeSlot } from '../../types/booking';
@@ -53,7 +53,6 @@ export default function BookingPage() {
     resolver: zodResolver(bookingSchema),
   });
 
-  const selectedServiceId = watch('service_id');
   const selectedEmployeeId = watch('employee_id');
   const selectedDate = watch('booking_date');
 
@@ -167,31 +166,47 @@ export default function BookingPage() {
             <p className="text-gray-600 mb-8">at {business.name}</p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <Select
-                label="Select Service"
-                error={errors.service_id?.message}
-                {...register('service_id')}
-              >
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Select Service
+                    </label>
+                    <select
+                      className={`custom-dropdown-select w-full text-gray-900 transition-all bg-white px-4 py-2.5 rounded-lg ${errors.service_id?.message ? 'custom-dropdown-select--error' : ''}`}
+                      {...register('service_id')}
+                      defaultValue=""
+                    >
                 <option value="">Choose a service...</option>
                 {services.map((service) => (
                   <option key={service.id} value={service.id}>
                     {service.name} - ${service.price} ({service.duration_minutes} min)
                   </option>
                 ))}
-              </Select>
+                    </select>
+                    {errors.service_id?.message && (
+                      <p className="mt-1 text-sm text-red-600">{errors.service_id.message}</p>
+                    )}
+                  </div>
 
-              <Select
-                label="Select Employee"
-                error={errors.employee_id?.message}
-                {...register('employee_id')}
-              >
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Select Employee
+                    </label>
+                    <select
+                      className={`custom-dropdown-select w-full text-gray-900 transition-all bg-white px-4 py-2.5 rounded-lg ${errors.employee_id?.message ? 'custom-dropdown-select--error' : ''}`}
+                      {...register('employee_id')}
+                      defaultValue=""
+                    >
                 <option value="">Choose an employee...</option>
                 {employees.map((employee) => (
                   <option key={employee.id} value={employee.id}>
                     {employee.name} {employee.position ? `- ${employee.position}` : ''}
                   </option>
                 ))}
-              </Select>
+                    </select>
+                    {errors.employee_id?.message && (
+                      <p className="mt-1 text-sm text-red-600">{errors.employee_id.message}</p>
+                    )}
+                  </div>
 
               <Input
                 type="date"

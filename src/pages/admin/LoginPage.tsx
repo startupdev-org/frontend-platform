@@ -116,7 +116,7 @@ export default function LoginPage() {
       <div className="login-page min-h-screen w-full max-w-none flex flex-col box-border">
         <div
           className="position-absolute top-0 start-0 end-0 h-screen dark:blend-soft-light"
-          style={{ backgroundImage: 'url(/assets/images/template/hero-11-bg.jpg)', backgroundSize: 'cover' }}
+          style={{ backgroundImage: 'url(/assets/images/hero-11-bg.jpg)', backgroundSize: 'cover' }}
         />
         <div className="position-absolute top-0 start-0 end-0 h-screen bg-indigo blend-soft-light d-none dark:d-block" />
         <div className="position-absolute top-0 start-0 end-0 h-screen bg-gradient-to-b from-white via-transparent to-white dark:from-gray-900 dark:to-gray-900" />
@@ -127,7 +127,7 @@ export default function LoginPage() {
           <div className="max-w-xl w-full flex flex-col items-center">
             <div className="login-page__card bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-100 mx-auto mt-4 sm:mt-6 xl:mt-8 box-border p-4 sm:p-5 md:p-6">
               <div className="mb-4 flex items-center justify-between">
-                <a href="/" className="text-sm text-gray-400 hover:text-gray-700 inline-flex items-center gap-1">
+                <a href="/business" className="text-sm text-gray-400 hover:text-gray-700 inline-flex items-center gap-1">
                   <TbCircleArrowLeftFilled className="text-lg" />
                   Înapoi la pagina principală
                 </a>

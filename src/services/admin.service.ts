@@ -5,6 +5,11 @@ import { Employee, CreateEmployeeDto, UpdateEmployeeDto } from '../types/employe
 const HOSTNAME = import.meta.env.VITE_BACKEND_HOSTNAME || 'http://localhost:8080';
 const AUTH_BASE_URL = `${HOSTNAME}/api/auth`;
 const BUSINESS_BASE_URL = `${HOSTNAME}/api/business`;
+const AUTH_TOKEN = import.meta.env.VITE_MOCK_AUTH_TOKEN;
+
+function authHeaders() {
+  return AUTH_TOKEN ? { Authorization: `Bearer ${AUTH_TOKEN}` } : undefined;
+}
 
 export const adminService = {
   async login(email: string, password: string) {
@@ -36,7 +41,9 @@ export const adminService = {
   },
 
   async getCurrentUser() {
-    const response = await axios.get(`${HOSTNAME}/api/users/whoami`);
+    const response = await axios.get(`${HOSTNAME}/api/users/whoami`, {
+      headers: authHeaders(),
+    });
     return response.data;
   },
 
@@ -68,7 +75,7 @@ export const adminService = {
       return response.data;
     },
 
-    async delete(id: string): Promise<void> {
+    async delete(_id: string): Promise<void> {
       throw new Error('delete service requires business_id in REST implementation');
     },
   },
@@ -83,8 +90,8 @@ export const adminService = {
 
     async create(employee: CreateEmployeeDto): Promise<Employee> {
       const response = await axios.post<Employee>(
-        `${BUSINESS_BASE_URL}/${employee.business_id}/employee`,
-        employee
+        `${BUSINESS_BASE_URL}/${(employee as any).business_id}/employee`,
+        employee,
       );
       return response.data;
     },
@@ -101,7 +108,7 @@ export const adminService = {
       return response.data;
     },
 
-    async delete(id: string): Promise<void> {
+    async delete(_id: string): Promise<void> {
       throw new Error('delete employee requires business_id in REST implementation');
     },
   },

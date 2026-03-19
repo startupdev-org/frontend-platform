@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import PlatformHomePage from '../pages/marketing/PlatformHomePage';
 import MarketplacePage from '../pages/marketplace/MarketplacePage';
-import BusinessTestPage from '../pages/marketplace/BusinessTestPage';
 import BusinessDetailsPage from '../pages/marketplace/BusinessDetailsPage';
 import LoginPage from '../pages/admin/LoginPage';
 import DashboardPage from '../pages/admin/DashboardPage';
@@ -15,33 +14,29 @@ import CreateEmployeePage from '../pages/CreateEmployeePage';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/business',
     element: <PlatformHomePage />,
+  },
+  {
+    path: '/',
+    element: <Navigate to="/business" replace />,
   },
   {
     path: '/businesses',
     element: <MarketplacePage />,
   },
-  // {
-  //   path: '/business/:slug',
-  //   element: <BusinessTestPage />,
-  // },
   {
     path: '/business-legacy/:slug',
+    element: <BusinessDetailsPage />,
+  },
+  {
+    path: '/:slug',
     element: <BusinessDetailsPage />,
   },
   {
     path: '/mock/create-employee',
     element: <CreateEmployeePage />
   },
-  // {
-  //   path: '/book/:businessSlug',
-  //   element: <BookingPage />,
-  // },
-  // {
-  //   path: '/booking-success/:bookingId',
-  //   element: <BookingSuccessPage />,
-  // },
   {
     path: '/admin',
     element: <Navigate to="/admin/login" replace />,

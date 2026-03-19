@@ -1,61 +1,88 @@
-import { Link } from 'react-router-dom';
-import { MapPinIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
+import { FaLocationDot } from 'react-icons/fa6';
 import { Business } from '../../types/business';
-import RatingStars from './RatingStars';
+import type { Service } from '../../types/service';
+import './BusinessCard.css';
 
 interface BusinessCardProps {
   business: Business;
 }
 
+function formatPriceMDL(price: number) {
+  const value = Number.isFinite(price) ? price : 0;
+  return `${value.toLocaleString('ro-RO')} MDL`;
+}
+
+function getActiveServices(services: Service[]) {
+  return services.filter((s) => s.is_active);
+}
+
+function normalizeImageUrl(url: string | null | undefined) {
+  if (!url) return undefined;
+  return url.replace(/\$\d+(?=([?#]|$))/, '');
+}
+
 export default function BusinessCard({ business }: BusinessCardProps) {
-  const priceRangeDisplay = '$'.repeat(business.price_range);
+  const navigate = useNavigate();
+
+  const activeServices = getActiveServices(business.providedServices);
+  const topServices = activeServices.slice(0, 3);
+  const minPrice = activeServices.length ? Math.min(...activeServices.map((s) => s.price)) : null;
+
+  const rawLogoUrl = business.logo_url ?? (business as any).logoUrl;
+  const rawCoverUrl = business.cover_image_url ?? (business as any).coverImageUrl;
+  const logoUrl = normalizeImageUrl(rawLogoUrl) ?? normalizeImageUrl(rawCoverUrl);
 
   return (
-    <Link
-      to={`/business/${business.slug}`}
-      className="block bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+    <div
+      className="card marketplace-equal-height-card"
+      role="link"
+      tabIndex={0}
+      onClick={() => navigate(`/${business.slug}`)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') navigate(`/${business.slug}`);
+      }}
     >
-      <div className="aspect-video bg-gray-200 overflow-hidden">
-        {business.logo_url ? (
-          <img
-            src={business.logo_url}
-            alt={business.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-            <span className="text-4xl font-bold text-blue-600">
-              {business.name.charAt(0)}
-            </span>
+      <div
+        className="card-image"
+        style={{
+          backgroundImage: logoUrl ? `url("${logoUrl}")` : undefined,
+        }}
+      />
+
+      <div className="card-content">
+        <div className="card-header">
+          <div>
+            <h3>{business.name}</h3>
+            <p className="business-address">
+              <FaLocationDot className="business-address-icon" />
+              <span>{business.address || business.city || ''}</span>
+            </p>
           </div>
-        )}
-      </div>
-
-      <div className="p-5">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-          {business.name}
-        </h3>
-
-        <div className="flex items-center mb-2">
-          <RatingStars rating={business.average_rating || 0} size="sm" />
-          <span className="ml-2 text-sm text-gray-600">
-            ({business.review_count || 0} reviews)
-          </span>
         </div>
 
-        <div className="flex items-center text-gray-600 text-sm mb-2">
-          <MapPinIcon className="h-4 w-4 mr-1" />
-          <span>{business.address || business.city}</span>
-        </div>
+        <p className="starting">Starting from {minPrice != null ? formatPriceMDL(minPrice) : '—'}</p>
 
-        <div className="flex items-center text-gray-600 text-sm">
-          <CurrencyDollarIcon className="h-4 w-4 mr-1" />
-          <span className="font-medium">{priceRangeDisplay}</span>
-          <span className="ml-2 text-xs px-2 py-1 bg-blue-50 text-blue-600 rounded-full">
-            {business.category}
-          </span>
+        <div className="card-expand">
+          {topServices.map((s) => (
+            <div key={s.id} className="service">
+              <span>{s.name}</span>
+              <strong>{formatPriceMDL(s.price)}</strong>
+            </div>
+          ))}
+
+          <button
+            type="button"
+            className="book-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/book/${business.slug}`);
+            }}
+          >
+            Book Appointment
+          </button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

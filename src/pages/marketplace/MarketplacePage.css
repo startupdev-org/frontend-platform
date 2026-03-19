@@ -1,0 +1,121 @@
+.marketplace-page-root {
+  min-height: 100vh;
+  background: none !important;
+}
+
+.marketplace-page-root #marketplace_header {
+  background: url('/assets/images/hero-11-bg.jpg') center top / cover no-repeat !important;
+}
+
+.marketplace-cards-section,
+.marketplace-cards-section .panel,
+.marketplace-cards-section .section-inner,
+.marketplace-cards-section .section-outer,
+.marketplace-cards-section main,
+.marketplace-cards-section .container,
+.marketplace-cards-section .section,
+.marketplace-cards-shell,
+.marketplace-cards-area,
+.marketplace-cards-empty {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.marketplace-cards-shell::before,
+.marketplace-cards-shell::after,
+.marketplace-cards-area::before,
+.marketplace-cards-area::after {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.marketplace-hero-filters .marketplace-hero-filter-select {
+  color: #111827 !important;
+  background-color: #fff !important;
+  border: 0 !important;
+  min-height: 26px !important;
+  height: 30px !important;
+  position: relative !important;
+  z-index: 5 !important;
+  display: block !important;
+  width: 100% !important;
+  padding: 0 32px 0 14px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: ellipsis !important;
+  -webkit-text-fill-color: #111827 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.marketplace-hero-filters > .d-inline-flex {
+  margin-inline-end: 0.5rem !important;
+}
+
+.marketplace-hero-filter-item {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 0 0.25rem;
+  display: flex;
+}
+
+.marketplace-hero-filter-item + .marketplace-hero-filter-item::before {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  top: 0;
+  height: 1px;
+  background: rgba(229, 231, 235, 0.95);
+  transform: translateY(-0.5px);
+}
+
+@media (min-width: 640px) {
+  .marketplace-hero-filter-item + .marketplace-hero-filter-item::before {
+    left: 0;
+    right: auto;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    height: auto;
+    transform: translateX(-0.5px);
+  }
+
+  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-filter-select {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+
+  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-filter-select {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+}
+
+@media (max-width: 639.98px) {
+  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-filter-select {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+
+  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-filter-select {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+}
+
+.marketplace-hero-filters .marketplace-hero-filter-select:focus {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}

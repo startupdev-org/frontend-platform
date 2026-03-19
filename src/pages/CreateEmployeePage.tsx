@@ -131,14 +131,12 @@ export default function CreateEmployeePage() {
                     <div className="bg-white rounded-xl shadow-md p-8">
                         <h1 className="text-2xl font-bold text-gray-900 mb-6">Add New Employee</h1>
 
-                        {/* Success Message */}
                         {successMessage && (
                             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                                 <p className="text-green-700 font-medium">{successMessage}</p>
                             </div>
                         )}
 
-                        {/* Error Message */}
                         {errorMessage && (
                             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                                 <p className="text-red-700 font-medium">{errorMessage}</p>
@@ -147,14 +145,12 @@ export default function CreateEmployeePage() {
 
                         <form onSubmit={handleSubmit} className="space-y-6">
 
-                            {/* Photo Upload */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Employee Photo
                                 </label>
 
                                 <div className="flex items-center gap-6">
-                                    {/* Preview */}
                                     <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0">
                                         {photoPreview ? (
                                             <img
@@ -169,7 +165,6 @@ export default function CreateEmployeePage() {
                                         )}
                                     </div>
 
-                                    {/* Upload button */}
                                     <div className="flex-1">
                                         <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -195,7 +190,6 @@ export default function CreateEmployeePage() {
                                 )}
                             </div>
 
-                            {/* Name */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Full Name <span className="text-red-500">*</span>
@@ -212,7 +206,6 @@ export default function CreateEmployeePage() {
                                 )}
                             </div>
 
-                            {/* Active toggle */}
                             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                 <div>
                                     <p className="text-sm font-medium text-gray-700">Active Status</p>
@@ -231,7 +224,6 @@ export default function CreateEmployeePage() {
                                 </button>
                             </div>
 
-                            {/* Submit */}
                             <div className="flex gap-3 pt-2">
                                 <Button
                                     type="submit"
@@ -256,32 +248,6 @@ export default function CreateEmployeePage() {
                         </form>
                     </div>
 
-                    {/* Flow explanation for testing */}
-                    <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
-                        <h3 className="text-sm font-semibold text-blue-800 mb-3">Upload Flow (for testing)</h3>
-                        <ol className="space-y-2 text-sm text-blue-700">
-                            <li className="flex items-start gap-2">
-                                <span className="font-bold shrink-0">1.</span>
-                                Select a photo → preview appears
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="font-bold shrink-0">2.</span>
-                                On submit, backend is asked for a presigned upload URL
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="font-bold shrink-0">3.</span>
-                                Photo uploads directly to Supabase Storage
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="font-bold shrink-0">4.</span>
-                                Public URL is included in the create employee request
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="font-bold shrink-0">5.</span>
-                                Employee is saved in the database with the photo URL
-                            </li>
-                        </ol>
-                    </div>
                 </div>
 
                 <Footer />

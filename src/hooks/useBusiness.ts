@@ -14,20 +14,41 @@ export const useBusinesses = (filters: BusinessFilters) => {
       try {
         setIsLoading(true);
         const data = await businessService.getAll(filters);
-
-        console.log('data: ', data)
         setBusinesses(data.content);
         setTotalElements(data.numberOfElemets);
         setTotalPages(data.totalPages);
       } catch (err) {
-        setError('Failed to load businesses');
+        const anyErr = err as any;
+        const status = anyErr?.response?.status as number | undefined;
+        const backendMessage =
+          anyErr?.response?.data?.message ??
+          anyErr?.response?.data?.error ??
+          (typeof anyErr?.response?.data === 'string' ? anyErr.response.data : undefined);
+
+        const prefix = status ? `Failed to load businesses (${status})` : 'Failed to load businesses';
+        const hint =
+          status === 403
+            ? ' (If the endpoint is protected, ensure your auth token is configured.)'
+            : '';
+
+        setError(backendMessage ? `${prefix}: ${backendMessage}${hint}` : `${prefix}${hint}`);
+
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchBusinesses();
-  }, [filters.page, filters.size, filters.city, filters.minRating]);
+  }, [
+    filters.page,
+    filters.size,
+    filters.search,
+    filters.category,
+    filters.minPrice,
+    filters.maxPrice,
+    filters.city,
+    filters.minRating,
+  ]);
 
   return { businesses, totalElements, totalPages, isLoading, error };
 };
@@ -45,12 +66,7 @@ export const useBusiness = (slug?: string) => {
       }
 
       try {
-
-        console.log('trying to make the request to get the business')
-
         const data = await businessService.getBySlug(slug);
-
-        console.log('the data is: ', data)
         setBusiness(data);
       } catch (err) {
         setError('Failed to load business');

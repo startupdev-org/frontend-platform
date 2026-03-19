@@ -5,7 +5,6 @@ import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import AdminSidebar from '../../components/layout/AdminSidebar';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
-import Input from '../../components/ui/Input';
 import Spinner from '../../components/ui/Spinner';
 import { useAuth } from '../../hooks/useAuth';
 import { useToastStore } from '../../app/store';

@@ -19,11 +19,11 @@ const SOLUTIONS = [
   { icon: '/assets/images/custom-icons/icon-08.svg', title: 'Automatizare bazată pe AI', desc: 'Oferta noastră de servicii' },
 ];
 
-const RESOURCES = [
-  { icon: 'unicon-checkmark', title: 'Listă de taskuri', desc: 'Gestionează mai multe softuri și instrumente pentru taskuri diferite.' },
-  { icon: 'unicon-chart-pie', title: 'Rapoarte', desc: 'Cele mai recente rapoarte, actualizări și informații din industrie.' },
-  { icon: 'unicon-increase-level', title: 'Foi de calcul', desc: 'Suite de instrumente care acoperă toate aspectele business-ului tău.' },
-  { icon: 'unicon-chart-venn-diagram', title: 'Colaborare', desc: 'Atribuie taskuri, partajează fișiere și comunică cu echipa ta.' },
+const NICHES = [
+  { icon: '/assets/images/custom-icons/icon-01.svg', title: 'Frizerii', category: 'barbershop', desc: 'Tunsori, bărbierit și îngrijire pentru bărbați.' },
+  { icon: '/assets/images/custom-icons/icon-02.svg', title: 'Saloane de înfrumusețare', category: 'salon', desc: 'Coafor, machiaj și tratamente de înfrumusețare.' },
+  { icon: '/assets/images/custom-icons/icon-03.svg', title: 'Spa & wellness', category: 'spa', desc: 'Relaxare, masaje și tratamente corporale.' },
+  { icon: '/assets/images/custom-icons/icon-05.svg', title: 'Saloane de unghii', category: 'nails', desc: 'Manichiură, pedichiură și nail art.' },
 ];
 
 type MarketingNavbarProps = {
@@ -41,6 +41,8 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
   const platformaTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const resourcesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
+  const categoriesTriggerRef = useRef<HTMLLIElement | null>(null);
+  const [categoriesLeft, setCategoriesLeft] = useState<number | null>(null);
 
   const clearPlatformaTimeout = () => {
     if (platformaTimeout.current) {
@@ -108,6 +110,20 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
   }, [openPlatforma, openResources]);
 
   useEffect(() => {
+    if (!openResources) {
+      setCategoriesLeft(null);
+      return;
+    }
+    if (typeof window === 'undefined') return;
+    const trigger = categoriesTriggerRef.current;
+    if (!trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    const dropdownWidth = 420;
+    const left = rect.left + rect.width / 2 - dropdownWidth / 2 + 124;
+    setCategoriesLeft(Math.max(8, Math.min(left, window.innerWidth - dropdownWidth - 8)));
+  }, [openResources]);
+
+  useEffect(() => {
     if (!searchOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setSearchOpen(false);
@@ -143,7 +159,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
               <div className="uc-navbar min-h-64px lg:min-h-80px text-dark dark:text-white">
                 <div className="uc-navbar-left gap-6 flex items-center">
                   <div className="uc-logo ltr:ms-1 rtl:me-1">
-                    <Link to="/" className="panel text-none">
+                    <Link to="/business" className="panel text-none">
                       <img className="dark:d-none" src="/assets/images/common/logo-11.svg" alt="Business Platform" />
                       <img className="d-none dark:d-block" src="/assets/images/common/logo-11-dark.svg" alt="Business Platform" />
                     </Link>
@@ -262,55 +278,61 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                       <a href="#key_features" className="inline-flex items-center min-h-[var(--uc-nav-height,80px)]">Soluții</a>
                     </li>
                     <li
+                      ref={categoriesTriggerRef}
                       className="position-relative flex items-center"
                       onMouseEnter={handleResourcesEnter}
                       onMouseLeave={handleResourcesLeave}
                     >
-                      <button type="button" className="gap-1 border-0 bg-transparent p-0 text-inherit fw-medium inline-flex items-center h-full min-h-[var(--uc-nav-height,80px)]">
-                        Resurse <span data-uc-navbar-parent-icon />
+                      <button
+                        type="button"
+                        className="gap-1 border-0 bg-transparent p-0 text-inherit fw-medium inline-flex items-center h-full min-h-[var(--uc-nav-height,80px)]"
+                      >
+                        Categorii <span data-uc-navbar-parent-icon />
                       </button>
-                      {openResources && createPortal(
-                        <div
-                          style={{ position: 'fixed', top: NAVBAR_HEIGHT, left: '50%', transform: 'translateX(-50%)', width: 600, maxWidth: '100vw', zIndex: 1000 }}
-                          onMouseEnter={handleResourcesEnter}
-                          onMouseLeave={handleResourcesLeave}
-                        >
-                          <div className={`uc-navbar-dropdown w-600px ft-primary text-unset fs-6 fw-normal p-0 hide-scrollbar rounded-2 overflow-hidden shadow-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 ${dropdownAnimate === 'resources' ? 'dropdown-animate-in' : ''}`}>
-                          <div className="row child-cols-6 g-0 col-match">
-                            <div>
-                              <ul className="uc-nav uc-navbar-dropdown-nav p-2">
-                                {RESOURCES.map((r) => (
-                                  <li key={r.title}>
-                                    <a className="hstack items-start gap-2 p-2 hover:bg-gray-600 hover:bg-opacity-5 dark:hover:bg-white duration-150 rounded-1-5" href="#key_features">
-                                      <i className={`icon-1 ${r.icon} fw-bold text-primary dark:text-secondary`} />
-                                      <span className="vstack gap-narrow mt-nnarrow">
-                                        <b className="fw-bold dark:text-white">{r.title}</b>
-                                        <span className="fw-normal">{r.desc}</span>
+                      {openResources &&
+                        createPortal(
+                          <div
+                            style={{
+                              position: 'fixed',
+                              top: NAVBAR_HEIGHT,
+                              left: categoriesLeft ?? '50%',
+                              transform: categoriesLeft == null ? 'translateX(-50%)' : 'none',
+                              maxWidth: '100vw',
+                              zIndex: 1000,
+                            }}
+                            onMouseEnter={handleResourcesEnter}
+                            onMouseLeave={handleResourcesLeave}
+                          >
+                            <div
+                              className={`uc-navbar-dropdown ft-primary text-unset fs-6 fw-normal p-1 hide-scrollbar rounded-3 overflow-hidden shadow-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 ${
+                                dropdownAnimate === 'resources' ? 'dropdown-animate-in' : ''
+                              }`}
+                              style={{ width: 420 }}
+                            >
+                              <ul className="uc-nav uc-navbar-dropdown-nav py-1">
+                                {NICHES.map((niche) => (
+                                  <li key={niche.title}>
+                                    <Link
+                                      to={`/businesses?category=${encodeURIComponent(niche.category)}`}
+                                      className="hstack items-start gap-2 ps-2 pe-3 py-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary hover:bg-gray-600 hover:bg-opacity-5 dark:hover:bg-white duration-150 rounded-2"
+                                    >
+                                      <span className="icon rounded dark:bg-white">
+                                        <img src={niche.icon} alt="" className="w-32px" />
                                       </span>
-                                    </a>
+                                      <span className="vstack gap-narrow">
+                                        <b className="fw-medium">{niche.title}</b>
+                                        <span className="fw-normal text-gray-600 dark:text-gray-300 fs-8">
+                                          {niche.desc}
+                                        </span>
+                                      </span>
+                                    </Link>
                                   </li>
                                 ))}
                               </ul>
                             </div>
-                            <div>
-                              <div className="vstack gap-2 p-3 h-100 bg-gray-25 dark:bg-gray-300 dark:bg-opacity-5">
-                                <div className="featured-image panel">
-                                  <figure className="featured-image m-0 rounded ratio ratio-3x2 rounded-1-5 overflow-hidden">
-                                    <img className="media-cover image" src="/assets/images/template/login.webp" alt="Demo" />
-                                  </figure>
-                                </div>
-                                <div className="vstack gap-1">
-                                  <h5 className="h6 m-0">Tot ce ai nevoie la un click distanță</h5>
-                                  <p className="fs-7 opacity-70">Scapă de bătaia de cap a gestionării mai multor softuri și instrumente.</p>
-                                </div>
-                                <Link to="/admin/login" className="btn btn-sm btn-primary">Începe perioada de probă</Link>
-                              </div>
-                            </div>
-                          </div>
-                          </div>
-                        </div>,
-                        document.body
-                      )}
+                          </div>,
+                          document.body
+                        )}
                     </li>
                     <li className="flex items-center">
                       <a href="#faq" className="inline-flex items-center min-h-[var(--uc-nav-height,80px)]">Despre</a>
@@ -366,7 +388,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
           <div className="uc-offcanvas-bar position-fixed top-0 end-0 h-100 w-280px max-w-90vw bg-white dark:bg-gray-800 dark:text-white shadow-xl z-999 overflow-auto lg:d-none">
             <div className="p-4 vstack gap-4">
               <div className="hstack justify-between items-center">
-                <Link to="/" className="h5 text-none text-gray-900 dark:text-white" onClick={() => setMobileMenuOpen(false)}>
+                <Link to="/business" className="h5 text-none text-gray-900 dark:text-white" onClick={() => setMobileMenuOpen(false)}>
                   <img className="w-32px dark:d-none" src="/assets/images/common/logo-11.svg" alt="Business Platform" />
                   <img className="w-32px d-none dark:d-block" src="/assets/images/common/logo-11-dark.svg" alt="Business Platform" />
                 </Link>
@@ -375,14 +397,44 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                 </button>
               </div>
               <ul className="nav-y gap-2 fs-6">
-                <li><Link to="/businesses" onClick={() => setMobileMenuOpen(false)}>Platformă</Link></li>
-                <li><a href="#key_features" onClick={() => setMobileMenuOpen(false)}>Soluții</a></li>
-                <li><a href="#integrations" onClick={() => setMobileMenuOpen(false)}>Resurse</a></li>
-                <li><a href="#pricing" onClick={() => setMobileMenuOpen(false)}>Prețuri</a></li>
-                <li><a href="#faq" onClick={() => setMobileMenuOpen(false)}>Despre</a></li>
-                <li><Link to="/admin/login" onClick={() => setMobileMenuOpen(false)}>Autentificare</Link></li>
                 <li>
-                  <a href="#contact" className="btn btn-sm btn-primary text-white w-100" onClick={() => setMobileMenuOpen(false)}>Contactează-ne</a>
+                  <Link to="/businesses" onClick={() => setMobileMenuOpen(false)}>
+                    Platformă
+                  </Link>
+                </li>
+                <li>
+                  <a href="#key_features" onClick={() => setMobileMenuOpen(false)}>
+                    Soluții
+                  </a>
+                </li>
+                <li>
+                  <Link to="/businesses" onClick={() => setMobileMenuOpen(false)}>
+                    Categorii
+                  </Link>
+                </li>
+                <li>
+                  <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>
+                    Prețuri
+                  </a>
+                </li>
+                <li>
+                  <a href="#faq" onClick={() => setMobileMenuOpen(false)}>
+                    Despre
+                  </a>
+                </li>
+                <li>
+                  <Link to="/admin/login" onClick={() => setMobileMenuOpen(false)}>
+                    Autentificare
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="#contact"
+                    className="btn btn-sm btn-primary text-white w-100"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Contactează-ne
+                  </a>
                 </li>
               </ul>
             </div>

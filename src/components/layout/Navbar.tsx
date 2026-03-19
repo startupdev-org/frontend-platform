@@ -6,14 +6,14 @@ export default function Navbar() {
     <nav className="bg-white shadow-sm sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/business" className="flex items-center space-x-2">
             <MagnifyingGlassIcon className="h-8 w-8 text-blue-600" />
             <span className="text-xl font-bold text-gray-900">BookBeauty</span>
           </Link>
 
           <div className="flex items-center space-x-4">
             <Link
-              to="/"
+              to="/business"
               className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
             >
               Marketplace

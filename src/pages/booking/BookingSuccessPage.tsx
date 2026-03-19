@@ -141,11 +141,11 @@ export default function BookingSuccessPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/">
+              <Link to="/business">
                 <Button variant="secondary">Back to Marketplace</Button>
               </Link>
               {booking.business && (
-                <Link to={`/business/${booking.business.slug}`}>
+                <Link to={`/${booking.business.slug}`}>
                   <Button>View Business</Button>
                 </Link>
               )}
