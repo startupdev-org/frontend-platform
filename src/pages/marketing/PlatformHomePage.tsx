@@ -89,7 +89,7 @@ export default function PlatformHomePage() {
           <div id="hero_header" className="hero-header section panel overflow-hidden">
             <div
               className="position-absolute top-0 start-0 end-0 h-screen dark:blend-soft-light"
-              style={{ backgroundImage: 'url(/assets/images/template/hero-11-bg.jpg)', backgroundSize: 'cover' }}
+              style={{ backgroundImage: 'url(/assets/images/hero-11-bg.jpg)', backgroundSize: 'cover' }}
             />
             <div className="position-absolute top-0 start-0 end-0 h-screen bg-indigo blend-soft-light d-none dark:d-block" />
             <div className="position-absolute top-0 start-0 end-0 h-screen bg-gradient-to-b from-white via-transparent to-white dark:from-gray-900 dark:to-gray-900" />
@@ -620,7 +620,7 @@ export default function PlatformHomePage() {
                     <div className="row child-cols-6 sm:child-cols col-match g-4">
                       <div className="col-12 sm:col-6">
                         <div className="panel vstack items-start gap-3 xl:gap-4 xl:w-350px">
-                          <Link to="/" style={{ width: 140 }}>
+                          <Link to="/business" style={{ width: 140 }}>
                             <img className="text-primary dark:text-white" src="/assets/images/common/logo-12-light.svg" alt="Business Platform" />
                           </Link>
                         </div>

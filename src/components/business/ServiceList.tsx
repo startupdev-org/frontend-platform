@@ -1,4 +1,4 @@
-import { ClockIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { ClockIcon } from '@heroicons/react/24/outline';
 import { Service } from '../../types/service';
 
 interface ServiceListProps {

@@ -10,7 +10,7 @@ export default function NotFoundPage() {
         <p className="text-gray-600 mb-8">
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <Link to="/">
+        <Link to="/business">
           <button className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
             <HomeIcon className="h-5 w-5 mr-2" />
             Back to Marketplace

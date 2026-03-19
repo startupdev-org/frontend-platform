@@ -7,7 +7,6 @@ export const health = async () => {
 
     try {
         const response = await axios.get(`${REST_API_BASE_URL}/check`);
-        console.log('response: ', response)
         return response.data;
     } catch (error) {
         throw error;
