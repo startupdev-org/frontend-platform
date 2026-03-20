@@ -5,6 +5,7 @@
 
 .marketplace-page-root #marketplace_header {
   background: url('/assets/images/hero-11-bg.jpg') center top / cover no-repeat !important;
+  position: relative;
 }
 
 .marketplace-cards-section,
@@ -33,7 +34,7 @@
 
 .marketplace-hero-filters .marketplace-hero-filter-select {
   color: #111827 !important;
-  background-color: #fff !important;
+  background-color: transparent !important;
   border: 0 !important;
   min-height: 26px !important;
   height: 30px !important;
@@ -118,4 +119,17 @@
   outline: 0 !important;
   outline-offset: 0 !important;
   box-shadow: none !important;
+}
+
+.marketplace-cards-area .row {
+  align-items: stretch;
+}
+
+.marketplace-cards-area .row > div {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.marketplace-cards-area .row > div > .marketplace-equal-height-card {
+  height: 100%;
 }

@@ -32,13 +32,29 @@ export default function PagePreloader({ active }: PagePreloaderProps) {
       html.classList.add('show-preloader');
       const preloader = getOrCreatePreloader();
       return () => {
-        html.classList.remove('show-preloader');
-        preloader.remove();
+        const minDisplay = 400;
+        const startedAt = startedAtRef.current ?? Date.now();
+        const elapsed = Date.now() - startedAt;
+        const remaining = Math.max(0, minDisplay - elapsed);
+
+        if ((preloader as HTMLDivElement).dataset.fadeScheduled === 'true') return;
+        (preloader as HTMLDivElement).dataset.fadeScheduled = 'true';
+
+        window.setTimeout(() => {
+          html.classList.remove('show-preloader');
+          requestAnimationFrame(() => {
+            preloader.style.transition = 'opacity 1.1s cubic-bezier(0.8, 0, 0.2, 1)';
+            preloader.style.opacity = '0';
+            window.setTimeout(() => preloader.remove(), 1100);
+          });
+        }, remaining);
       };
     }
 
     const preloader = document.getElementById(PRELOADER_ID) as HTMLDivElement | null;
     if (!preloader) return;
+
+    if (preloader.dataset.fadeScheduled === 'true') return;
 
     const minDisplay = 400;
     const startedAt = startedAtRef.current ?? Date.now();

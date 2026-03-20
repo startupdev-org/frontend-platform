@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { FaLocationDot } from 'react-icons/fa6';
+import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 import { Business } from '../../types/business';
 import type { Service } from '../../types/service';
 import './BusinessCard.css';
@@ -14,7 +15,12 @@ function formatPriceMDL(price: number) {
 }
 
 function getActiveServices(services: Service[]) {
-  return services.filter((s) => s.is_active);
+  return services.filter((s) => {
+    const service = s as Service & { active?: boolean; is_active?: boolean };
+    if (typeof service.active === 'boolean') return service.active;
+    if (typeof service.is_active === 'boolean') return service.is_active;
+    return true;
+  });
 }
 
 function normalizeImageUrl(url: string | null | undefined) {
@@ -25,9 +31,12 @@ function normalizeImageUrl(url: string | null | undefined) {
 export default function BusinessCard({ business }: BusinessCardProps) {
   const navigate = useNavigate();
 
-  const activeServices = getActiveServices(business.providedServices);
+  const activeServices = getActiveServices((business.providedServices ?? []) as Service[]);
   const topServices = activeServices.slice(0, 3);
-  const minPrice = activeServices.length ? Math.min(...activeServices.map((s) => s.price)) : null;
+  const prices = activeServices
+    .map((s) => Number(s.price))
+    .filter((price): price is number => Number.isFinite(price));
+  const minPrice = prices.length ? Math.min(...prices) : null;
 
   const rawLogoUrl = business.logo_url ?? (business as any).logoUrl;
   const rawCoverUrl = business.cover_image_url ?? (business as any).coverImageUrl;
@@ -79,7 +88,8 @@ export default function BusinessCard({ business }: BusinessCardProps) {
               navigate(`/book/${business.slug}`);
             }}
           >
-            Book Appointment
+            <CalendarDaysIcon className="book-button__icon h-5 w-5 mr-2" />
+            <span className="book-button__text">Programează-te</span>
           </button>
         </div>
       </div>
