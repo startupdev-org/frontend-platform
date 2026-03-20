@@ -197,7 +197,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                                             <i className="fs-7 unicon-cube fw-bold ltr:me-narrow rtl:ms-narrow" /> Produse
                                           </h6>
                                           {PRODUCTS.map((p) => (
-                                            <Link key={p.title} to="/businesses" className="hstack items-start gap-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
+                                            <Link key={p.title} to="/business" className="hstack items-start gap-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
                                               <span className="icon rounded dark:bg-white">
                                                 <img className="w-32px" src={p.icon} alt="" />
                                               </span>
@@ -207,7 +207,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                                               </div>
                                             </Link>
                                           ))}
-                                          <Link to="/businesses" className="ltr:ms-6 rtl:me-6 text-none fs-8 text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
+                                          <Link to="/business" className="ltr:ms-6 rtl:me-6 text-none fs-8 text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
                                             <span className="border-bottom hover:border-primary duration-150">Vezi toate produsele</span>
                                             <i className="d-inline-flex fs-8 unicon-arrow-up-right fw-bold rtl:rotate-y-180" />
                                           </Link>
@@ -217,7 +217,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                                             <i className="fs-7 unicon-gamification fw-bold ltr:me-narrow rtl:ms-narrow" /> Soluții profesionale
                                           </h6>
                                           {SOLUTIONS.map((s) => (
-                                            <Link key={s.title} to="/businesses" className="hstack items-start gap-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
+                                            <Link key={s.title} to="/business" className="hstack items-start gap-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
                                               <span className="icon rounded dark:bg-white">
                                                 <img className="w-32px" src={s.icon} alt="" />
                                               </span>
@@ -227,7 +227,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                                               </div>
                                             </Link>
                                           ))}
-                                          <Link to="/businesses" className="ltr:ms-6 rtl:me-6 text-none fs-8 text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
+                                          <Link to="/business" className="ltr:ms-6 rtl:me-6 text-none fs-8 text-dark dark:text-white hover:text-primary dark:hover:text-tertiary">
                                             <span className="border-bottom hover:border-primary duration-150">Vezi toate soluțiile</span>
                                             <i className="d-inline-flex fs-8 unicon-arrow-up-right fw-bold rtl:rotate-y-180" />
                                           </Link>
@@ -275,7 +275,9 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                       )}
                     </li>
                     <li className="flex items-center">
-                      <a href="#key_features" className="inline-flex items-center min-h-[var(--uc-nav-height,80px)]">Soluții</a>
+                      <Link to="/business" className="inline-flex items-center min-h-[var(--uc-nav-height,80px)]">
+                        Soluții
+                      </Link>
                     </li>
                     <li
                       ref={categoriesTriggerRef}
@@ -312,8 +314,8 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                               <ul className="uc-nav uc-navbar-dropdown-nav py-1">
                                 {NICHES.map((niche) => (
                                   <li key={niche.title}>
-                                    <Link
-                                      to={`/businesses?category=${encodeURIComponent(niche.category)}`}
+                                      <Link
+                                      to={`/?category=${encodeURIComponent(niche.category)}`}
                                       className="hstack items-start gap-2 ps-2 pe-3 py-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary hover:bg-gray-600 hover:bg-opacity-5 dark:hover:bg-white duration-150 rounded-2"
                                     >
                                       <span className="icon rounded dark:bg-white">
@@ -398,17 +400,17 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
               </div>
               <ul className="nav-y gap-2 fs-6">
                 <li>
-                  <Link to="/businesses" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/business" onClick={() => setMobileMenuOpen(false)}>
                     Platformă
                   </Link>
                 </li>
                 <li>
-                  <a href="#key_features" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/business" onClick={() => setMobileMenuOpen(false)}>
                     Soluții
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/businesses" onClick={() => setMobileMenuOpen(false)}>
+                  <Link to="/" onClick={() => setMobileMenuOpen(false)}>
                     Categorii
                   </Link>
                 </li>

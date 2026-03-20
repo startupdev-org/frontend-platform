@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FaSearch } from "react-icons/fa";
+import { useLocation, useNavigate } from 'react-router-dom';
 import BusinessCard from '../../components/business/BusinessCard';
 import MarketingNavbar from '../../components/layout/MarketingNavbar';
-import Spinner from '../../components/ui/Spinner';
+import PagePreloader from '../../components/ui/PagePreloader';
 import { useBusinesses } from '../../hooks/useBusiness';
 import type { WorkingHours } from '../../types/business';
 import './MarketplacePage.css';
@@ -20,6 +21,9 @@ function isOpenToday(workingHours: WorkingHours | undefined, date: Date) {
 }
 
 export default function MarketplacePage() {
+  const routerLocation = useLocation();
+  const navigate = useNavigate();
+
   const { businesses: serverBusinesses, isLoading, error } = useBusinesses({
     page: PAGE,
     size: PAGE_SIZE,
@@ -31,6 +35,11 @@ export default function MarketplacePage() {
   const [niche, setNiche] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   const [timeFilter, setTimeFilter] = useState<'any' | 'open_today'>('any');
+  const [autoSelectDefaults, setAutoSelectDefaults] = useState(true);
+
+  const urlParams = useMemo(() => new URLSearchParams(routerLocation.search), [routerLocation.search]);
+  const categoryFromUrl = urlParams.get('category') ?? '';
+  const hasUrlFilters = Array.from(urlParams.keys()).length > 0;
 
   const nicheOptions = useMemo(() => {
     const opts = new Set(serverBusinesses.map((b) => b.category).filter(Boolean));
@@ -43,12 +52,20 @@ export default function MarketplacePage() {
   }, [serverBusinesses]);
 
   useEffect(() => {
-    if (!niche && nicheOptions.length) setNiche(nicheOptions[0]);
-  }, [niche, nicheOptions]);
+    if (!autoSelectDefaults) return;
+    if (!categoryFromUrl && !niche && nicheOptions.length) setNiche(nicheOptions[0]);
+  }, [autoSelectDefaults, categoryFromUrl, niche, nicheOptions]);
 
   useEffect(() => {
+    if (!categoryFromUrl) return;
+    setNiche(categoryFromUrl);
+    setAutoSelectDefaults(false);
+  }, [categoryFromUrl]);
+
+  useEffect(() => {
+    if (!autoSelectDefaults) return;
     if (!location && locationOptions.length) setLocation(locationOptions[0]);
-  }, [location, locationOptions]);
+  }, [autoSelectDefaults, location, locationOptions]);
 
   const businesses = useMemo(() => {
     const now = new Date();
@@ -81,17 +98,18 @@ export default function MarketplacePage() {
         <MarketingNavbar />
 
         <div id="wrapper" className="wrap">
-          <div id="marketplace_header" className="hero-header section panel overflow-hidden">
-            <div className="section-outer panel pt-7 lg:pt-8 xl:pt-9 w-100 position-relative z-1">
-              <div className="container max-w-lg">
+          <div id="marketplace_header" className="hero-header section panel">
+            <div className="section-outer panel pt-8 lg:pt-9 xl:pt-10 w-100 position-relative z-1">
+              <div
+                className="position-absolute top-0 start-0 end-0 h-full dark:blend-soft-light z-0"
+                style={{ backgroundImage: 'url(/assets/images/hero-11-bg.jpg)', backgroundSize: 'cover' }}
+              />
+              <div className="position-absolute top-0 start-0 end-0 h-full bg-indigo blend-soft-light d-none dark:d-block z-0" />
+              <div className="position-absolute top-0 start-0 end-0 h-full bg-gradient-to-b from-white via-transparent to-white dark:from-gray-900 dark:to-gray-900 z-0" />
+
+              <div className="container max-w-lg position-relative z-1">
                 <div className="section-inner panel max-w-750px xl:max-w-900px mx-auto text-center">
                   <div className="panel vstack items-center gap-2 xl:gap-3 mb-5 sm:mb-7 xl:mb-8">
-                    <span
-                      className="ft-serif fs-7 py-narrow px-2 border rounded text-uppercase text-gradient"
-                      style={{ fontFamily: 'Poppins', fontWeight: 600 }}
-                    >
-                      Marketplace Business Platform
-                    </span>
                     <h1 className="h2 sm:h1 md:display-6 lg:display-5 xl:display-3 m-0">
                       Găsește business-ul potrivit
                     </h1>
@@ -99,17 +117,20 @@ export default function MarketplacePage() {
                       Caută și descoperă saloane, servicii și profesioniști listați în Business Platform, gata să preia noi clienți.
                     </p>
 
-                    <div className="vstack sm:hstack gap-0.5 sm:gap-1 bg-white rounded-3 sm:rounded shadow-lg p-0.5 mx-auto w-100 max-w-650px marketplace-hero-filters mb-1 ltr:sm:ms-2 rtl:sm:me-2">
+                    <div className="vstack sm:hstack gap-1 sm:gap-0 bg-white rounded-3 sm:rounded shadow-lg p-1 mx-auto w-100 max-w-650px lg:max-w-750px marketplace-hero-filters mb-1 ltr:sm:ms-2 rtl:sm:me-2 mt-2">
                       <span className="d-inline-flex justify-center items-center w-28px h-28px opacity-60 mb-0.5 sm:mb-0 sm:mr-1 rtl:sm:ml-1">
-                        <FaSearch className="h-3.5 w-3.5 text-gray-500 ml-5" />
+                        <FaSearch className="h-5.5 w-5.5 ml-5 text-gray-500" />
                       </span>
                       <div className="flex-1 vstack sm:hstack gap-1 sm:gap-0 min-w-0">
                         <div className="marketplace-hero-filter-item">
                           <select
                             aria-label="Servicii"
                             value={niche}
-                            onChange={(e) => setNiche((e.target as HTMLSelectElement).value)}
-                            className="custom-dropdown-select border-0 bg-white px-3 py-2 fs-6 w-full marketplace-hero-filter-select"
+                            onChange={(e) => {
+                              setNiche((e.target as HTMLSelectElement).value);
+                              setAutoSelectDefaults(false);
+                            }}
+                            className="custom-dropdown-select border-0 bg-transparent px-3 py-2 fs-6 w-full marketplace-hero-filter-select"
                           >
                             <option value="">{isLoading && nicheOptions.length === 0 ? 'Loading...' : 'Servicii'}</option>
                             {nicheOptions.map((opt) => (
@@ -124,8 +145,11 @@ export default function MarketplacePage() {
                           <select
                             aria-label="Locație"
                             value={location}
-                            onChange={(e) => setLocation((e.target as HTMLSelectElement).value)}
-                            className="custom-dropdown-select border-0 bg-white px-3 py-2 fs-6 w-full marketplace-hero-filter-select"
+                            onChange={(e) => {
+                              setLocation((e.target as HTMLSelectElement).value);
+                              setAutoSelectDefaults(false);
+                            }}
+                            className="custom-dropdown-select border-0 bg-transparent px-3 py-2 fs-6 w-full marketplace-hero-filter-select"
                           >
                             <option value="">{isLoading && locationOptions.length === 0 ? 'Loading...' : 'Locație'}</option>
                             {locationOptions.map((opt) => (
@@ -140,8 +164,11 @@ export default function MarketplacePage() {
                           <select
                             aria-label="Oricând"
                             value={timeFilter}
-                            onChange={(e) => setTimeFilter((e.target as HTMLSelectElement).value as 'any' | 'open_today')}
-                            className="custom-dropdown-select border-0 bg-white px-3 py-2 fs-6 w-full marketplace-hero-filter-select"
+                            onChange={(e) => {
+                              setTimeFilter((e.target as HTMLSelectElement).value as 'any' | 'open_today');
+                              setAutoSelectDefaults(false);
+                            }}
+                            className="custom-dropdown-select border-0 bg-transparent px-3 py-2 fs-6 w-full marketplace-hero-filter-select"
                           >
                             <option value="any">Oricând</option>
                             <option value="open_today">Deschis astăzi</option>
@@ -151,15 +178,22 @@ export default function MarketplacePage() {
 
                       <button
                         type="button"
-                        className="btn btn-md lg:btn-lg btn-dark rounded-2 sm:rounded px-3 py-2 sm:ml-6 rtl:sm:mr-6"
+                        className="btn btn-md lg:btn-lg btn-dark rounded-2 sm:rounded px-3 py-2 ltr:sm:ms-2 rtl:sm:me-2 lg:min-w-200px"
                         onClick={() => {
+                          if (hasUrlFilters) {
+                            setAutoSelectDefaults(false);
+                            setNiche('');
+                            setLocation('');
+                            setTimeFilter('any');
+                            navigate('/', { replace: true });
+                          }
                           document.getElementById('marketplace_results')?.scrollIntoView({
                             behavior: 'smooth',
                             block: 'start',
                           });
                         }}
                       >
-                        Caută
+                        {hasUrlFilters ? 'Resetează filtre' : 'Caută'}
                       </button>
                     </div>
                   </div>
@@ -181,7 +215,7 @@ export default function MarketplacePage() {
                         </div>
                       ) : isLoading ? (
                         <div className="panel py-10 text-center marketplace-cards-empty">
-                          <Spinner size="lg" />
+                          <PagePreloader active={true} />
                         </div>
                       ) : businesses.length === 0 ? (
                         <div className="panel py-10 text-center marketplace-cards-empty">

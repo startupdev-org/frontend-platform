@@ -28,8 +28,9 @@ export const businessService = {
       params,
       headers: authHeaders(),
     });
-
+    console.log(response.data);
     return response.data;
+
   },
 
   async getBySlug(slug: string): Promise<Business | null> {
