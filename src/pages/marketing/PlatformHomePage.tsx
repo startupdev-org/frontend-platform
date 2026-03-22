@@ -1,34 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import MarketingNavbar from '../../components/layout/MarketingNavbar';
-
-const FAQ_ITEMS = [
-  {
-    question: 'Trebuie să știu programare ca să folosesc platforma?',
-    answer:
-      'Nu, Business Platform este gândită pentru oameni de business, nu pentru dezvoltatori. Nu ai nevoie de cunoștințe de HTML/CSS sau JavaScript pentru a-ți publica afacerea online.',
-  },
-  {
-    question: 'Pot s-o folosesc pentru proiecte comerciale?',
-    answer:
-      'Desigur. Business Platform este creată pentru a sprijini proiectele comerciale. O poți folosi și pentru a construi pagini de prezentare moderne pentru clienții tăi (nu spunem nimănui).',
-  },
-  {
-    question: 'O pot folosi pentru mai multe proiecte?',
-    answer: 'Da, o poți folosi pentru câte proiecte ai nevoie; nu impunem limite.',
-  },
-  {
-    question: 'Pot să creez și să vând un produs folosind platforma?',
-    answer:
-      'Nu, licența nu permite revânzarea directă a platformei ca produs separat. O poți folosi însă pentru a-ți crește și digitaliza propriul business.',
-  },
-  {
-    question: 'Care este politica voastră de rambursare?',
-    answer:
-      'Ne dorim ca toți clienții să fie mulțumiți și lucrăm continuu la îmbunătățirea produsului. Din cauza naturii digitale a serviciului, după activarea abonamentului nu oferim rambursări, dar suntem mereu disponibili să te ajutăm să obții maximum din platformă.',
-  },
-];
+import MarketingFooter from '../../components/layout/MarketingFooter';
+import { MARKETING_FAQ_ITEMS } from '../../content/marketingFaq';
+import { useUniCoreAccordion } from '../../hooks/useUniCoreAccordion';
+import '../../styles/marketing-faq-accordion.css';
 
 const INTEGRATIONS = [
   { name: 'Figma', icon: '/assets/images/tools/figma.svg' },
@@ -50,7 +27,7 @@ const TESTIMONIALS = [
 ];
 
 export default function PlatformHomePage() {
-  const [faqOpenIndex, setFaqOpenIndex] = useState(0);
+  const { ref: faqAccordionRef } = useUniCoreAccordion();
 
   useEffect(() => {
     document.body.classList.add('disable-cursor');
@@ -116,7 +93,7 @@ export default function PlatformHomePage() {
                           </button>
                         </div>
                         <div className="mt-3 sm:mt-6 xl:mt-8" data-anime="translateY: [16, 0]; opacity: [0, 1]; easing: easeOutExpo; duration: 750; delay: 1500;">
-                          <span className="fs-6 fw-semibold text-dark dark:text-white opacity-80">Folosit de companii mici și mari</span>
+                          <span className="fs-6 fw-semibold text-dark dark:text-white opacity-80">De încredere pentru branduri cunoscute</span>
                           <div className="panel mt-3">
                             <div className="row child-cols-4 sm:child-cols justify-center items-center gx-2 gy-3 sm:g-8 text-dark dark:text-white">
                               {[1, 2, 3, 4, 5].map((i) => (
@@ -545,34 +522,34 @@ export default function PlatformHomePage() {
                     <h2 className="h3 sm:h2 xl:h1 m-0">Întrebări frecvente</h2>
                   </div>
                   <div className="section-content panel" data-anime="onview: -200; targets: > ul > li; translateY: [48, 0]; opacity: [0, 1]; easing: easeOutCubic; duration: 500; delay: anime.stagger(100, {start: 200});">
-                    <ul className="gap-1 max-w-md xl:max-w-lg mx-auto vstack gap-0">
-                      {FAQ_ITEMS.map((item, index) => (
+                    <ul
+                      ref={faqAccordionRef}
+                      className="uc-accordion gap-1 max-w-md xl:max-w-lg mx-auto vstack gap-0 m-0 p-0 list-unstyled marketing-faq-accordion"
+                      data-uc-accordion="targets: > li;"
+                    >
+                      {MARKETING_FAQ_ITEMS.map((item, index) => (
                         <li
-                          key={index}
-                          className={`panel p-2 md:p-3 lg:p-4 bg-secondary dark:bg-gray-800 rounded-2 ${faqOpenIndex === index ? 'uc-open' : ''}`}
+                          key={item.question}
+                          className={`panel p-2 md:p-3 lg:p-4 bg-secondary dark:bg-gray-800 rounded-2 ${index === 0 ? 'uc-open' : ''}`}
                         >
-                          <button
-                            type="button"
-                            className="uc-accordion-title h6 md:h5 lg:h5 fw-bold ltr:pe-4 rtl:ps-4 w-100 text-start border-0 bg-transparent d-flex justify-between items-center"
-                            onClick={() => setFaqOpenIndex(faqOpenIndex === index ? -1 : index)}
-                            aria-expanded={faqOpenIndex === index}
+                          <a
+                            className="uc-accordion-title h6 md:h5 lg:h5 fw-bold mb-0 pb-0 ltr:pe-4 rtl:ps-4"
+                            href="#"
+                            onClick={(e) => e.preventDefault()}
                           >
                             {item.question}
-                            <span className="fs-5">{faqOpenIndex === index ? '−' : '+'}</span>
-                          </button>
-                          {faqOpenIndex === index && (
-                            <div className="uc-accordion-content lg:fs-5 pt-2 text-gray-800 dark:text-gray-200">
-                              <p className="m-0">{item.answer}</p>
-                            </div>
-                          )}
+                          </a>
+                          <div className="uc-accordion-content lg:fs-5 text-gray-800 dark:text-gray-200">
+                            <p className="m-0">{item.answer}</p>
+                          </div>
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div className="section-footer panel vstack gap-2 items-center mt-6 sm:mt-8 xl:mt-9" data-anime="translateY: [24, 0]; opacity: [0, 1]; easing: easeOutExpo; duration: 750; delay: 750;">
-                    <a href="#contact" className="btn btn-md lg:btn-lg btn-outline-dark dark:text-white dark:hover:text-dark dark:hover:bg-white border shadow-sm rounded-2 sm:rounded px-3 py-2 lg:min-w-200px">
+                    <Link to="/contact" className="btn btn-md lg:btn-lg btn-outline-dark dark:text-white dark:hover:text-dark dark:hover:bg-white border shadow-sm rounded-2 sm:rounded px-3 py-2 lg:min-w-200px">
                       Ai încă o întrebare?
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -580,127 +557,7 @@ export default function PlatformHomePage() {
           </div>
         </div>
 
-        <footer id="uc-footer" className="uc-footer panel overflow-hidden ft-tertiary" data-anime="onview: -100; translateY: [24, 0]; opacity: [0, 1]; easing: easeOutExpo; duration: 750; delay: 250;">
-          <div className="footer-outer py-6 lg:py-8 xl:py-9 lg:mx-2 rounded-2 xl:rounded-3 text-gray-900 dark:text-white bg-gradient-to-b from-secondary to-transparent dark:from-gray-700 dark:to-transparent">
-            <div className="uc-footer-cta">
-              <div className="container">
-                <div className="section-inner panel vstack gap-4 lg:gap-6 xl:gap-8">
-                  <div className="panel">
-                    <div className="row child-cols-12 justify-between items-center g-3 sm:g-4 text-center lg:text-start">
-                      <div className="lg:col-7 xl:col-6">
-                        <div className="vstack gap-1 sm:gap-2">
-                          <h2 className="h4 sm:h2 xl:h1 m-0">
-                            Automatizează task-urile, <br /> colaborează fără efort
-                          </h2>
-                        </div>
-                      </div>
-                      <div className="lg:col-auto">
-                        <div className="vstack gap-2 items-center">
-                          <Link
-                            to="/admin/login"
-                            className="btn btn-md xl:btn-lg text-white bg-gradient-to-r from-primary to-tertiary gradient-hover hover:bg-opacity-70 dark:hover:bg-opacity-80 border-0 shadow-sm rounded-2 sm:rounded px-3 py-2 lg:min-w-200px"
-                          >
-                            Începe perioada de probă
-                          </Link>
-                          <span className="fs-7 text-gray-700 dark:text-gray-300">Fără card necesar!</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="container">
-              <hr className="w-100 my-4 lg:my-6 xl:my-9" />
-            </div>
-            <div className="uc-footer-content">
-              <div className="container">
-                <div className="uc-footer-inner vstack gap-4 lg:gap-6 xl:gap-8">
-                  <div className="uc-footer-widgets panel">
-                    <div className="row child-cols-6 sm:child-cols col-match g-4">
-                      <div className="col-12 sm:col-6">
-                        <div className="panel vstack items-start gap-3 xl:gap-4 xl:w-350px">
-                          <Link to="/business" style={{ width: 140 }}>
-                            <img className="text-primary dark:text-white" src="/assets/images/common/logo-12-light.svg" alt="Business Platform" />
-                          </Link>
-                        </div>
-                      </div>
-                      <div>
-                        <ul className="nav-y gap-2 fs-6 xl:fs-5">
-                          <li>
-                            <a href="#integrations">Produse</a>
-                          </li>
-                          <li>
-                            <a href="#key_features">Funcționalități</a>
-                          </li>
-                          <li>
-                            <a href="#pricing">Prețuri</a>
-                          </li>
-                          <li>
-                            <a href="#faq">Despre</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <ul className="nav-y gap-2 fs-6 xl:fs-5">
-                          <li>
-                            <a href="#contact">Blog</a>
-                          </li>
-                          <li>
-                            <a href="#contact">Resurse</a>
-                          </li>
-                          <li>
-                            <a href="#contact">Suport</a>
-                          </li>
-                          <li>
-                            <Link to="/admin/login">Portal client</Link>
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="col-12 lg:col-auto">
-                        <div className="panel">
-                          <ul className="social-icons nav-x gap-0">
-                            <li>
-                              <a className="w-40px h-40px d-inline-flex justify-center items-center transition-all duration-200 ease-in hover:scale-110" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                                <i className="unicon-logo-instagram icon-3" />
-                              </a>
-                            </li>
-                            <li>
-                              <a className="w-40px h-40px d-inline-flex justify-center items-center transition-all duration-200 ease-in hover:scale-110" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                                <i className="unicon-logo-facebook icon-3" />
-                              </a>
-                            </li>
-                            <li>
-                              <a className="w-40px h-40px d-inline-flex justify-center items-center transition-all duration-200 ease-in hover:scale-110" href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X">
-                                <i className="unicon-logo-x-filled icon-3" />
-                              </a>
-                            </li>
-                            <li>
-                              <a className="w-40px h-40px d-inline-flex justify-center items-center transition-all duration-200 ease-in hover:scale-110" href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                                <i className="unicon-logo-linkedin icon-3" />
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="uc-footer-bottom panel vstack sm:hstack gap-2 justify-between items-center text-center pt-4 border-top text-gray-700 dark:text-gray-200">
-                    <p className="m-0">Business Platform © 2025. Toate drepturile rezervate.</p>
-                    <ul className="nav-x gap-1 m-0">
-                      <li>
-                        <a href="#privacy">Politica de confidențialitate</a>
-                      </li>
-                      <li className="mx-2 lg:mx-3">
-                        <a href="#terms">Termeni și condiții</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <MarketingFooter />
       </div>
     </>
   );

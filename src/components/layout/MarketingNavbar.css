@@ -71,7 +71,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(to right, var(--color-primary, #0F8465), var(--color-tertiary, #87D038));
+  background: linear-gradient(to right, var(--color-primary, #0f8465), var(--color-tertiary, #87d038));
   transform: scaleX(0);
   transition: transform 0.2s ease-out;
   transform-origin: center;
@@ -84,9 +84,32 @@
 }
 .uc-navbar-nav > li > a:hover,
 .uc-navbar-nav > li > button:hover {
-  color: var(--color-primary, #0F8465);
+  color: var(--color-primary, #0f8465);
 }
 .uc-dark .uc-navbar-nav > li > a:hover::before,
 .uc-dark .uc-navbar-nav > li > button:hover::before {
   background: linear-gradient(to right, var(--color-primary), var(--color-tertiary));
+}
+
+.marketing-categories-dropdown .marketing-categories-dropdown__item {
+  background-color: transparent;
+  background-image: none !important;
+}
+.marketing-categories-dropdown .marketing-categories-dropdown__item:hover,
+.marketing-categories-dropdown .marketing-categories-dropdown__item:focus-visible {
+  background-color: rgb(15 23 42 / 0.06);
+  background-image: none !important;
+}
+.uc-dark .marketing-categories-dropdown .marketing-categories-dropdown__item:hover,
+.uc-dark .marketing-categories-dropdown .marketing-categories-dropdown__item:focus-visible {
+  background-color: rgb(255 255 255 / 0.08);
+  background-image: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .marketing-categories-dropdown .marketing-categories-dropdown__item:hover,
+  .marketing-categories-dropdown .marketing-categories-dropdown__item:focus-visible {
+    background-color: rgb(255 255 255 / 0.08);
+    background-image: none !important;
+  }
 }
