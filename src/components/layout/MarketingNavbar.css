@@ -71,7 +71,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(to right, var(--color-primary, #0f8465), var(--color-tertiary, #87d038));
+  background: linear-gradient(to right, var(--color-primary, #1565c0), var(--color-tertiary, #0ea5e9));
   transform: scaleX(0);
   transition: transform 0.2s ease-out;
   transform-origin: center;
@@ -84,7 +84,7 @@
 }
 .uc-navbar-nav > li > a:hover,
 .uc-navbar-nav > li > button:hover {
-  color: var(--color-primary, #0f8465);
+  color: var(--color-primary, #1565c0);
 }
 .uc-dark .uc-navbar-nav > li > a:hover::before,
 .uc-dark .uc-navbar-nav > li > button:hover::before {

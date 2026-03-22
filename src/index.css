@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-	--color-primary: #0f8465;
-	--color-tertiary: #87d038;
+	--color-primary: #1565c0;
+	--color-tertiary: #0ea5e9;
 }
 
 .uc-pageloader {

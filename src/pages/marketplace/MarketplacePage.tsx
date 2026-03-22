@@ -228,7 +228,7 @@ export default function MarketplacePage() {
           name="description"
           content="Categorie, oraș sau program — rezervă online în Business Platform."
         />
-        <meta name="theme-color" content="#178d72" />
+        <meta name="theme-color" content="#1565c0" />
         <link rel="stylesheet" href="/assets/js/uni-core/css/uni-core.min.css" />
         <link rel="stylesheet" href="/assets/css/fonts.css" />
         <link rel="stylesheet" href="/assets/css/unicons.min.css" />

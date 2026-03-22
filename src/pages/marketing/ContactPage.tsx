@@ -139,7 +139,7 @@ export default function ContactPage() {
           content="Scrie-ne pe Business Platform — întrebări, feedback sau suport. Îți răspundem cât putem de repede."
         />
         <meta name="keywords" content="contact, suport, Business Platform, programări, business local" />
-        <meta name="theme-color" content="#178d72" />
+        <meta name="theme-color" content="#1565c0" />
         <link rel="stylesheet" href="/assets/js/uni-core/css/uni-core.min.css" />
         <link rel="stylesheet" href="/assets/css/fonts.css" />
         <link rel="stylesheet" href="/assets/css/unicons.min.css" />
@@ -330,31 +330,30 @@ export default function ContactPage() {
                       data-anime="onview: -100; targets: > *; translateY: [48, 0]; opacity: [0, 1]; easing: easeOutCubic; duration: 500; delay: anime.stagger(100, {start: 200});"
                     >
                       {CONTACT_CHANNELS.map(({ title, description, href, cta, external, Icon, iconRem = 2.25 }) => (
-                        <div
-                          key={title}
-                          className="panel px-3 py-4 lg:p-4 rounded-2 bg-secondary dark:bg-gray-800 lg:hover:scale-105 duration-150 transition-all"
-                        >
-                          <div className="hstack gap-2 lg:gap-3 items-start">
-                            <div className="cstack w-64px h-64px lg:w-80px lg:h-80px rounded lg:rounded-2 bg-white dark:bg-gray-800 flex-shrink-0">
-                              <Icon
-                                className="text-primary"
-                                style={{ width: `${iconRem}rem`, height: `${iconRem}rem` }}
-                                aria-hidden
-                              />
-                            </div>
-                            <div className="vstack justify-center min-w-0 flex-1 gap-2">
-                              <h3 className="h6 lg:h5 m-0 text-gray-900 dark:text-white">{title}</h3>
-                              <p className="fs-7 lg:fs-6 opacity-70 dark:opacity-80 text-gray-800 dark:text-gray-200 m-0">
-                                {description}
-                              </p>
-                              <a
-                                href={href}
-                                className="uc-link fw-bold hstack gap-narrow self-start"
-                                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                              >
-                                <span>{cta}</span>
-                                <i className="position-relative icon icon-1 unicon-arrow-right rtl:rotate-180 translate-y-px" />
-                              </a>
+                        <div key={title}>
+                          <div className="panel px-3 py-4 lg:p-4 rounded-2 bg-secondary dark:bg-gray-800 lg:hover:scale-105 duration-150 transition-all">
+                            <div className="hstack gap-2 lg:gap-3 items-start">
+                              <div className="cstack w-64px h-64px lg:w-80px lg:h-80px rounded lg:rounded-2 bg-white dark:bg-gray-800 flex-shrink-0">
+                                <Icon
+                                  className="text-primary"
+                                  style={{ width: `${iconRem}rem`, height: `${iconRem}rem` }}
+                                  aria-hidden
+                                />
+                              </div>
+                              <div className="vstack justify-center min-w-0 flex-1 gap-2">
+                                <h3 className="h6 lg:h5 m-0 text-gray-900 dark:text-white">{title}</h3>
+                                <p className="fs-7 lg:fs-6 opacity-70 dark:opacity-80 text-gray-800 dark:text-gray-200 m-0">
+                                  {description}
+                                </p>
+                                <a
+                                  href={href}
+                                  className="uc-link fw-bold hstack gap-narrow self-start"
+                                  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                >
+                                  <span>{cta}</span>
+                                  <i className="position-relative icon icon-1 unicon-arrow-right rtl:rotate-180 translate-y-px" />
+                                </a>
+                              </div>
                             </div>
                           </div>
                         </div>
