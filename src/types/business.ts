@@ -47,7 +47,7 @@ export interface DaySchedule {
 export interface BusinessFilters {
   page: number;
   size: number;
-  /** Free-text search by business name */
+  /** Free-text search (e.g. name, description, city — backend-defined) */
   search?: string;
   /** Category filter (e.g. 'Salon de înfrumusețare') */
   category?: string;

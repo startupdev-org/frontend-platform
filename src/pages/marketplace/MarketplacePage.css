@@ -3,6 +3,10 @@
   background: none !important;
 }
 
+.marketplace-page-root #marketplace_results {
+  scroll-margin-top: 5.5rem;
+}
+
 .marketplace-page-root #marketplace_header {
   background: url('/assets/images/hero-11-bg.jpg') center top / cover no-repeat !important;
   position: relative;
@@ -17,12 +21,7 @@
 .marketplace-cards-section .section,
 .marketplace-cards-shell,
 .marketplace-cards-area,
-.marketplace-cards-empty {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-}
-
+.marketplace-cards-empty,
 .marketplace-cards-shell::before,
 .marketplace-cards-shell::after,
 .marketplace-cards-area::before,
@@ -32,34 +31,102 @@
   background-image: none !important;
 }
 
-.marketplace-hero-filters .marketplace-hero-filter-select {
-  color: #111827 !important;
+.marketplace-hero-filters .marketplace-hero-filter-select,
+.marketplace-hero-filters .marketplace-hero-search-input {
+  color: rgba(var(--bs-dark-rgb), 1) !important;
   background-color: transparent !important;
   border: 0 !important;
-  min-height: 26px !important;
-  height: 30px !important;
+  min-height: 0 !important;
+  height: auto !important;
   position: relative !important;
   z-index: 5 !important;
   display: block !important;
   width: 100% !important;
-  padding: 0 32px 0 14px !important;
+  padding: 0.5rem 32px 0.5rem 14px !important;
   border-radius: 14px !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  line-height: 1.2 !important;
+  font-weight: 400 !important;
+  font-family: var(--bs-font-sans-serif) !important;
+  line-height: 1.5 !important;
   white-space: nowrap !important;
   overflow: visible !important;
   text-overflow: ellipsis !important;
-  -webkit-text-fill-color: #111827 !important;
+  -webkit-text-fill-color: rgba(var(--bs-dark-rgb), 1) !important;
   -webkit-text-stroke: 0 !important;
   text-shadow: none !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
+.marketplace-hero-filters .marketplace-hero-search-input {
+  padding: 0.5rem 14px !important;
+  white-space: normal !important;
+}
+
 .marketplace-hero-filters > .d-inline-flex {
   margin-inline-end: 0.5rem !important;
+}
+
+.marketplace-hero-filters .marketplace-hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  width: auto;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .marketplace-hero-filters .marketplace-hero-actions {
+    margin-inline: 0;
+    margin-inline-start: 0.5rem;
+  }
+}
+
+.marketplace-hero-filters .marketplace-hero-reset-btn {
+  background-color: transparent !important;
+  color: rgba(var(--bs-dark-rgb), 0.9) !important;
+  border: 1px solid rgba(var(--bs-dark-rgb), 0.2) !important;
+  box-shadow: none !important;
+}
+
+.marketplace-hero-filters .marketplace-hero-reset-btn:hover {
+  background-color: rgba(15, 132, 101, 0.1) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+.marketplace-hero-filters .marketplace-hero-reset-btn:focus-visible {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(15, 132, 101, 0.22) !important;
+}
+
+.marketplace-hero-filters .marketplace-hero-reset-btn:active {
+  background-color: rgba(15, 132, 101, 0.16) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+.marketplace-hero-filters .marketplace-hero-search-submit {
+  width: auto !important;
+  max-width: 100%;
+  flex: 0 0 auto;
+  min-width: 11rem;
+  padding-inline: 1.375rem !important;
+}
+
+@media (min-width: 640px) {
+  .marketplace-hero-filters .marketplace-hero-search-submit {
+    min-width: 12.5rem;
+    padding-inline: 1.5rem !important;
+  }
+}
+
+.marketplace-hero-filters .marketplace-hero-actions .btn {
+  width: auto !important;
+  max-width: 100%;
 }
 
 .marketplace-hero-filter-item {
@@ -92,30 +159,35 @@
     transform: translateX(-0.5px);
   }
 
-  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-filter-select {
+  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-filter-select,
+  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-search-input {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
 
-  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-filter-select {
+  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-filter-select,
+  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-search-input {
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
 }
 
 @media (max-width: 639.98px) {
-  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-filter-select {
+  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-filter-select,
+  .marketplace-hero-filter-item:not(:first-child) .marketplace-hero-search-input {
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
   }
 
-  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-filter-select {
+  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-filter-select,
+  .marketplace-hero-filter-item:not(:last-child) .marketplace-hero-search-input {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
 }
 
-.marketplace-hero-filters .marketplace-hero-filter-select:focus {
+.marketplace-hero-filters .marketplace-hero-filter-select:focus,
+.marketplace-hero-filters .marketplace-hero-search-input:focus {
   outline: 0 !important;
   outline-offset: 0 !important;
   box-shadow: none !important;
@@ -127,9 +199,75 @@
 
 .marketplace-cards-area .row > div {
   display: flex;
-  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .marketplace-cards-area .row > div > .marketplace-equal-height-card {
   height: 100%;
+}
+
+@keyframes marketplace-card-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.marketplace-cards-area .marketplace-card-fade-item,
+.marketplace-cards-area .marketplace-results-message-fade {
+  animation: marketplace-card-fade-in 0.55s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marketplace-cards-area .marketplace-card-fade-item,
+  .marketplace-cards-area .marketplace-results-message-fade {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.marketplace-cards-area .marketplace-results-inline-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 12rem;
+  padding: 2rem 1rem;
+}
+
+.marketplace-cards-area .marketplace-results-inline-loader .loading {
+  display: inline-block;
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.marketplace-cards-area .marketplace-results-inline-loader .loading > div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  animation: uc-loading 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: var(--color-primary) transparent transparent transparent;
+}
+
+.marketplace-cards-area .marketplace-results-inline-loader .loading > div:nth-child(1) {
+  animation-delay: -0.1s;
+}
+
+.marketplace-cards-area .marketplace-results-inline-loader .loading > div:nth-child(2) {
+  animation-delay: -0.2s;
+}
+
+.marketplace-cards-area .marketplace-results-inline-loader .loading > div:nth-child(3) {
+  animation-delay: -0.3s;
 }
