@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
+import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import './MarketingNavbar.css';
 
 const NAVBAR_HEIGHT = 80;
+const ucNavHeightStyle: CSSProperties = { ['--uc-nav-height' as string]: `${NAVBAR_HEIGHT}px` };
 
 const PRODUCTS = [
   { icon: '/assets/images/custom-icons/icon-01.svg', title: 'Constructor șabloane email', desc: 'Creează emailuri personalizate care convertesc' },
@@ -37,7 +39,6 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
   const [searchOpen, setSearchOpen] = useState(false);
   const [navAnimated, setNavAnimated] = useState(false);
   const [sticky, setSticky] = useState(false);
-  const [dropdownAnimate, setDropdownAnimate] = useState<'platforma' | 'resources' | null>(null);
   const platformaTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const resourcesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
@@ -91,7 +92,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
       const y = window.scrollY;
       const prev = lastScrollY.current;
       lastScrollY.current = y;
-      const threshold = typeof window !== 'undefined' ? window.innerHeight : 800;
+      const threshold = window.innerHeight;
       if (y <= 0) {
         setSticky(false);
         return;
@@ -104,17 +105,10 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
   }, []);
 
   useEffect(() => {
-    if (openPlatforma) setDropdownAnimate('platforma');
-    else if (openResources) setDropdownAnimate('resources');
-    else setDropdownAnimate(null);
-  }, [openPlatforma, openResources]);
-
-  useEffect(() => {
     if (!openResources) {
       setCategoriesLeft(null);
       return;
     }
-    if (typeof window === 'undefined') return;
     const trigger = categoriesTriggerRef.current;
     if (!trigger) return;
     const rect = trigger.getBoundingClientRect();
@@ -136,6 +130,8 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
     };
   }, [searchOpen]);
 
+  const dropdownAnimate = openPlatforma ? 'platforma' : openResources ? 'resources' : null;
+
   return (
     <>
       <header
@@ -154,7 +150,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
           className={`uc-navbar-container border-bottom ft-tertiary z-1 ${navAnimated ? 'navbar-animate-in' : ''}`}
           data-anime="translateY: [-40, 0]; opacity: [0, 1]; easing: easeOutExpo; duration: 750; delay: 0;"
         >
-          <div className="uc-navbar-main" style={{ ['--uc-nav-height' as string]: '80px' }}>
+          <div className="uc-navbar-main" style={ucNavHeightStyle}>
             <div className="container">
               <div className="uc-navbar min-h-64px lg:min-h-80px text-dark dark:text-white">
                 <div className="uc-navbar-left gap-6 flex items-center">
@@ -164,7 +160,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                       <img className="d-none dark:d-block" src="/assets/images/common/logo-11-dark.svg" alt="Business Platform" />
                     </Link>
                   </div>
-                  <ul className="uc-navbar-nav fw-medium gap-3 xl:gap-5 d-none lg:d-flex items-center" style={{ ['--uc-nav-height' as string]: '80px' }}>
+                  <ul className="uc-navbar-nav fw-medium gap-3 xl:gap-5 d-none lg:d-flex items-center" style={ucNavHeightStyle}>
                     <li
                       className="position-relative flex items-center"
                       onMouseEnter={handlePlatformaEnter}
@@ -240,11 +236,11 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                                       <div className="panel category-section">
                                         <h5 className="h6">Începutul e simplu!</h5>
                                         <ul className="uc-nav uc-navbar-dropdown-nav fs-7 fw-normal row child-cols-12 vstack gap-2">
-                                          <li><a href="#contact">Angajează un expert</a></li>
+                                          <li><Link to="/contact">Angajează un expert</Link></li>
                                           <li><a href="#clients_feedback">Povești clienți</a></li>
                                           <li><a href="#integrations">Resurse</a></li>
                                           <li><a href="#faq">Blog</a></li>
-                                          <li><a href="#contact">Centru de ajutor</a></li>
+                                          <li><Link to="/contact">Centru de ajutor</Link></li>
                                         </ul>
                                       </div>
                                       <div className="panel category-section">
@@ -311,12 +307,12 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                               }`}
                               style={{ width: 420 }}
                             >
-                              <ul className="uc-nav uc-navbar-dropdown-nav py-1">
+                              <ul className="uc-nav uc-navbar-dropdown-nav marketing-categories-dropdown py-1">
                                 {NICHES.map((niche) => (
                                   <li key={niche.title}>
-                                      <Link
+                                    <Link
                                       to={`/?category=${encodeURIComponent(niche.category)}`}
-                                      className="hstack items-start gap-2 ps-2 pe-3 py-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary hover:bg-gray-600 hover:bg-opacity-5 dark:hover:bg-white duration-150 rounded-2"
+                                      className="marketing-categories-dropdown__item hstack items-start gap-2 ps-2 pe-3 py-2 text-none text-dark dark:text-white hover:text-primary dark:hover:text-tertiary duration-150 rounded-2"
                                     >
                                       <span className="icon rounded dark:bg-white">
                                         <img src={niche.icon} alt="" className="w-32px" />
@@ -344,11 +340,8 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                 <div className="uc-navbar-right gap-2 lg:gap-4 flex items-center" style={{ position: 'relative', zIndex: 100 }}>
                   <button
                     type="button"
-                    role="button"
-                    tabIndex={0}
                     data-search-trigger
-                    className="btn btn-md dark:text-white border-0 p-0 h-48px min-w-48px inline-flex items-center justify-center"
-                    style={{ cursor: 'pointer', background: 'transparent' }}
+                    className="btn btn-md dark:text-white border-0 bg-transparent p-0 h-48px min-w-48px inline-flex cursor-pointer items-center justify-center"
                     onClick={() => setSearchOpen(true)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
@@ -363,9 +356,9 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                   <Link to="/admin/login" className="uc-link fs-5 text-dark dark:text-white d-none lg:d-flex">
                     Autentificare
                   </Link>
-                  <a href="#contact" className="btn btn-md fs-6 lg:px-3 rounded text-white bg-gradient-to-r from-primary to-tertiary gradient-hover hover:bg-opacity-90 dark:hover:bg-opacity-80 border-0 d-none lg:d-flex">
+                  <Link to="/contact" className="btn btn-md fs-6 lg:px-3 rounded text-white bg-gradient-to-r from-primary to-tertiary gradient-hover hover:bg-opacity-90 dark:hover:bg-opacity-80 border-0 d-none lg:d-flex">
                     <span>Contactează-ne</span>
-                  </a>
+                  </Link>
                   <button
                     type="button"
                     className="uc-menu-trigger btn btn-md border-0 bg-dark text-white dark:bg-white dark:text-dark w-40px h-40px rounded-circle p-0 d-inline-flex lg:d-none"
@@ -430,13 +423,13 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                   </Link>
                 </li>
                 <li>
-                  <a
-                    href="#contact"
+                  <Link
+                    to="/contact"
                     className="btn btn-sm btn-primary text-white w-100"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Contactează-ne
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

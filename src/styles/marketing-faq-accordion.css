@@ -1,0 +1,18 @@
+.marketing-faq-accordion:not([data-marketing-faq-ready]) > li:not(.uc-open) > .uc-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.marketing-faq-accordion .uc-accordion-content {
+  margin-top: 0 !important;
+  padding-top: 0.5rem;
+}
+
+.marketing-faq-accordion .uc-accordion-content p {
+  margin: 0;
+}
+
+.marketing-faq-accordion .uc-accordion-title {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}

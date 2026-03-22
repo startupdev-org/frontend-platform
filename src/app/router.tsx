@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import PlatformHomePage from '../pages/marketing/PlatformHomePage';
+import ContactPage from '../pages/marketing/ContactPage';
 import MarketplacePage from '../pages/marketplace/MarketplacePage';
 import BusinessDetailsPage from '../pages/marketplace/BusinessDetailsPage';
 import LoginPage from '../pages/admin/LoginPage';
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
   {
     path: '/business-legacy/:slug',
     element: <BusinessDetailsPage />,
+  },
+  {
+    path: '/contact',
+    element: <ContactPage />,
   },
   {
     path: '/:slug',
