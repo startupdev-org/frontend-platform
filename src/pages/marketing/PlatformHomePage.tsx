@@ -43,7 +43,7 @@ export default function PlatformHomePage() {
           content="Business Platform te ajută să îți publici business-ul online, cu profil complet, servicii și program de lucru, astfel încât clienții să te poată găsi și rezerva ușor."
         />
         <meta name="keywords" content="business, platformă business, programări online, listare business, marketing online, saloane, servicii locale" />
-        <meta name="theme-color" content="#178d72" />
+        <meta name="theme-color" content="#1565c0" />
         <link rel="stylesheet" href="/assets/js/uni-core/css/uni-core.min.css" />
         <link rel="stylesheet" href="/assets/css/fonts.css" />
         <link rel="stylesheet" href="/assets/css/unicons.min.css" />

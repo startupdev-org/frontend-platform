@@ -6,36 +6,36 @@
   --font-family-serif: "Poppins", sans-serif;
   --radius: 50rem;
   --border-radius: 50rem;
-  --color-primary: #0F8465;
-  --bs-primary-rgb: 15, 132, 101;
-  --color-primary-: #0F8465;
-  --bs-primary--rgb: 15, 132, 101;
-  --color-primary-10: rgb(247.8, 251.31, 250.38);
-  --bs-primary-10-rgb: 248, 251, 250;
-  --color-primary-25: rgb(243, 248.85, 247.3);
-  --bs-primary-25-rgb: 243, 249, 247;
-  --color-primary-50: rgb(231, 242.7, 239.6);
-  --bs-primary-50-rgb: 231, 243, 240;
-  --color-primary-100: rgb(207, 230.4, 224.2);
-  --bs-primary-100-rgb: 207, 230, 224;
-  --color-primary-200: rgb(159, 205.8, 193.4);
-  --bs-primary-200-rgb: 159, 206, 193;
-  --color-primary-300: rgb(111, 181.2, 162.6);
-  --bs-primary-300-rgb: 111, 181, 163;
-  --color-primary-400: rgb(63, 156.6, 131.8);
-  --bs-primary-400-rgb: 63, 157, 132;
-  --color-primary-500: #0F8465;
-  --bs-primary-500-rgb: 15, 132, 101;
-  --color-primary-600: rgb(12, 105.6, 80.8);
-  --bs-primary-600-rgb: 12, 106, 81;
-  --color-primary-700: rgb(9, 79.2, 60.6);
-  --bs-primary-700-rgb: 9, 79, 61;
-  --color-primary-800: rgb(6, 52.8, 40.4);
-  --bs-primary-800-rgb: 6, 53, 40;
-  --color-primary-900: rgb(3, 26.4, 20.2);
-  --bs-primary-900-rgb: 3, 26, 20;
-  --color-primary-950: rgb(1.5, 13.2, 10.1);
-  --bs-primary-950-rgb: 1, 13, 10;
+  --color-primary: #1565C0;
+  --bs-primary-rgb: 21, 101, 192;
+  --color-primary-: #1565C0;
+  --bs-primary--rgb: 21, 101, 192;
+  --color-primary-10: rgb(247.98, 250.38, 253.11);
+  --bs-primary-10-rgb: 248, 250, 253;
+  --color-primary-25: rgb(243.3, 247.3, 251.85);
+  --bs-primary-25-rgb: 243, 247, 252;
+  --color-primary-50: rgb(231.6, 239.6, 248.7);
+  --bs-primary-50-rgb: 232, 240, 249;
+  --color-primary-100: rgb(208.2, 224.2, 242.4);
+  --bs-primary-100-rgb: 208, 224, 242;
+  --color-primary-200: rgb(161.4, 193.4, 229.8);
+  --bs-primary-200-rgb: 161, 193, 230;
+  --color-primary-300: rgb(114.6, 162.6, 217.2);
+  --bs-primary-300-rgb: 115, 163, 217;
+  --color-primary-400: rgb(67.8, 131.8, 204.6);
+  --bs-primary-400-rgb: 68, 132, 205;
+  --color-primary-500: #1565C0;
+  --bs-primary-500-rgb: 21, 101, 192;
+  --color-primary-600: rgb(16.8, 80.8, 153.6);
+  --bs-primary-600-rgb: 17, 81, 154;
+  --color-primary-700: rgb(12.6, 60.6, 115.2);
+  --bs-primary-700-rgb: 13, 61, 115;
+  --color-primary-800: rgb(8.4, 40.4, 76.8);
+  --bs-primary-800-rgb: 8, 40, 77;
+  --color-primary-900: rgb(4.2, 20.2, 38.4);
+  --bs-primary-900-rgb: 4, 20, 38;
+  --color-primary-950: rgb(2.1, 10.1, 19.2);
+  --bs-primary-950-rgb: 2, 10, 19;
   --color-secondary: #F6F4F0;
   --bs-secondary-rgb: 246, 244, 240;
   --color-secondary-: #F6F4F0;
@@ -66,36 +66,36 @@
   --bs-secondary-900-rgb: 49, 49, 48;
   --color-secondary-950: rgb(24.6, 24.4, 24);
   --bs-secondary-950-rgb: 25, 24, 24;
-  --color-tertiary: #87D038;
-  --bs-tertiary-rgb: 135, 208, 56;
-  --color-tertiary-: #87D038;
-  --bs-tertiary--rgb: 135, 208, 56;
-  --color-tertiary-10: rgb(251.4, 253.59, 249.03);
-  --bs-tertiary-10-rgb: 251, 254, 249;
-  --color-tertiary-25: rgb(249, 252.65, 245.05);
-  --bs-tertiary-25-rgb: 249, 253, 245;
-  --color-tertiary-50: rgb(243, 250.3, 235.1);
-  --bs-tertiary-50-rgb: 243, 250, 235;
-  --color-tertiary-100: rgb(231, 245.6, 215.2);
-  --bs-tertiary-100-rgb: 231, 246, 215;
-  --color-tertiary-200: rgb(207, 236.2, 175.4);
-  --bs-tertiary-200-rgb: 207, 236, 175;
-  --color-tertiary-300: rgb(183, 226.8, 135.6);
-  --bs-tertiary-300-rgb: 183, 227, 136;
-  --color-tertiary-400: rgb(159, 217.4, 95.8);
-  --bs-tertiary-400-rgb: 159, 217, 96;
-  --color-tertiary-500: #87D038;
-  --bs-tertiary-500-rgb: 135, 208, 56;
-  --color-tertiary-600: rgb(108, 166.4, 44.8);
-  --bs-tertiary-600-rgb: 108, 166, 45;
-  --color-tertiary-700: rgb(81, 124.8, 33.6);
-  --bs-tertiary-700-rgb: 81, 125, 34;
-  --color-tertiary-800: rgb(54, 83.2, 22.4);
-  --bs-tertiary-800-rgb: 54, 83, 22;
-  --color-tertiary-900: rgb(27, 41.6, 11.2);
-  --bs-tertiary-900-rgb: 27, 42, 11;
-  --color-tertiary-950: rgb(13.5, 20.8, 5.6);
-  --bs-tertiary-950-rgb: 13, 21, 6;
+  --color-tertiary: #0EA5E9;
+  --bs-tertiary-rgb: 14, 165, 233;
+  --color-tertiary-: #0EA5E9;
+  --bs-tertiary--rgb: 14, 165, 233;
+  --color-tertiary-10: rgb(247.77, 252.3, 254.34);
+  --bs-tertiary-10-rgb: 248, 252, 254;
+  --color-tertiary-25: rgb(242.95, 250.5, 253.9);
+  --bs-tertiary-25-rgb: 243, 250, 254;
+  --color-tertiary-50: rgb(230.9, 246, 252.8);
+  --bs-tertiary-50-rgb: 231, 246, 253;
+  --color-tertiary-100: rgb(206.8, 237, 250.6);
+  --bs-tertiary-100-rgb: 207, 237, 251;
+  --color-tertiary-200: rgb(158.6, 219, 246.2);
+  --bs-tertiary-200-rgb: 159, 219, 246;
+  --color-tertiary-300: rgb(110.4, 201, 241.8);
+  --bs-tertiary-300-rgb: 110, 201, 242;
+  --color-tertiary-400: rgb(62.2, 183, 237.4);
+  --bs-tertiary-400-rgb: 62, 183, 237;
+  --color-tertiary-500: #0EA5E9;
+  --bs-tertiary-500-rgb: 14, 165, 233;
+  --color-tertiary-600: rgb(11.2, 132, 186.4);
+  --bs-tertiary-600-rgb: 11, 132, 186;
+  --color-tertiary-700: rgb(8.4, 99, 139.8);
+  --bs-tertiary-700-rgb: 8, 99, 140;
+  --color-tertiary-800: rgb(5.6, 66, 93.2);
+  --bs-tertiary-800-rgb: 6, 66, 93;
+  --color-tertiary-900: rgb(2.8, 33, 46.6);
+  --bs-tertiary-900-rgb: 3, 33, 47;
+  --color-tertiary-950: rgb(1.4, 16.5, 23.3);
+  --bs-tertiary-950-rgb: 1, 16, 23;
   --color-gray: #31393a;
   --bs-gray-rgb: 49, 57, 58;
   --color-gray-: #31393a;
@@ -165,438 +165,438 @@
 }
 
 .to-primary {
-  --uc-gradient-to: #0F8465;
+  --uc-gradient-to: #1565C0;
 }
 
 .from-primary {
-  --uc-gradient-from: #0F8465;
+  --uc-gradient-from: #1565C0;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary {
-  --uc-gradient-stops: var(--uc-gradient-from), #0F8465, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #1565C0, var(--uc-gradient-to) !important;
 }
 
 .to-primary- {
-  --uc-gradient-to: #0F8465;
+  --uc-gradient-to: #1565C0;
 }
 
 .from-primary- {
-  --uc-gradient-from: #0F8465;
+  --uc-gradient-from: #1565C0;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary- {
-  --uc-gradient-stops: var(--uc-gradient-from), #0F8465, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #1565C0, var(--uc-gradient-to) !important;
 }
 
 .to-primary-10 {
-  --uc-gradient-to: rgb(247.8, 251.31, 250.38);
+  --uc-gradient-to: rgb(247.98, 250.38, 253.11);
 }
 
 .from-primary-10 {
-  --uc-gradient-from: rgb(247.8, 251.31, 250.38);
+  --uc-gradient-from: rgb(247.98, 250.38, 253.11);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-10 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(247.8, 251.31, 250.38), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(247.98, 250.38, 253.11), var(--uc-gradient-to) !important;
 }
 
 .to-primary-25 {
-  --uc-gradient-to: rgb(243, 248.85, 247.3);
+  --uc-gradient-to: rgb(243.3, 247.3, 251.85);
 }
 
 .from-primary-25 {
-  --uc-gradient-from: rgb(243, 248.85, 247.3);
+  --uc-gradient-from: rgb(243.3, 247.3, 251.85);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-25 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(243, 248.85, 247.3), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(243.3, 247.3, 251.85), var(--uc-gradient-to) !important;
 }
 
 .to-primary-50 {
-  --uc-gradient-to: rgb(231, 242.7, 239.6);
+  --uc-gradient-to: rgb(231.6, 239.6, 248.7);
 }
 
 .from-primary-50 {
-  --uc-gradient-from: rgb(231, 242.7, 239.6);
+  --uc-gradient-from: rgb(231.6, 239.6, 248.7);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-50 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(231, 242.7, 239.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(231.6, 239.6, 248.7), var(--uc-gradient-to) !important;
 }
 
 .to-primary-100 {
-  --uc-gradient-to: rgb(207, 230.4, 224.2);
+  --uc-gradient-to: rgb(208.2, 224.2, 242.4);
 }
 
 .from-primary-100 {
-  --uc-gradient-from: rgb(207, 230.4, 224.2);
+  --uc-gradient-from: rgb(208.2, 224.2, 242.4);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-100 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(207, 230.4, 224.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(208.2, 224.2, 242.4), var(--uc-gradient-to) !important;
 }
 
 .to-primary-200 {
-  --uc-gradient-to: rgb(159, 205.8, 193.4);
+  --uc-gradient-to: rgb(161.4, 193.4, 229.8);
 }
 
 .from-primary-200 {
-  --uc-gradient-from: rgb(159, 205.8, 193.4);
+  --uc-gradient-from: rgb(161.4, 193.4, 229.8);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-200 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(159, 205.8, 193.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(161.4, 193.4, 229.8), var(--uc-gradient-to) !important;
 }
 
 .to-primary-300 {
-  --uc-gradient-to: rgb(111, 181.2, 162.6);
+  --uc-gradient-to: rgb(114.6, 162.6, 217.2);
 }
 
 .from-primary-300 {
-  --uc-gradient-from: rgb(111, 181.2, 162.6);
+  --uc-gradient-from: rgb(114.6, 162.6, 217.2);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-300 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(111, 181.2, 162.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(114.6, 162.6, 217.2), var(--uc-gradient-to) !important;
 }
 
 .to-primary-400 {
-  --uc-gradient-to: rgb(63, 156.6, 131.8);
+  --uc-gradient-to: rgb(67.8, 131.8, 204.6);
 }
 
 .from-primary-400 {
-  --uc-gradient-from: rgb(63, 156.6, 131.8);
+  --uc-gradient-from: rgb(67.8, 131.8, 204.6);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-400 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(63, 156.6, 131.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(67.8, 131.8, 204.6), var(--uc-gradient-to) !important;
 }
 
 .to-primary-500 {
-  --uc-gradient-to: #0F8465;
+  --uc-gradient-to: #1565C0;
 }
 
 .from-primary-500 {
-  --uc-gradient-from: #0F8465;
+  --uc-gradient-from: #1565C0;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-500 {
-  --uc-gradient-stops: var(--uc-gradient-from), #0F8465, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #1565C0, var(--uc-gradient-to) !important;
 }
 
 .to-primary-600 {
-  --uc-gradient-to: rgb(12, 105.6, 80.8);
+  --uc-gradient-to: rgb(16.8, 80.8, 153.6);
 }
 
 .from-primary-600 {
-  --uc-gradient-from: rgb(12, 105.6, 80.8);
+  --uc-gradient-from: rgb(16.8, 80.8, 153.6);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-600 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(12, 105.6, 80.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(16.8, 80.8, 153.6), var(--uc-gradient-to) !important;
 }
 
 .to-primary-700 {
-  --uc-gradient-to: rgb(9, 79.2, 60.6);
+  --uc-gradient-to: rgb(12.6, 60.6, 115.2);
 }
 
 .from-primary-700 {
-  --uc-gradient-from: rgb(9, 79.2, 60.6);
+  --uc-gradient-from: rgb(12.6, 60.6, 115.2);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-700 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(9, 79.2, 60.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(12.6, 60.6, 115.2), var(--uc-gradient-to) !important;
 }
 
 .to-primary-800 {
-  --uc-gradient-to: rgb(6, 52.8, 40.4);
+  --uc-gradient-to: rgb(8.4, 40.4, 76.8);
 }
 
 .from-primary-800 {
-  --uc-gradient-from: rgb(6, 52.8, 40.4);
+  --uc-gradient-from: rgb(8.4, 40.4, 76.8);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-800 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(6, 52.8, 40.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(8.4, 40.4, 76.8), var(--uc-gradient-to) !important;
 }
 
 .to-primary-900 {
-  --uc-gradient-to: rgb(3, 26.4, 20.2);
+  --uc-gradient-to: rgb(4.2, 20.2, 38.4);
 }
 
 .from-primary-900 {
-  --uc-gradient-from: rgb(3, 26.4, 20.2);
+  --uc-gradient-from: rgb(4.2, 20.2, 38.4);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-900 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(3, 26.4, 20.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(4.2, 20.2, 38.4), var(--uc-gradient-to) !important;
 }
 
 .to-primary-950 {
-  --uc-gradient-to: rgb(1.5, 13.2, 10.1);
+  --uc-gradient-to: rgb(2.1, 10.1, 19.2);
 }
 
 .from-primary-950 {
-  --uc-gradient-from: rgb(1.5, 13.2, 10.1);
+  --uc-gradient-from: rgb(2.1, 10.1, 19.2);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-primary-950 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(1.5, 13.2, 10.1), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(2.1, 10.1, 19.2), var(--uc-gradient-to) !important;
 }
 
 :where(.uc-dark) .dark\:to-primary,
 :where(.uc-dark) .dark\:to-primary {
-  --uc-gradient-to: #0F8465 !important;
+  --uc-gradient-to: #1565C0 !important;
 }
 
 :where(.uc-dark) .dark\:from-primary,
 :where(.uc-dark) .dark\:from-primary {
-  --uc-gradient-from: #0F8465 !important;
+  --uc-gradient-from: #1565C0 !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 :where(.uc-dark) .dark\:via-primary,
 :where(.uc-dark) .dark\:via-primary {
-  --uc-gradient-stops: var(--uc-gradient-from), #0F8465, var(--uc-gradient-to);
+  --uc-gradient-stops: var(--uc-gradient-from), #1565C0, var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:to-primary-,
 :where(.uc-dark) .dark\:to-primary- {
-  --uc-gradient-to: #0F8465 !important;
+  --uc-gradient-to: #1565C0 !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-,
 :where(.uc-dark) .dark\:from-primary- {
-  --uc-gradient-from: #0F8465 !important;
+  --uc-gradient-from: #1565C0 !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-,
 :where(.uc-dark) .dark\:via-primary- {
-  --uc-gradient-stops: var(--uc-gradient-from), #0F8465, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #1565C0, var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-10,
 :where(.uc-dark) .dark\:to-primary-10 {
-  --uc-gradient-to: rgb(247.8, 251.31, 250.38) !important;
+  --uc-gradient-to: rgb(247.98, 250.38, 253.11) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-10,
 :where(.uc-dark) .dark\:from-primary-10 {
-  --uc-gradient-from: rgb(247.8, 251.31, 250.38) !important;
+  --uc-gradient-from: rgb(247.98, 250.38, 253.11) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-10,
 :where(.uc-dark) .dark\:via-primary-10 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(247.8, 251.31, 250.38), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(247.98, 250.38, 253.11), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-25,
 :where(.uc-dark) .dark\:to-primary-25 {
-  --uc-gradient-to: rgb(243, 248.85, 247.3) !important;
+  --uc-gradient-to: rgb(243.3, 247.3, 251.85) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-25,
 :where(.uc-dark) .dark\:from-primary-25 {
-  --uc-gradient-from: rgb(243, 248.85, 247.3) !important;
+  --uc-gradient-from: rgb(243.3, 247.3, 251.85) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-25,
 :where(.uc-dark) .dark\:via-primary-25 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(243, 248.85, 247.3), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(243.3, 247.3, 251.85), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-50,
 :where(.uc-dark) .dark\:to-primary-50 {
-  --uc-gradient-to: rgb(231, 242.7, 239.6) !important;
+  --uc-gradient-to: rgb(231.6, 239.6, 248.7) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-50,
 :where(.uc-dark) .dark\:from-primary-50 {
-  --uc-gradient-from: rgb(231, 242.7, 239.6) !important;
+  --uc-gradient-from: rgb(231.6, 239.6, 248.7) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-50,
 :where(.uc-dark) .dark\:via-primary-50 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(231, 242.7, 239.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(231.6, 239.6, 248.7), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-100,
 :where(.uc-dark) .dark\:to-primary-100 {
-  --uc-gradient-to: rgb(207, 230.4, 224.2) !important;
+  --uc-gradient-to: rgb(208.2, 224.2, 242.4) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-100,
 :where(.uc-dark) .dark\:from-primary-100 {
-  --uc-gradient-from: rgb(207, 230.4, 224.2) !important;
+  --uc-gradient-from: rgb(208.2, 224.2, 242.4) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-100,
 :where(.uc-dark) .dark\:via-primary-100 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(207, 230.4, 224.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(208.2, 224.2, 242.4), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-200,
 :where(.uc-dark) .dark\:to-primary-200 {
-  --uc-gradient-to: rgb(159, 205.8, 193.4) !important;
+  --uc-gradient-to: rgb(161.4, 193.4, 229.8) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-200,
 :where(.uc-dark) .dark\:from-primary-200 {
-  --uc-gradient-from: rgb(159, 205.8, 193.4) !important;
+  --uc-gradient-from: rgb(161.4, 193.4, 229.8) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-200,
 :where(.uc-dark) .dark\:via-primary-200 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(159, 205.8, 193.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(161.4, 193.4, 229.8), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-300,
 :where(.uc-dark) .dark\:to-primary-300 {
-  --uc-gradient-to: rgb(111, 181.2, 162.6) !important;
+  --uc-gradient-to: rgb(114.6, 162.6, 217.2) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-300,
 :where(.uc-dark) .dark\:from-primary-300 {
-  --uc-gradient-from: rgb(111, 181.2, 162.6) !important;
+  --uc-gradient-from: rgb(114.6, 162.6, 217.2) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-300,
 :where(.uc-dark) .dark\:via-primary-300 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(111, 181.2, 162.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(114.6, 162.6, 217.2), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-400,
 :where(.uc-dark) .dark\:to-primary-400 {
-  --uc-gradient-to: rgb(63, 156.6, 131.8) !important;
+  --uc-gradient-to: rgb(67.8, 131.8, 204.6) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-400,
 :where(.uc-dark) .dark\:from-primary-400 {
-  --uc-gradient-from: rgb(63, 156.6, 131.8) !important;
+  --uc-gradient-from: rgb(67.8, 131.8, 204.6) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-400,
 :where(.uc-dark) .dark\:via-primary-400 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(63, 156.6, 131.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(67.8, 131.8, 204.6), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-500,
 :where(.uc-dark) .dark\:to-primary-500 {
-  --uc-gradient-to: #0F8465 !important;
+  --uc-gradient-to: #1565C0 !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-500,
 :where(.uc-dark) .dark\:from-primary-500 {
-  --uc-gradient-from: #0F8465 !important;
+  --uc-gradient-from: #1565C0 !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-500,
 :where(.uc-dark) .dark\:via-primary-500 {
-  --uc-gradient-stops: var(--uc-gradient-from), #0F8465, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #1565C0, var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-600,
 :where(.uc-dark) .dark\:to-primary-600 {
-  --uc-gradient-to: rgb(12, 105.6, 80.8) !important;
+  --uc-gradient-to: rgb(16.8, 80.8, 153.6) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-600,
 :where(.uc-dark) .dark\:from-primary-600 {
-  --uc-gradient-from: rgb(12, 105.6, 80.8) !important;
+  --uc-gradient-from: rgb(16.8, 80.8, 153.6) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-600,
 :where(.uc-dark) .dark\:via-primary-600 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(12, 105.6, 80.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(16.8, 80.8, 153.6), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-700,
 :where(.uc-dark) .dark\:to-primary-700 {
-  --uc-gradient-to: rgb(9, 79.2, 60.6) !important;
+  --uc-gradient-to: rgb(12.6, 60.6, 115.2) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-700,
 :where(.uc-dark) .dark\:from-primary-700 {
-  --uc-gradient-from: rgb(9, 79.2, 60.6) !important;
+  --uc-gradient-from: rgb(12.6, 60.6, 115.2) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-700,
 :where(.uc-dark) .dark\:via-primary-700 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(9, 79.2, 60.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(12.6, 60.6, 115.2), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-800,
 :where(.uc-dark) .dark\:to-primary-800 {
-  --uc-gradient-to: rgb(6, 52.8, 40.4) !important;
+  --uc-gradient-to: rgb(8.4, 40.4, 76.8) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-800,
 :where(.uc-dark) .dark\:from-primary-800 {
-  --uc-gradient-from: rgb(6, 52.8, 40.4) !important;
+  --uc-gradient-from: rgb(8.4, 40.4, 76.8) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-800,
 :where(.uc-dark) .dark\:via-primary-800 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(6, 52.8, 40.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(8.4, 40.4, 76.8), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-900,
 :where(.uc-dark) .dark\:to-primary-900 {
-  --uc-gradient-to: rgb(3, 26.4, 20.2) !important;
+  --uc-gradient-to: rgb(4.2, 20.2, 38.4) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-900,
 :where(.uc-dark) .dark\:from-primary-900 {
-  --uc-gradient-from: rgb(3, 26.4, 20.2) !important;
+  --uc-gradient-from: rgb(4.2, 20.2, 38.4) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-900,
 :where(.uc-dark) .dark\:via-primary-900 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(3, 26.4, 20.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(4.2, 20.2, 38.4), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-primary-950,
 :where(.uc-dark) .dark\:to-primary-950 {
-  --uc-gradient-to: rgb(1.5, 13.2, 10.1) !important;
+  --uc-gradient-to: rgb(2.1, 10.1, 19.2) !important;
 }
 
 *:where(.uc-dark) .dark\:from-primary-950,
 :where(.uc-dark) .dark\:from-primary-950 {
-  --uc-gradient-from: rgb(1.5, 13.2, 10.1) !important;
+  --uc-gradient-from: rgb(2.1, 10.1, 19.2) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-primary-950,
 :where(.uc-dark) .dark\:via-primary-950 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(1.5, 13.2, 10.1), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(2.1, 10.1, 19.2), var(--uc-gradient-to) !important;
 }
 
 .to-secondary {
@@ -1035,438 +1035,438 @@
 }
 
 .to-tertiary {
-  --uc-gradient-to: #87D038;
+  --uc-gradient-to: #0EA5E9;
 }
 
 .from-tertiary {
-  --uc-gradient-from: #87D038;
+  --uc-gradient-from: #0EA5E9;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary {
-  --uc-gradient-stops: var(--uc-gradient-from), #87D038, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #0EA5E9, var(--uc-gradient-to) !important;
 }
 
 .to-tertiary- {
-  --uc-gradient-to: #87D038;
+  --uc-gradient-to: #0EA5E9;
 }
 
 .from-tertiary- {
-  --uc-gradient-from: #87D038;
+  --uc-gradient-from: #0EA5E9;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary- {
-  --uc-gradient-stops: var(--uc-gradient-from), #87D038, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #0EA5E9, var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-10 {
-  --uc-gradient-to: rgb(251.4, 253.59, 249.03);
+  --uc-gradient-to: rgb(247.77, 252.3, 254.34);
 }
 
 .from-tertiary-10 {
-  --uc-gradient-from: rgb(251.4, 253.59, 249.03);
+  --uc-gradient-from: rgb(247.77, 252.3, 254.34);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-10 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(251.4, 253.59, 249.03), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(247.77, 252.3, 254.34), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-25 {
-  --uc-gradient-to: rgb(249, 252.65, 245.05);
+  --uc-gradient-to: rgb(242.95, 250.5, 253.9);
 }
 
 .from-tertiary-25 {
-  --uc-gradient-from: rgb(249, 252.65, 245.05);
+  --uc-gradient-from: rgb(242.95, 250.5, 253.9);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-25 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(249, 252.65, 245.05), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(242.95, 250.5, 253.9), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-50 {
-  --uc-gradient-to: rgb(243, 250.3, 235.1);
+  --uc-gradient-to: rgb(230.9, 246, 252.8);
 }
 
 .from-tertiary-50 {
-  --uc-gradient-from: rgb(243, 250.3, 235.1);
+  --uc-gradient-from: rgb(230.9, 246, 252.8);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-50 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(243, 250.3, 235.1), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(230.9, 246, 252.8), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-100 {
-  --uc-gradient-to: rgb(231, 245.6, 215.2);
+  --uc-gradient-to: rgb(206.8, 237, 250.6);
 }
 
 .from-tertiary-100 {
-  --uc-gradient-from: rgb(231, 245.6, 215.2);
+  --uc-gradient-from: rgb(206.8, 237, 250.6);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-100 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(231, 245.6, 215.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(206.8, 237, 250.6), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-200 {
-  --uc-gradient-to: rgb(207, 236.2, 175.4);
+  --uc-gradient-to: rgb(158.6, 219, 246.2);
 }
 
 .from-tertiary-200 {
-  --uc-gradient-from: rgb(207, 236.2, 175.4);
+  --uc-gradient-from: rgb(158.6, 219, 246.2);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-200 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(207, 236.2, 175.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(158.6, 219, 246.2), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-300 {
-  --uc-gradient-to: rgb(183, 226.8, 135.6);
+  --uc-gradient-to: rgb(110.4, 201, 241.8);
 }
 
 .from-tertiary-300 {
-  --uc-gradient-from: rgb(183, 226.8, 135.6);
+  --uc-gradient-from: rgb(110.4, 201, 241.8);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-300 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(183, 226.8, 135.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(110.4, 201, 241.8), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-400 {
-  --uc-gradient-to: rgb(159, 217.4, 95.8);
+  --uc-gradient-to: rgb(62.2, 183, 237.4);
 }
 
 .from-tertiary-400 {
-  --uc-gradient-from: rgb(159, 217.4, 95.8);
+  --uc-gradient-from: rgb(62.2, 183, 237.4);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-400 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(159, 217.4, 95.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(62.2, 183, 237.4), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-500 {
-  --uc-gradient-to: #87D038;
+  --uc-gradient-to: #0EA5E9;
 }
 
 .from-tertiary-500 {
-  --uc-gradient-from: #87D038;
+  --uc-gradient-from: #0EA5E9;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-500 {
-  --uc-gradient-stops: var(--uc-gradient-from), #87D038, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #0EA5E9, var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-600 {
-  --uc-gradient-to: rgb(108, 166.4, 44.8);
+  --uc-gradient-to: rgb(11.2, 132, 186.4);
 }
 
 .from-tertiary-600 {
-  --uc-gradient-from: rgb(108, 166.4, 44.8);
+  --uc-gradient-from: rgb(11.2, 132, 186.4);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-600 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(108, 166.4, 44.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(11.2, 132, 186.4), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-700 {
-  --uc-gradient-to: rgb(81, 124.8, 33.6);
+  --uc-gradient-to: rgb(8.4, 99, 139.8);
 }
 
 .from-tertiary-700 {
-  --uc-gradient-from: rgb(81, 124.8, 33.6);
+  --uc-gradient-from: rgb(8.4, 99, 139.8);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-700 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(81, 124.8, 33.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(8.4, 99, 139.8), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-800 {
-  --uc-gradient-to: rgb(54, 83.2, 22.4);
+  --uc-gradient-to: rgb(5.6, 66, 93.2);
 }
 
 .from-tertiary-800 {
-  --uc-gradient-from: rgb(54, 83.2, 22.4);
+  --uc-gradient-from: rgb(5.6, 66, 93.2);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-800 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(54, 83.2, 22.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(5.6, 66, 93.2), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-900 {
-  --uc-gradient-to: rgb(27, 41.6, 11.2);
+  --uc-gradient-to: rgb(2.8, 33, 46.6);
 }
 
 .from-tertiary-900 {
-  --uc-gradient-from: rgb(27, 41.6, 11.2);
+  --uc-gradient-from: rgb(2.8, 33, 46.6);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-900 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(27, 41.6, 11.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(2.8, 33, 46.6), var(--uc-gradient-to) !important;
 }
 
 .to-tertiary-950 {
-  --uc-gradient-to: rgb(13.5, 20.8, 5.6);
+  --uc-gradient-to: rgb(1.4, 16.5, 23.3);
 }
 
 .from-tertiary-950 {
-  --uc-gradient-from: rgb(13.5, 20.8, 5.6);
+  --uc-gradient-from: rgb(1.4, 16.5, 23.3);
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 .via-tertiary-950 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(13.5, 20.8, 5.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(1.4, 16.5, 23.3), var(--uc-gradient-to) !important;
 }
 
 :where(.uc-dark) .dark\:to-tertiary,
 :where(.uc-dark) .dark\:to-tertiary {
-  --uc-gradient-to: #87D038 !important;
+  --uc-gradient-to: #0EA5E9 !important;
 }
 
 :where(.uc-dark) .dark\:from-tertiary,
 :where(.uc-dark) .dark\:from-tertiary {
-  --uc-gradient-from: #87D038 !important;
+  --uc-gradient-from: #0EA5E9 !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 :where(.uc-dark) .dark\:via-tertiary,
 :where(.uc-dark) .dark\:via-tertiary {
-  --uc-gradient-stops: var(--uc-gradient-from), #87D038, var(--uc-gradient-to);
+  --uc-gradient-stops: var(--uc-gradient-from), #0EA5E9, var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-,
 :where(.uc-dark) .dark\:to-tertiary- {
-  --uc-gradient-to: #87D038 !important;
+  --uc-gradient-to: #0EA5E9 !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-,
 :where(.uc-dark) .dark\:from-tertiary- {
-  --uc-gradient-from: #87D038 !important;
+  --uc-gradient-from: #0EA5E9 !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-,
 :where(.uc-dark) .dark\:via-tertiary- {
-  --uc-gradient-stops: var(--uc-gradient-from), #87D038, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #0EA5E9, var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-10,
 :where(.uc-dark) .dark\:to-tertiary-10 {
-  --uc-gradient-to: rgb(251.4, 253.59, 249.03) !important;
+  --uc-gradient-to: rgb(247.77, 252.3, 254.34) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-10,
 :where(.uc-dark) .dark\:from-tertiary-10 {
-  --uc-gradient-from: rgb(251.4, 253.59, 249.03) !important;
+  --uc-gradient-from: rgb(247.77, 252.3, 254.34) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-10,
 :where(.uc-dark) .dark\:via-tertiary-10 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(251.4, 253.59, 249.03), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(247.77, 252.3, 254.34), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-25,
 :where(.uc-dark) .dark\:to-tertiary-25 {
-  --uc-gradient-to: rgb(249, 252.65, 245.05) !important;
+  --uc-gradient-to: rgb(242.95, 250.5, 253.9) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-25,
 :where(.uc-dark) .dark\:from-tertiary-25 {
-  --uc-gradient-from: rgb(249, 252.65, 245.05) !important;
+  --uc-gradient-from: rgb(242.95, 250.5, 253.9) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-25,
 :where(.uc-dark) .dark\:via-tertiary-25 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(249, 252.65, 245.05), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(242.95, 250.5, 253.9), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-50,
 :where(.uc-dark) .dark\:to-tertiary-50 {
-  --uc-gradient-to: rgb(243, 250.3, 235.1) !important;
+  --uc-gradient-to: rgb(230.9, 246, 252.8) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-50,
 :where(.uc-dark) .dark\:from-tertiary-50 {
-  --uc-gradient-from: rgb(243, 250.3, 235.1) !important;
+  --uc-gradient-from: rgb(230.9, 246, 252.8) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-50,
 :where(.uc-dark) .dark\:via-tertiary-50 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(243, 250.3, 235.1), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(230.9, 246, 252.8), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-100,
 :where(.uc-dark) .dark\:to-tertiary-100 {
-  --uc-gradient-to: rgb(231, 245.6, 215.2) !important;
+  --uc-gradient-to: rgb(206.8, 237, 250.6) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-100,
 :where(.uc-dark) .dark\:from-tertiary-100 {
-  --uc-gradient-from: rgb(231, 245.6, 215.2) !important;
+  --uc-gradient-from: rgb(206.8, 237, 250.6) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-100,
 :where(.uc-dark) .dark\:via-tertiary-100 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(231, 245.6, 215.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(206.8, 237, 250.6), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-200,
 :where(.uc-dark) .dark\:to-tertiary-200 {
-  --uc-gradient-to: rgb(207, 236.2, 175.4) !important;
+  --uc-gradient-to: rgb(158.6, 219, 246.2) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-200,
 :where(.uc-dark) .dark\:from-tertiary-200 {
-  --uc-gradient-from: rgb(207, 236.2, 175.4) !important;
+  --uc-gradient-from: rgb(158.6, 219, 246.2) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-200,
 :where(.uc-dark) .dark\:via-tertiary-200 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(207, 236.2, 175.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(158.6, 219, 246.2), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-300,
 :where(.uc-dark) .dark\:to-tertiary-300 {
-  --uc-gradient-to: rgb(183, 226.8, 135.6) !important;
+  --uc-gradient-to: rgb(110.4, 201, 241.8) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-300,
 :where(.uc-dark) .dark\:from-tertiary-300 {
-  --uc-gradient-from: rgb(183, 226.8, 135.6) !important;
+  --uc-gradient-from: rgb(110.4, 201, 241.8) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-300,
 :where(.uc-dark) .dark\:via-tertiary-300 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(183, 226.8, 135.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(110.4, 201, 241.8), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-400,
 :where(.uc-dark) .dark\:to-tertiary-400 {
-  --uc-gradient-to: rgb(159, 217.4, 95.8) !important;
+  --uc-gradient-to: rgb(62.2, 183, 237.4) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-400,
 :where(.uc-dark) .dark\:from-tertiary-400 {
-  --uc-gradient-from: rgb(159, 217.4, 95.8) !important;
+  --uc-gradient-from: rgb(62.2, 183, 237.4) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-400,
 :where(.uc-dark) .dark\:via-tertiary-400 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(159, 217.4, 95.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(62.2, 183, 237.4), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-500,
 :where(.uc-dark) .dark\:to-tertiary-500 {
-  --uc-gradient-to: #87D038 !important;
+  --uc-gradient-to: #0EA5E9 !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-500,
 :where(.uc-dark) .dark\:from-tertiary-500 {
-  --uc-gradient-from: #87D038 !important;
+  --uc-gradient-from: #0EA5E9 !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-500,
 :where(.uc-dark) .dark\:via-tertiary-500 {
-  --uc-gradient-stops: var(--uc-gradient-from), #87D038, var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), #0EA5E9, var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-600,
 :where(.uc-dark) .dark\:to-tertiary-600 {
-  --uc-gradient-to: rgb(108, 166.4, 44.8) !important;
+  --uc-gradient-to: rgb(11.2, 132, 186.4) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-600,
 :where(.uc-dark) .dark\:from-tertiary-600 {
-  --uc-gradient-from: rgb(108, 166.4, 44.8) !important;
+  --uc-gradient-from: rgb(11.2, 132, 186.4) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-600,
 :where(.uc-dark) .dark\:via-tertiary-600 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(108, 166.4, 44.8), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(11.2, 132, 186.4), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-700,
 :where(.uc-dark) .dark\:to-tertiary-700 {
-  --uc-gradient-to: rgb(81, 124.8, 33.6) !important;
+  --uc-gradient-to: rgb(8.4, 99, 139.8) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-700,
 :where(.uc-dark) .dark\:from-tertiary-700 {
-  --uc-gradient-from: rgb(81, 124.8, 33.6) !important;
+  --uc-gradient-from: rgb(8.4, 99, 139.8) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-700,
 :where(.uc-dark) .dark\:via-tertiary-700 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(81, 124.8, 33.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(8.4, 99, 139.8), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-800,
 :where(.uc-dark) .dark\:to-tertiary-800 {
-  --uc-gradient-to: rgb(54, 83.2, 22.4) !important;
+  --uc-gradient-to: rgb(5.6, 66, 93.2) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-800,
 :where(.uc-dark) .dark\:from-tertiary-800 {
-  --uc-gradient-from: rgb(54, 83.2, 22.4) !important;
+  --uc-gradient-from: rgb(5.6, 66, 93.2) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-800,
 :where(.uc-dark) .dark\:via-tertiary-800 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(54, 83.2, 22.4), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(5.6, 66, 93.2), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-900,
 :where(.uc-dark) .dark\:to-tertiary-900 {
-  --uc-gradient-to: rgb(27, 41.6, 11.2) !important;
+  --uc-gradient-to: rgb(2.8, 33, 46.6) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-900,
 :where(.uc-dark) .dark\:from-tertiary-900 {
-  --uc-gradient-from: rgb(27, 41.6, 11.2) !important;
+  --uc-gradient-from: rgb(2.8, 33, 46.6) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-900,
 :where(.uc-dark) .dark\:via-tertiary-900 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(27, 41.6, 11.2), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(2.8, 33, 46.6), var(--uc-gradient-to) !important;
 }
 
 *:where(.uc-dark) .dark\:to-tertiary-950,
 :where(.uc-dark) .dark\:to-tertiary-950 {
-  --uc-gradient-to: rgb(13.5, 20.8, 5.6) !important;
+  --uc-gradient-to: rgb(1.4, 16.5, 23.3) !important;
 }
 
 *:where(.uc-dark) .dark\:from-tertiary-950,
 :where(.uc-dark) .dark\:from-tertiary-950 {
-  --uc-gradient-from: rgb(13.5, 20.8, 5.6) !important;
+  --uc-gradient-from: rgb(1.4, 16.5, 23.3) !important;
   --uc-gradient-stops: var(--uc-gradient-from), var(--uc-gradient-to);
 }
 
 *:where(.uc-dark) .dark\:via-tertiary-950,
 :where(.uc-dark) .dark\:via-tertiary-950 {
-  --uc-gradient-stops: var(--uc-gradient-from), rgb(13.5, 20.8, 5.6), var(--uc-gradient-to) !important;
+  --uc-gradient-stops: var(--uc-gradient-from), rgb(1.4, 16.5, 23.3), var(--uc-gradient-to) !important;
 }
 
 .to-gray {
@@ -5596,275 +5596,275 @@ h6, .h6 {
 
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #0F8465;
-  --bs-btn-border-color: #0F8465;
+  --bs-btn-bg: #1565C0;
+  --bs-btn-border-color: #1565C0;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(12, 105.6, 80.8);
-  --bs-btn-hover-border-color: rgb(12, 105.6, 80.8);
+  --bs-btn-hover-bg: rgb(16.8, 80.8, 153.6);
+  --bs-btn-hover-border-color: rgb(16.8, 80.8, 153.6);
   --bs-btn-focus-shadow-rgb: 63, 157, 132;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(9, 79.2, 60.6);
-  --bs-btn-active-border-color: rgb(9, 79.2, 60.6);
+  --bs-btn-active-bg: rgb(12.6, 60.6, 115.2);
+  --bs-btn-active-border-color: rgb(12.6, 60.6, 115.2);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #0F8465;
-  --bs-btn-disabled-border-color: #0F8465;
+  --bs-btn-disabled-bg: #1565C0;
+  --bs-btn-disabled-border-color: #1565C0;
 }
 
 .btn-primary-10 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(247.8, 251.31, 250.38);
-  --bs-btn-border-color: rgb(247.8, 251.31, 250.38);
+  --bs-btn-bg: rgb(247.98, 250.38, 253.11);
+  --bs-btn-border-color: rgb(247.98, 250.38, 253.11);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(247.8, 251.31, 250.38);
-  --bs-btn-hover-border-color: rgb(247.8, 251.31, 250.38);
+  --bs-btn-hover-bg: rgb(247.98, 250.38, 253.11);
+  --bs-btn-hover-border-color: rgb(247.98, 250.38, 253.11);
   --bs-btn-focus-shadow-rgb: 207, 230, 224;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(247.8, 251.31, 250.38);
-  --bs-btn-active-border-color: rgb(247.8, 251.31, 250.38);
+  --bs-btn-active-bg: rgb(247.98, 250.38, 253.11);
+  --bs-btn-active-border-color: rgb(247.98, 250.38, 253.11);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(247.8, 251.31, 250.38);
-  --bs-btn-disabled-border-color: rgb(247.8, 251.31, 250.38);
+  --bs-btn-disabled-bg: rgb(247.98, 250.38, 253.11);
+  --bs-btn-disabled-border-color: rgb(247.98, 250.38, 253.11);
 }
 
 .btn-primary-25 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(243, 248.85, 247.3);
-  --bs-btn-border-color: rgb(243, 248.85, 247.3);
+  --bs-btn-bg: rgb(243.3, 247.3, 251.85);
+  --bs-btn-border-color: rgb(243.3, 247.3, 251.85);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(243, 248.85, 247.3);
-  --bs-btn-hover-border-color: rgb(243, 248.85, 247.3);
+  --bs-btn-hover-bg: rgb(243.3, 247.3, 251.85);
+  --bs-btn-hover-border-color: rgb(243.3, 247.3, 251.85);
   --bs-btn-focus-shadow-rgb: 207, 230, 224;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(243, 248.85, 247.3);
-  --bs-btn-active-border-color: rgb(243, 248.85, 247.3);
+  --bs-btn-active-bg: rgb(243.3, 247.3, 251.85);
+  --bs-btn-active-border-color: rgb(243.3, 247.3, 251.85);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(243, 248.85, 247.3);
-  --bs-btn-disabled-border-color: rgb(243, 248.85, 247.3);
+  --bs-btn-disabled-bg: rgb(243.3, 247.3, 251.85);
+  --bs-btn-disabled-border-color: rgb(243.3, 247.3, 251.85);
 }
 
 .btn-primary-50 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(231, 242.7, 239.6);
-  --bs-btn-border-color: rgb(231, 242.7, 239.6);
+  --bs-btn-bg: rgb(231.6, 239.6, 248.7);
+  --bs-btn-border-color: rgb(231.6, 239.6, 248.7);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(231, 242.7, 239.6);
-  --bs-btn-hover-border-color: rgb(231, 242.7, 239.6);
+  --bs-btn-hover-bg: rgb(231.6, 239.6, 248.7);
+  --bs-btn-hover-border-color: rgb(231.6, 239.6, 248.7);
   --bs-btn-focus-shadow-rgb: 207, 230, 224;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(231, 242.7, 239.6);
-  --bs-btn-active-border-color: rgb(231, 242.7, 239.6);
+  --bs-btn-active-bg: rgb(231.6, 239.6, 248.7);
+  --bs-btn-active-border-color: rgb(231.6, 239.6, 248.7);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(231, 242.7, 239.6);
-  --bs-btn-disabled-border-color: rgb(231, 242.7, 239.6);
+  --bs-btn-disabled-bg: rgb(231.6, 239.6, 248.7);
+  --bs-btn-disabled-border-color: rgb(231.6, 239.6, 248.7);
 }
 
 .btn-primary-100 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(207, 230.4, 224.2);
-  --bs-btn-border-color: rgb(207, 230.4, 224.2);
+  --bs-btn-bg: rgb(208.2, 224.2, 242.4);
+  --bs-btn-border-color: rgb(208.2, 224.2, 242.4);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(159, 205.8, 193.4);
-  --bs-btn-hover-border-color: rgb(159, 205.8, 193.4);
+  --bs-btn-hover-bg: rgb(161.4, 193.4, 229.8);
+  --bs-btn-hover-border-color: rgb(161.4, 193.4, 229.8);
   --bs-btn-focus-shadow-rgb: 207, 230, 224;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(111, 181.2, 162.6);
-  --bs-btn-active-border-color: rgb(111, 181.2, 162.6);
+  --bs-btn-active-bg: rgb(114.6, 162.6, 217.2);
+  --bs-btn-active-border-color: rgb(114.6, 162.6, 217.2);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(207, 230.4, 224.2);
-  --bs-btn-disabled-border-color: rgb(207, 230.4, 224.2);
+  --bs-btn-disabled-bg: rgb(208.2, 224.2, 242.4);
+  --bs-btn-disabled-border-color: rgb(208.2, 224.2, 242.4);
 }
 
 .btn-primary-200 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(159, 205.8, 193.4);
-  --bs-btn-border-color: rgb(159, 205.8, 193.4);
+  --bs-btn-bg: rgb(161.4, 193.4, 229.8);
+  --bs-btn-border-color: rgb(161.4, 193.4, 229.8);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(111, 181.2, 162.6);
-  --bs-btn-hover-border-color: rgb(111, 181.2, 162.6);
+  --bs-btn-hover-bg: rgb(114.6, 162.6, 217.2);
+  --bs-btn-hover-border-color: rgb(114.6, 162.6, 217.2);
   --bs-btn-focus-shadow-rgb: 207, 230, 224;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(63, 156.6, 131.8);
-  --bs-btn-active-border-color: rgb(63, 156.6, 131.8);
+  --bs-btn-active-bg: rgb(67.8, 131.8, 204.6);
+  --bs-btn-active-border-color: rgb(67.8, 131.8, 204.6);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(159, 205.8, 193.4);
-  --bs-btn-disabled-border-color: rgb(159, 205.8, 193.4);
+  --bs-btn-disabled-bg: rgb(161.4, 193.4, 229.8);
+  --bs-btn-disabled-border-color: rgb(161.4, 193.4, 229.8);
 }
 
 .btn-primary-300 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(111, 181.2, 162.6);
-  --bs-btn-border-color: rgb(111, 181.2, 162.6);
+  --bs-btn-bg: rgb(114.6, 162.6, 217.2);
+  --bs-btn-border-color: rgb(114.6, 162.6, 217.2);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(63, 156.6, 131.8);
-  --bs-btn-hover-border-color: rgb(63, 156.6, 131.8);
+  --bs-btn-hover-bg: rgb(67.8, 131.8, 204.6);
+  --bs-btn-hover-border-color: rgb(67.8, 131.8, 204.6);
   --bs-btn-focus-shadow-rgb: 159, 206, 193;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #0F8465;
-  --bs-btn-active-border-color: #0F8465;
+  --bs-btn-active-bg: #1565C0;
+  --bs-btn-active-border-color: #1565C0;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(111, 181.2, 162.6);
-  --bs-btn-disabled-border-color: rgb(111, 181.2, 162.6);
+  --bs-btn-disabled-bg: rgb(114.6, 162.6, 217.2);
+  --bs-btn-disabled-border-color: rgb(114.6, 162.6, 217.2);
 }
 
 .btn-primary-400 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(63, 156.6, 131.8);
-  --bs-btn-border-color: rgb(63, 156.6, 131.8);
+  --bs-btn-bg: rgb(67.8, 131.8, 204.6);
+  --bs-btn-border-color: rgb(67.8, 131.8, 204.6);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #0F8465;
-  --bs-btn-hover-border-color: #0F8465;
+  --bs-btn-hover-bg: #1565C0;
+  --bs-btn-hover-border-color: #1565C0;
   --bs-btn-focus-shadow-rgb: 111, 181, 163;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(12, 105.6, 80.8);
-  --bs-btn-active-border-color: rgb(12, 105.6, 80.8);
+  --bs-btn-active-bg: rgb(16.8, 80.8, 153.6);
+  --bs-btn-active-border-color: rgb(16.8, 80.8, 153.6);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(63, 156.6, 131.8);
-  --bs-btn-disabled-border-color: rgb(63, 156.6, 131.8);
+  --bs-btn-disabled-bg: rgb(67.8, 131.8, 204.6);
+  --bs-btn-disabled-border-color: rgb(67.8, 131.8, 204.6);
 }
 
 .btn-primary-500 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #0F8465;
-  --bs-btn-border-color: #0F8465;
+  --bs-btn-bg: #1565C0;
+  --bs-btn-border-color: #1565C0;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(12, 105.6, 80.8);
-  --bs-btn-hover-border-color: rgb(12, 105.6, 80.8);
+  --bs-btn-hover-bg: rgb(16.8, 80.8, 153.6);
+  --bs-btn-hover-border-color: rgb(16.8, 80.8, 153.6);
   --bs-btn-focus-shadow-rgb: 63, 157, 132;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(9, 79.2, 60.6);
-  --bs-btn-active-border-color: rgb(9, 79.2, 60.6);
+  --bs-btn-active-bg: rgb(12.6, 60.6, 115.2);
+  --bs-btn-active-border-color: rgb(12.6, 60.6, 115.2);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #0F8465;
-  --bs-btn-disabled-border-color: #0F8465;
+  --bs-btn-disabled-bg: #1565C0;
+  --bs-btn-disabled-border-color: #1565C0;
 }
 
 .btn-primary-600 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(12, 105.6, 80.8);
-  --bs-btn-border-color: rgb(12, 105.6, 80.8);
+  --bs-btn-bg: rgb(16.8, 80.8, 153.6);
+  --bs-btn-border-color: rgb(16.8, 80.8, 153.6);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(9, 79.2, 60.6);
-  --bs-btn-hover-border-color: rgb(9, 79.2, 60.6);
-  --bs-btn-focus-shadow-rgb: 15, 132, 101;
+  --bs-btn-hover-bg: rgb(12.6, 60.6, 115.2);
+  --bs-btn-hover-border-color: rgb(12.6, 60.6, 115.2);
+  --bs-btn-focus-shadow-rgb: 21, 101, 192;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(6, 52.8, 40.4);
-  --bs-btn-active-border-color: rgb(6, 52.8, 40.4);
+  --bs-btn-active-bg: rgb(8.4, 40.4, 76.8);
+  --bs-btn-active-border-color: rgb(8.4, 40.4, 76.8);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(12, 105.6, 80.8);
-  --bs-btn-disabled-border-color: rgb(12, 105.6, 80.8);
+  --bs-btn-disabled-bg: rgb(16.8, 80.8, 153.6);
+  --bs-btn-disabled-border-color: rgb(16.8, 80.8, 153.6);
 }
 
 .btn-primary-700 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(9, 79.2, 60.6);
-  --bs-btn-border-color: rgb(9, 79.2, 60.6);
+  --bs-btn-bg: rgb(12.6, 60.6, 115.2);
+  --bs-btn-border-color: rgb(12.6, 60.6, 115.2);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(6, 52.8, 40.4);
-  --bs-btn-hover-border-color: rgb(6, 52.8, 40.4);
+  --bs-btn-hover-bg: rgb(8.4, 40.4, 76.8);
+  --bs-btn-hover-border-color: rgb(8.4, 40.4, 76.8);
   --bs-btn-focus-shadow-rgb: 12, 106, 81;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-active-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-active-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-active-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(9, 79.2, 60.6);
-  --bs-btn-disabled-border-color: rgb(9, 79.2, 60.6);
+  --bs-btn-disabled-bg: rgb(12.6, 60.6, 115.2);
+  --bs-btn-disabled-border-color: rgb(12.6, 60.6, 115.2);
 }
 
 .btn-primary-800 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(6, 52.8, 40.4);
-  --bs-btn-border-color: rgb(6, 52.8, 40.4);
+  --bs-btn-bg: rgb(8.4, 40.4, 76.8);
+  --bs-btn-border-color: rgb(8.4, 40.4, 76.8);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-hover-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-hover-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-hover-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-focus-shadow-rgb: 9, 79, 61;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-active-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-active-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-active-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(6, 52.8, 40.4);
-  --bs-btn-disabled-border-color: rgb(6, 52.8, 40.4);
+  --bs-btn-disabled-bg: rgb(8.4, 40.4, 76.8);
+  --bs-btn-disabled-border-color: rgb(8.4, 40.4, 76.8);
 }
 
 .btn-primary-900 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-hover-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-hover-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-hover-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-focus-shadow-rgb: 6, 53, 40;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-active-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-active-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-active-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-disabled-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-disabled-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-disabled-border-color: rgb(4.2, 20.2, 38.4);
 }
 
 .btn-primary-950 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(1.5, 13.2, 10.1);
-  --bs-btn-border-color: rgb(1.5, 13.2, 10.1);
+  --bs-btn-bg: rgb(2.1, 10.1, 19.2);
+  --bs-btn-border-color: rgb(2.1, 10.1, 19.2);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-hover-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-hover-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-hover-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-focus-shadow-rgb: 1, 13, 10;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(3, 26.4, 20.2);
-  --bs-btn-active-border-color: rgb(3, 26.4, 20.2);
+  --bs-btn-active-bg: rgb(4.2, 20.2, 38.4);
+  --bs-btn-active-border-color: rgb(4.2, 20.2, 38.4);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(1.5, 13.2, 10.1);
-  --bs-btn-disabled-border-color: rgb(1.5, 13.2, 10.1);
+  --bs-btn-disabled-bg: rgb(2.1, 10.1, 19.2);
+  --bs-btn-disabled-border-color: rgb(2.1, 10.1, 19.2);
 }
 
 .btn-outline-primary {
-  --bs-btn-color: #0F8465;
-  --bs-btn-border-color: #0F8465;
+  --bs-btn-color: #1565C0;
+  --bs-btn-border-color: #1565C0;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #0F8465;
-  --bs-btn-hover-border-color: #0F8465;
-  --bs-btn-focus-shadow-rgb: 15, 132, 101;
+  --bs-btn-hover-bg: #1565C0;
+  --bs-btn-hover-border-color: #1565C0;
+  --bs-btn-focus-shadow-rgb: 21, 101, 192;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(9, 79.2, 60.6);
-  --bs-btn-active-border-color: rgb(9, 79.2, 60.6);
+  --bs-btn-active-bg: rgb(12.6, 60.6, 115.2);
+  --bs-btn-active-border-color: rgb(12.6, 60.6, 115.2);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #0F8465;
+  --bs-btn-disabled-color: #1565C0;
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #0F8465;
+  --bs-btn-disabled-border-color: #1565C0;
   --bs-gradient: none;
 }
 
 .btn-alt-primary {
   background: white !important;
-  color: #0F8465 !important;
+  color: #1565C0 !important;
 }
 .btn-alt-primary:hover, .btn-alt-primary:focus {
-  background: #0F8465 !important;
+  background: #1565C0 !important;
   color: #fff !important;
 }
 
 .btn-ghost-primary {
-  background: rgb(231, 242.7, 239.6) !important;
-  color: #0F8465 !important;
+  background: rgb(231.6, 239.6, 248.7) !important;
+  color: #1565C0 !important;
 }
 .btn-ghost-primary:hover, .btn-ghost-primary:focus {
-  background: rgb(207, 230.4, 224.2) !important;
-  color: #0F8465 !important;
+  background: rgb(208.2, 224.2, 242.4) !important;
+  color: #1565C0 !important;
 }
 
 .btn-secondary {
@@ -6142,274 +6142,274 @@ h6, .h6 {
 
 .btn-tertiary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #87D038;
-  --bs-btn-border-color: #87D038;
+  --bs-btn-bg: #0EA5E9;
+  --bs-btn-border-color: #0EA5E9;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(108, 166.4, 44.8);
-  --bs-btn-hover-border-color: rgb(108, 166.4, 44.8);
+  --bs-btn-hover-bg: rgb(11.2, 132, 186.4);
+  --bs-btn-hover-border-color: rgb(11.2, 132, 186.4);
   --bs-btn-focus-shadow-rgb: 159, 217, 96;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(81, 124.8, 33.6);
-  --bs-btn-active-border-color: rgb(81, 124.8, 33.6);
+  --bs-btn-active-bg: rgb(8.4, 99, 139.8);
+  --bs-btn-active-border-color: rgb(8.4, 99, 139.8);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #87D038;
-  --bs-btn-disabled-border-color: #87D038;
+  --bs-btn-disabled-bg: #0EA5E9;
+  --bs-btn-disabled-border-color: #0EA5E9;
 }
 
 .btn-tertiary-10 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(251.4, 253.59, 249.03);
-  --bs-btn-border-color: rgb(251.4, 253.59, 249.03);
+  --bs-btn-bg: rgb(247.77, 252.3, 254.34);
+  --bs-btn-border-color: rgb(247.77, 252.3, 254.34);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(251.4, 253.59, 249.03);
-  --bs-btn-hover-border-color: rgb(251.4, 253.59, 249.03);
+  --bs-btn-hover-bg: rgb(247.77, 252.3, 254.34);
+  --bs-btn-hover-border-color: rgb(247.77, 252.3, 254.34);
   --bs-btn-focus-shadow-rgb: 231, 246, 215;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(251.4, 253.59, 249.03);
-  --bs-btn-active-border-color: rgb(251.4, 253.59, 249.03);
+  --bs-btn-active-bg: rgb(247.77, 252.3, 254.34);
+  --bs-btn-active-border-color: rgb(247.77, 252.3, 254.34);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(251.4, 253.59, 249.03);
-  --bs-btn-disabled-border-color: rgb(251.4, 253.59, 249.03);
+  --bs-btn-disabled-bg: rgb(247.77, 252.3, 254.34);
+  --bs-btn-disabled-border-color: rgb(247.77, 252.3, 254.34);
 }
 
 .btn-tertiary-25 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(249, 252.65, 245.05);
-  --bs-btn-border-color: rgb(249, 252.65, 245.05);
+  --bs-btn-bg: rgb(242.95, 250.5, 253.9);
+  --bs-btn-border-color: rgb(242.95, 250.5, 253.9);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(249, 252.65, 245.05);
-  --bs-btn-hover-border-color: rgb(249, 252.65, 245.05);
+  --bs-btn-hover-bg: rgb(242.95, 250.5, 253.9);
+  --bs-btn-hover-border-color: rgb(242.95, 250.5, 253.9);
   --bs-btn-focus-shadow-rgb: 231, 246, 215;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(249, 252.65, 245.05);
-  --bs-btn-active-border-color: rgb(249, 252.65, 245.05);
+  --bs-btn-active-bg: rgb(242.95, 250.5, 253.9);
+  --bs-btn-active-border-color: rgb(242.95, 250.5, 253.9);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(249, 252.65, 245.05);
-  --bs-btn-disabled-border-color: rgb(249, 252.65, 245.05);
+  --bs-btn-disabled-bg: rgb(242.95, 250.5, 253.9);
+  --bs-btn-disabled-border-color: rgb(242.95, 250.5, 253.9);
 }
 
 .btn-tertiary-50 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(243, 250.3, 235.1);
-  --bs-btn-border-color: rgb(243, 250.3, 235.1);
+  --bs-btn-bg: rgb(230.9, 246, 252.8);
+  --bs-btn-border-color: rgb(230.9, 246, 252.8);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(243, 250.3, 235.1);
-  --bs-btn-hover-border-color: rgb(243, 250.3, 235.1);
+  --bs-btn-hover-bg: rgb(230.9, 246, 252.8);
+  --bs-btn-hover-border-color: rgb(230.9, 246, 252.8);
   --bs-btn-focus-shadow-rgb: 231, 246, 215;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(243, 250.3, 235.1);
-  --bs-btn-active-border-color: rgb(243, 250.3, 235.1);
+  --bs-btn-active-bg: rgb(230.9, 246, 252.8);
+  --bs-btn-active-border-color: rgb(230.9, 246, 252.8);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(243, 250.3, 235.1);
-  --bs-btn-disabled-border-color: rgb(243, 250.3, 235.1);
+  --bs-btn-disabled-bg: rgb(230.9, 246, 252.8);
+  --bs-btn-disabled-border-color: rgb(230.9, 246, 252.8);
 }
 
 .btn-tertiary-100 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(231, 245.6, 215.2);
-  --bs-btn-border-color: rgb(231, 245.6, 215.2);
+  --bs-btn-bg: rgb(206.8, 237, 250.6);
+  --bs-btn-border-color: rgb(206.8, 237, 250.6);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(207, 236.2, 175.4);
-  --bs-btn-hover-border-color: rgb(207, 236.2, 175.4);
+  --bs-btn-hover-bg: rgb(158.6, 219, 246.2);
+  --bs-btn-hover-border-color: rgb(158.6, 219, 246.2);
   --bs-btn-focus-shadow-rgb: 231, 246, 215;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(183, 226.8, 135.6);
-  --bs-btn-active-border-color: rgb(183, 226.8, 135.6);
+  --bs-btn-active-bg: rgb(110.4, 201, 241.8);
+  --bs-btn-active-border-color: rgb(110.4, 201, 241.8);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(231, 245.6, 215.2);
-  --bs-btn-disabled-border-color: rgb(231, 245.6, 215.2);
+  --bs-btn-disabled-bg: rgb(206.8, 237, 250.6);
+  --bs-btn-disabled-border-color: rgb(206.8, 237, 250.6);
 }
 
 .btn-tertiary-200 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(207, 236.2, 175.4);
-  --bs-btn-border-color: rgb(207, 236.2, 175.4);
+  --bs-btn-bg: rgb(158.6, 219, 246.2);
+  --bs-btn-border-color: rgb(158.6, 219, 246.2);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(183, 226.8, 135.6);
-  --bs-btn-hover-border-color: rgb(183, 226.8, 135.6);
+  --bs-btn-hover-bg: rgb(110.4, 201, 241.8);
+  --bs-btn-hover-border-color: rgb(110.4, 201, 241.8);
   --bs-btn-focus-shadow-rgb: 231, 246, 215;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(159, 217.4, 95.8);
-  --bs-btn-active-border-color: rgb(159, 217.4, 95.8);
+  --bs-btn-active-bg: rgb(62.2, 183, 237.4);
+  --bs-btn-active-border-color: rgb(62.2, 183, 237.4);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(207, 236.2, 175.4);
-  --bs-btn-disabled-border-color: rgb(207, 236.2, 175.4);
+  --bs-btn-disabled-bg: rgb(158.6, 219, 246.2);
+  --bs-btn-disabled-border-color: rgb(158.6, 219, 246.2);
 }
 
 .btn-tertiary-300 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(183, 226.8, 135.6);
-  --bs-btn-border-color: rgb(183, 226.8, 135.6);
+  --bs-btn-bg: rgb(110.4, 201, 241.8);
+  --bs-btn-border-color: rgb(110.4, 201, 241.8);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(159, 217.4, 95.8);
-  --bs-btn-hover-border-color: rgb(159, 217.4, 95.8);
+  --bs-btn-hover-bg: rgb(62.2, 183, 237.4);
+  --bs-btn-hover-border-color: rgb(62.2, 183, 237.4);
   --bs-btn-focus-shadow-rgb: 207, 236, 175;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #87D038;
-  --bs-btn-active-border-color: #87D038;
+  --bs-btn-active-bg: #0EA5E9;
+  --bs-btn-active-border-color: #0EA5E9;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(183, 226.8, 135.6);
-  --bs-btn-disabled-border-color: rgb(183, 226.8, 135.6);
+  --bs-btn-disabled-bg: rgb(110.4, 201, 241.8);
+  --bs-btn-disabled-border-color: rgb(110.4, 201, 241.8);
 }
 
 .btn-tertiary-400 {
   --bs-btn-color: #000;
-  --bs-btn-bg: rgb(159, 217.4, 95.8);
-  --bs-btn-border-color: rgb(159, 217.4, 95.8);
+  --bs-btn-bg: rgb(62.2, 183, 237.4);
+  --bs-btn-border-color: rgb(62.2, 183, 237.4);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #87D038;
-  --bs-btn-hover-border-color: #87D038;
+  --bs-btn-hover-bg: #0EA5E9;
+  --bs-btn-hover-border-color: #0EA5E9;
   --bs-btn-focus-shadow-rgb: 183, 227, 136;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(108, 166.4, 44.8);
-  --bs-btn-active-border-color: rgb(108, 166.4, 44.8);
+  --bs-btn-active-bg: rgb(11.2, 132, 186.4);
+  --bs-btn-active-border-color: rgb(11.2, 132, 186.4);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: rgb(159, 217.4, 95.8);
-  --bs-btn-disabled-border-color: rgb(159, 217.4, 95.8);
+  --bs-btn-disabled-bg: rgb(62.2, 183, 237.4);
+  --bs-btn-disabled-border-color: rgb(62.2, 183, 237.4);
 }
 
 .btn-tertiary-500 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #87D038;
-  --bs-btn-border-color: #87D038;
+  --bs-btn-bg: #0EA5E9;
+  --bs-btn-border-color: #0EA5E9;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(108, 166.4, 44.8);
-  --bs-btn-hover-border-color: rgb(108, 166.4, 44.8);
+  --bs-btn-hover-bg: rgb(11.2, 132, 186.4);
+  --bs-btn-hover-border-color: rgb(11.2, 132, 186.4);
   --bs-btn-focus-shadow-rgb: 159, 217, 96;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(81, 124.8, 33.6);
-  --bs-btn-active-border-color: rgb(81, 124.8, 33.6);
+  --bs-btn-active-bg: rgb(8.4, 99, 139.8);
+  --bs-btn-active-border-color: rgb(8.4, 99, 139.8);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #87D038;
-  --bs-btn-disabled-border-color: #87D038;
+  --bs-btn-disabled-bg: #0EA5E9;
+  --bs-btn-disabled-border-color: #0EA5E9;
 }
 
 .btn-tertiary-600 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(108, 166.4, 44.8);
-  --bs-btn-border-color: rgb(108, 166.4, 44.8);
+  --bs-btn-bg: rgb(11.2, 132, 186.4);
+  --bs-btn-border-color: rgb(11.2, 132, 186.4);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(81, 124.8, 33.6);
-  --bs-btn-hover-border-color: rgb(81, 124.8, 33.6);
-  --bs-btn-focus-shadow-rgb: 135, 208, 56;
+  --bs-btn-hover-bg: rgb(8.4, 99, 139.8);
+  --bs-btn-hover-border-color: rgb(8.4, 99, 139.8);
+  --bs-btn-focus-shadow-rgb: 14, 165, 233;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(54, 83.2, 22.4);
-  --bs-btn-active-border-color: rgb(54, 83.2, 22.4);
+  --bs-btn-active-bg: rgb(5.6, 66, 93.2);
+  --bs-btn-active-border-color: rgb(5.6, 66, 93.2);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(108, 166.4, 44.8);
-  --bs-btn-disabled-border-color: rgb(108, 166.4, 44.8);
+  --bs-btn-disabled-bg: rgb(11.2, 132, 186.4);
+  --bs-btn-disabled-border-color: rgb(11.2, 132, 186.4);
 }
 
 .btn-tertiary-700 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(81, 124.8, 33.6);
-  --bs-btn-border-color: rgb(81, 124.8, 33.6);
+  --bs-btn-bg: rgb(8.4, 99, 139.8);
+  --bs-btn-border-color: rgb(8.4, 99, 139.8);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(54, 83.2, 22.4);
-  --bs-btn-hover-border-color: rgb(54, 83.2, 22.4);
+  --bs-btn-hover-bg: rgb(5.6, 66, 93.2);
+  --bs-btn-hover-border-color: rgb(5.6, 66, 93.2);
   --bs-btn-focus-shadow-rgb: 108, 166, 45;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-active-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-active-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-active-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(81, 124.8, 33.6);
-  --bs-btn-disabled-border-color: rgb(81, 124.8, 33.6);
+  --bs-btn-disabled-bg: rgb(8.4, 99, 139.8);
+  --bs-btn-disabled-border-color: rgb(8.4, 99, 139.8);
 }
 
 .btn-tertiary-800 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(54, 83.2, 22.4);
-  --bs-btn-border-color: rgb(54, 83.2, 22.4);
+  --bs-btn-bg: rgb(5.6, 66, 93.2);
+  --bs-btn-border-color: rgb(5.6, 66, 93.2);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-hover-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-hover-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-hover-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-focus-shadow-rgb: 81, 125, 34;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-active-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-active-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-active-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(54, 83.2, 22.4);
-  --bs-btn-disabled-border-color: rgb(54, 83.2, 22.4);
+  --bs-btn-disabled-bg: rgb(5.6, 66, 93.2);
+  --bs-btn-disabled-border-color: rgb(5.6, 66, 93.2);
 }
 
 .btn-tertiary-900 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-hover-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-hover-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-hover-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-focus-shadow-rgb: 54, 83, 22;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-active-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-active-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-active-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-disabled-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-disabled-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-disabled-border-color: rgb(2.8, 33, 46.6);
 }
 
 .btn-tertiary-950 {
   --bs-btn-color: #fff;
-  --bs-btn-bg: rgb(13.5, 20.8, 5.6);
-  --bs-btn-border-color: rgb(13.5, 20.8, 5.6);
+  --bs-btn-bg: rgb(1.4, 16.5, 23.3);
+  --bs-btn-border-color: rgb(1.4, 16.5, 23.3);
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-hover-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-hover-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-hover-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-focus-shadow-rgb: 13, 21, 6;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(27, 41.6, 11.2);
-  --bs-btn-active-border-color: rgb(27, 41.6, 11.2);
+  --bs-btn-active-bg: rgb(2.8, 33, 46.6);
+  --bs-btn-active-border-color: rgb(2.8, 33, 46.6);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: rgb(13.5, 20.8, 5.6);
-  --bs-btn-disabled-border-color: rgb(13.5, 20.8, 5.6);
+  --bs-btn-disabled-bg: rgb(1.4, 16.5, 23.3);
+  --bs-btn-disabled-border-color: rgb(1.4, 16.5, 23.3);
 }
 
 .btn-outline-tertiary {
-  --bs-btn-color: #87D038;
-  --bs-btn-border-color: #87D038;
+  --bs-btn-color: #0EA5E9;
+  --bs-btn-border-color: #0EA5E9;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #87D038;
-  --bs-btn-hover-border-color: #87D038;
-  --bs-btn-focus-shadow-rgb: 135, 208, 56;
+  --bs-btn-hover-bg: #0EA5E9;
+  --bs-btn-hover-border-color: #0EA5E9;
+  --bs-btn-focus-shadow-rgb: 14, 165, 233;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(81, 124.8, 33.6);
-  --bs-btn-active-border-color: rgb(81, 124.8, 33.6);
+  --bs-btn-active-bg: rgb(8.4, 99, 139.8);
+  --bs-btn-active-border-color: rgb(8.4, 99, 139.8);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #87D038;
+  --bs-btn-disabled-color: #0EA5E9;
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #87D038;
+  --bs-btn-disabled-border-color: #0EA5E9;
   --bs-gradient: none;
 }
 
 .btn-alt-tertiary {
   background: white !important;
-  color: #87D038 !important;
+  color: #0EA5E9 !important;
 }
 .btn-alt-tertiary:hover, .btn-alt-tertiary:focus {
-  background: #87D038 !important;
+  background: #0EA5E9 !important;
   color: #fff !important;
 }
 
 .btn-ghost-tertiary {
-  background: rgb(243, 250.3, 235.1) !important;
-  color: #87D038 !important;
+  background: rgb(230.9, 246, 252.8) !important;
+  color: #0EA5E9 !important;
 }
 .btn-ghost-tertiary:hover, .btn-ghost-tertiary:focus {
-  background: rgb(231, 245.6, 215.2) !important;
+  background: rgb(206.8, 237, 250.6) !important;
   color: #000 !important;
 }
 
