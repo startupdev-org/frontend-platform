@@ -3,7 +3,11 @@ import { FaLocationDot } from 'react-icons/fa6';
 import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 import { Business } from '../../types/business';
 import type { Service } from '../../types/service';
+import type { WorkingHours } from '../../types/business';
+import RatingStars from './RatingStars';
 import './BusinessCard.css';
+
+const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 
 interface BusinessCardProps {
   business: Business;
@@ -28,15 +32,50 @@ function normalizeImageUrl(url: string | null | undefined) {
   return url.replace(/\$\d+(?=([?#]|$))/, '');
 }
 
+function getTodayClosingTime(workingHours: WorkingHours | undefined, date: Date): string | null {
+  if (!workingHours) return null;
+  const todayKey = WEEKDAY_KEYS[date.getDay() as number];
+  const hoursToday = workingHours[todayKey];
+  return hoursToday?.close || null;
+}
+
+function formatPhoneNumber(phone: string | null): { formatted: string; callable: string } {
+  if (!phone) return { formatted: 'Telefon indisponibil', callable: '' };
+  
+  // Remove all non-digit characters
+  const digits = phone.replace(/\D/g, '');
+  
+  // Handle Moldova numbers (+373)
+  if (digits.startsWith('373') && digits.length === 11) {
+    const number = digits.slice(3); // Remove 373
+    return {
+      formatted: `+373 (${number.slice(0, 2)}) ${number.slice(2, 5)} ${number.slice(5)}`,
+      callable: `+${digits}`
+    };
+  }
+  
+  // Handle local Moldova numbers (starting with 0)
+  if (digits.startsWith('0') && digits.length === 9) {
+    const number = digits.slice(1); // Remove leading 0
+    return {
+      formatted: `+373 (${number.slice(0, 2)}) ${number.slice(2, 5)} ${number.slice(5)}`,
+      callable: `+373${number}`
+    };
+  }
+  
+  // Return original if format doesn't match
+  return { formatted: phone, callable: phone };
+}
+
 export default function BusinessCard({ business }: BusinessCardProps) {
   const navigate = useNavigate();
 
   const activeServices = getActiveServices((business.providedServices ?? []) as Service[]);
   const topServices = activeServices.slice(0, 3);
-  const prices = activeServices
-    .map((s) => Number(s.price))
-    .filter((price): price is number => Number.isFinite(price));
-  const minPrice = prices.length ? Math.min(...prices) : null;
+  
+  const today = new Date();
+  const closingTime = getTodayClosingTime(business.working_hours, today);
+  const phoneInfo = formatPhoneNumber(business.phone);
 
   const rawLogoUrl = business.logo_url ?? (business as any).logoUrl;
   const rawCoverUrl = business.cover_image_url ?? (business as any).coverImageUrl;
@@ -63,16 +102,40 @@ export default function BusinessCard({ business }: BusinessCardProps) {
         <div className="card-header">
           <div>
             <h3>{business.name}</h3>
-            <p className="business-address">
-              <FaLocationDot className="business-address-icon" />
-              <span>{business.address || business.city || ''}</span>
-            </p>
+            <div className="business-meta">
+              <div className="business-address-row">
+                <p className="business-address">
+                  <FaLocationDot className="business-address-icon" />
+                  <span>{business.address || business.city || ''}</span>
+                </p>
+                <RatingStars 
+                  rating={business.average_rating || 0} 
+                  size="sm" 
+                  showNumber 
+                  className="business-rating"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <p className="starting">Starting from {minPrice != null ? formatPriceMDL(minPrice) : '—'}</p>
-
         <div className="card-expand">
+          <div className="business-info-row">
+            {phoneInfo.callable ? (
+              <a 
+                href={`tel:${phoneInfo.callable}`} 
+                className="phone-number phone-link"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {phoneInfo.formatted}
+              </a>
+            ) : (
+              <p className="phone-number">{phoneInfo.formatted}</p>
+            )}
+            <p className="closing-time">
+              {closingTime ? `Închide la ${closingTime}` : 'Program nedisponibil'}
+            </p>
+          </div>
           {topServices.map((s) => (
             <div key={s.id} className="service">
               <span>{s.name}</span>

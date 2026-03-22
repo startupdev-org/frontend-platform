@@ -312,41 +312,50 @@ export default function ContactPage() {
           </div>
 
           <div id="helpful-links" className="section panel overflow-hidden">
-            <div className="section-outer panel py-6 sm:py-8 xl:py-9">
+            <div className="section-outer panel pb-6 sm:pb-8 lg:pb-9">
               <div className="container max-w-lg">
                 <div className="section-inner panel">
-                  <div className="section-heading panel vstack items-center gap-2 xl:gap-3 mb-6 sm:mb-8 xl:mb-9 max-w-500px xl:max-w-700px mx-auto text-center" data-anime="onview: -100; targets: >*; translateY: [48, 0]; opacity: [0, 1]; easing: easeOutCubic; duration: 500; delay: anime.stagger(100, {start: 200});">
-                    <span className="ft-serif fs-7 fw-semibold py-narrow px-2 border rounded text-uppercase text-gradient">Contacte</span>
-                    <h2 className="h3 sm:h2 xl:h1 m-0">Unde ne găsești</h2>
-                  </div>
-                  <div
-                    className="section-content panel"
-                    data-anime="onview: -200; targets: > * > *; translateY: [48, 0]; opacity: [0, 1]; easing: easeOutCubic; duration: 500; delay: anime.stagger(100, {start: 200});"
-                  >
-                    <div className="row child-cols-12 sm:child-cols-6 g-2 lg:g-4 justify-between col-match">
+                  <div className="panel vstack gap-4 sm:gap-6 xl:gap-8">
+                    <div
+                      className="section-heading panel vstack items-center gap-2 xl:gap-3 m-0 max-w-500px xl:max-w-700px mx-auto text-center"
+                      data-anime="onview: -100; targets: >*; translateY: [48, 0]; opacity: [0, 1]; easing: easeOutCubic; duration: 500; delay: anime.stagger(100, {start: 200});"
+                    >
+                      <span className="ft-serif fs-7 fw-semibold py-narrow px-2 border rounded text-uppercase text-gradient">
+                        Contacte
+                      </span>
+                      <h2 className="h4 sm:h3 lg:h2 m-0 text-gray-900 dark:text-white">Unde ne găsești</h2>
+                    </div>
+                    <div
+                      className="row child-cols-12 sm:child-cols-6 g-2 lg:g-4 justify-between col-match"
+                      data-anime="onview: -100; targets: > *; translateY: [48, 0]; opacity: [0, 1]; easing: easeOutCubic; duration: 500; delay: anime.stagger(100, {start: 200});"
+                    >
                       {CONTACT_CHANNELS.map(({ title, description, href, cta, external, Icon, iconRem = 2.25 }) => (
                         <div
                           key={title}
-                          className="feature-item panel overflow-hidden rounded-2 sm:rounded-3 border border-1 dark:border-gray-600 hstack items-start gap-2 lg:gap-3 px-3 py-4 lg:p-4 bg-secondary dark:bg-gray-800 hover:shadow-sm transition-all"
+                          className="panel px-3 py-4 lg:p-4 rounded-2 bg-secondary dark:bg-gray-800 lg:hover:scale-105 duration-150 transition-all"
                         >
-                          <div className="cstack w-80px h-80px rounded lg:rounded-2 bg-white dark:bg-gray-900 flex-shrink-0">
-                            <Icon
-                              className="text-primary"
-                              style={{ width: `${iconRem}rem`, height: `${iconRem}rem` }}
-                              aria-hidden
-                            />
-                          </div>
-                          <div className="vstack justify-center flex-grow-1 min-w-0 gap-2">
-                            <h3 className="h6 lg:h5 m-0 text-gray-900 dark:text-white">{title}</h3>
-                            <p className="fs-7 lg:fs-6 text-gray-700 dark:text-gray-300 m-0">{description}</p>
-                            <a
-                              href={href}
-                              className="uc-link fw-bold hstack gap-narrow self-start"
-                              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                            >
-                              <span>{cta}</span>
-                              <i className="position-relative icon icon-1 unicon-arrow-right rtl:rotate-180 translate-y-px" />
-                            </a>
+                          <div className="hstack gap-2 lg:gap-3 items-start">
+                            <div className="cstack w-64px h-64px lg:w-80px lg:h-80px rounded lg:rounded-2 bg-white dark:bg-gray-800 flex-shrink-0">
+                              <Icon
+                                className="text-primary"
+                                style={{ width: `${iconRem}rem`, height: `${iconRem}rem` }}
+                                aria-hidden
+                              />
+                            </div>
+                            <div className="vstack justify-center min-w-0 flex-1 gap-2">
+                              <h3 className="h6 lg:h5 m-0 text-gray-900 dark:text-white">{title}</h3>
+                              <p className="fs-7 lg:fs-6 opacity-70 dark:opacity-80 text-gray-800 dark:text-gray-200 m-0">
+                                {description}
+                              </p>
+                              <a
+                                href={href}
+                                className="uc-link fw-bold hstack gap-narrow self-start"
+                                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                              >
+                                <span>{cta}</span>
+                                <i className="position-relative icon icon-1 unicon-arrow-right rtl:rotate-180 translate-y-px" />
+                              </a>
+                            </div>
                           </div>
                         </div>
                       ))}

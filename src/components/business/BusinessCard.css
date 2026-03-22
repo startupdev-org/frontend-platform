@@ -79,6 +79,35 @@
   font-weight: 400;
 }
 
+.business-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.business-address-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.business-address {
+  flex: 1;
+  min-width: 0;
+}
+
+.business-rating {
+  flex-shrink: 0;
+}
+
+.business-rating .ml-2 {
+  font-size: 13px;
+  color: #374151;
+  font-weight: 500;
+}
+
 .business-address {
   display: flex;
   align-items: center;
@@ -93,11 +122,42 @@
   flex-shrink: 0;
 }
 
-.starting {
-  margin: 0 0 16px;
+.business-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 12px;
+  gap: 12px;
+  padding: 0 0 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.phone-number {
+  margin: 0;
   font-weight: 500;
   color: #374151;
   font-size: 14px;
+  flex: 1;
+}
+
+.phone-link {
+  text-decoration: none;
+  color: #374151;
+  transition: color 0.2s ease;
+}
+
+.phone-link:hover {
+  color: #0f8465;
+  text-decoration: underline;
+}
+
+.closing-time {
+  margin: 0;
+  font-weight: 400;
+  color: #6b7280;
+  font-size: 13px;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .card-expand {
@@ -106,7 +166,6 @@
   transition: all 0.3s ease;
   margin-top: 0;
   padding-top: 16px;
-  border-top: 1px solid #f3f4f6;
   bottom: -30px;
   position: relative;
   flex: 1 1 auto;
@@ -126,9 +185,11 @@
   border-bottom: 1px solid rgba(243, 244, 246, 0.8);
 }
 
-.service:last-child {
+/* Last service row — book button is the actual :last-child, so use last div-of-type */
+.card-expand > .service:last-of-type {
   border-bottom: none;
   padding-bottom: 0;
+  margin-bottom: 20px;
 }
 
 .service strong {

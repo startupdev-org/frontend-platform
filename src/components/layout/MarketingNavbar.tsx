@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import type { CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { MARKETING_NICHES } from '../../data/marketingNiches';
 import './MarketingNavbar.css';
 
 const NAVBAR_HEIGHT = 80;
@@ -21,18 +22,13 @@ const SOLUTIONS = [
   { icon: '/assets/images/custom-icons/icon-08.svg', title: 'Automatizare bazată pe AI', desc: 'Oferta noastră de servicii' },
 ];
 
-const NICHES = [
-  { icon: '/assets/images/custom-icons/icon-01.svg', title: 'Frizerii', category: 'barbershop', desc: 'Tunsori, bărbierit și îngrijire pentru bărbați.' },
-  { icon: '/assets/images/custom-icons/icon-02.svg', title: 'Saloane de înfrumusețare', category: 'salon', desc: 'Coafor, machiaj și tratamente de înfrumusețare.' },
-  { icon: '/assets/images/custom-icons/icon-03.svg', title: 'Spa & wellness', category: 'spa', desc: 'Relaxare, masaje și tratamente corporale.' },
-  { icon: '/assets/images/custom-icons/icon-05.svg', title: 'Saloane de unghii', category: 'nails', desc: 'Manichiură, pedichiură și nail art.' },
-];
-
 type MarketingNavbarProps = {
   solidBackground?: boolean;
 };
 
 export default function MarketingNavbar({ solidBackground = false }: MarketingNavbarProps) {
+  const navigate = useNavigate();
+  const routerLocation = useLocation();
   const [openPlatforma, setOpenPlatforma] = useState(false);
   const [openResources, setOpenResources] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -155,7 +151,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
               <div className="uc-navbar min-h-64px lg:min-h-80px text-dark dark:text-white">
                 <div className="uc-navbar-left gap-6 flex items-center">
                   <div className="uc-logo ltr:ms-1 rtl:me-1">
-                    <Link to="/business" className="panel text-none">
+                    <Link to="/" className="panel text-none">
                       <img className="dark:d-none" src="/assets/images/common/logo-11.svg" alt="Business Platform" />
                       <img className="d-none dark:d-block" src="/assets/images/common/logo-11-dark.svg" alt="Business Platform" />
                     </Link>
@@ -308,7 +304,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                               style={{ width: 420 }}
                             >
                               <ul className="uc-nav uc-navbar-dropdown-nav marketing-categories-dropdown py-1">
-                                {NICHES.map((niche) => (
+                                {MARKETING_NICHES.map((niche) => (
                                   <li key={niche.title}>
                                     <Link
                                       to={`/?category=${encodeURIComponent(niche.category)}`}
@@ -383,7 +379,7 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
           <div className="uc-offcanvas-bar position-fixed top-0 end-0 h-100 w-280px max-w-90vw bg-white dark:bg-gray-800 dark:text-white shadow-xl z-999 overflow-auto lg:d-none">
             <div className="p-4 vstack gap-4">
               <div className="hstack justify-between items-center">
-                <Link to="/business" className="h5 text-none text-gray-900 dark:text-white" onClick={() => setMobileMenuOpen(false)}>
+                <Link to="/" className="h5 text-none text-gray-900 dark:text-white" onClick={() => setMobileMenuOpen(false)}>
                   <img className="w-32px dark:d-none" src="/assets/images/common/logo-11.svg" alt="Business Platform" />
                   <img className="w-32px d-none dark:d-block" src="/assets/images/common/logo-11-dark.svg" alt="Business Platform" />
                 </Link>
@@ -496,7 +492,23 @@ export default function MarketingNavbar({ solidBackground = false }: MarketingNa
                 <form
                   className="hstack gap-1 mt-4 border-bottom p-narrow dark:border-gray-700"
                   action="?"
-                  onSubmit={(e) => e.preventDefault()}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const fd = new FormData(e.currentTarget);
+                    const q = String(fd.get('q') ?? '').trim();
+                    const onMarketplace =
+                      routerLocation.pathname === '/' || routerLocation.pathname === '/businesses';
+                    const p = onMarketplace ? new URLSearchParams(routerLocation.search) : new URLSearchParams();
+                    if (q) p.set('q', q);
+                    else p.delete('q');
+                    const search = p.toString();
+                    if (!q && !onMarketplace) {
+                      setSearchOpen(false);
+                      return;
+                    }
+                    navigate(search ? `/?${search}` : '/', { replace: false });
+                    setSearchOpen(false);
+                  }}
                 >
                   <span className="d-inline-flex justify-center items-center w-24px sm:w-40 h-24px sm:h-40px opacity-50">
                     <i className="unicon-search icon-3" />

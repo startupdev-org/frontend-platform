@@ -28,7 +28,6 @@ export const businessService = {
       params,
       headers: authHeaders(),
     });
-    console.log(response.data);
     return response.data;
 
   },
