@@ -11,9 +11,12 @@ import type { BusinessFilters, WorkingHours } from '../../types/business';
 import './MarketplacePage.css';
 
 const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
+/** How many business cards to show per UI page */
 const PAGE_SIZE = 6;
-const FETCH_PAGE: Pick<BusinessFilters, 'page' | 'size'> = { page: 0, size: 500 };
-const FACET_FILTERS: BusinessFilters = { ...FETCH_PAGE };
+/** City dropdown: how many businesses to fetch to derive city options */
+const CITY_FACET_FETCH_SIZE = 200;
+/** "Open today" mode (client-only): how many businesses to fetch, then filter+paginate in the UI */
+const OPEN_TODAY_FETCH_SIZE = 200;
 
 function resolveCategoryOrNameQuery(raw: string): { category: string | null; q: string | null } {
   const t = raw.trim();
@@ -90,18 +93,44 @@ export default function MarketplacePage() {
     return Number.isFinite(n) && n >= 1 ? n : 1;
   }, [urlParams]);
 
-  const listFilters = useMemo(
+  const facetFilters = useMemo(
     (): BusinessFilters => ({
-      ...FETCH_PAGE,
-      category: categoryParam || undefined,
-      city: cityParam || undefined,
-      search: qParam || undefined,
+      page: 0,
+      size: CITY_FACET_FETCH_SIZE,
     }),
-    [categoryParam, cityParam, qParam],
+    [],
   );
 
-  const { businesses: serverBusinesses, isLoading, error } = useBusinesses(listFilters);
-  const { businesses: facetBusinesses, isLoading: citiesLoading } = useBusinesses(FACET_FILTERS);
+  const listFilters = useMemo(
+    (): BusinessFilters => {
+      const common = {
+        category: categoryParam || undefined,
+        city: cityParam || undefined,
+        search: qParam || undefined,
+      };
+
+      if (openTodayParam) {
+        // Client-side filtering/pagination only possible with a bounded fetch window.
+        return {
+          page: 0,
+          size: OPEN_TODAY_FETCH_SIZE,
+          ...common,
+        };
+      }
+
+      // Server-side pagination (efficient network usage).
+      return {
+        page: pageOneBased - 1,
+        size: PAGE_SIZE,
+        ...common,
+      };
+    },
+    [categoryParam, cityParam, qParam, openTodayParam, openTodayParam ? 0 : pageOneBased],
+  );
+
+  const { businesses: serverBusinesses, totalPages: serverTotalPages, isLoading, error } =
+    useBusinesses(listFilters);
+  const { businesses: facetBusinesses, isLoading: citiesLoading } = useBusinesses(facetFilters);
 
   const displayFromUrl = useMemo(
     () => displayCategoryOrSearchFromUrl(categoryParam, qParam),
@@ -189,34 +218,47 @@ export default function MarketplacePage() {
   }, [pageOneBased, scrollToResults]);
 
   const openFiltered = useMemo(() => {
-    if (!openTodayParam) return serverBusinesses;
+    if (!openTodayParam) return [];
     const now = new Date();
     return serverBusinesses.filter((b) => isOpenToday(b.working_hours, now));
   }, [serverBusinesses, openTodayParam]);
 
-  const listPageCount = useMemo(
-    () => Math.max(1, Math.ceil(openFiltered.length / PAGE_SIZE)),
-    [openFiltered],
-  );
+  const listPageCount = useMemo(() => {
+    if (!openTodayParam) return Math.max(1, serverTotalPages || 1);
+    return Math.max(1, Math.ceil(openFiltered.length / PAGE_SIZE));
+  }, [openTodayParam, serverTotalPages, openFiltered.length]);
 
   const businesses = useMemo(() => {
+    if (!openTodayParam) return serverBusinesses;
     const start = (pageOneBased - 1) * PAGE_SIZE;
     return openFiltered.slice(start, start + PAGE_SIZE);
-  }, [openFiltered, pageOneBased]);
+  }, [openTodayParam, serverBusinesses, openFiltered, pageOneBased]);
 
   useEffect(() => {
     if (isLoading || error) return;
-    if (openFiltered.length === 0) {
-      if (pageOneBased > 1) navigateSearch((p) => p.delete('page'), true);
+    if (pageOneBased > listPageCount) {
+      navigateSearch(
+        (p) => {
+          if (listPageCount <= 1) p.delete('page');
+          else p.set('page', String(listPageCount));
+        },
+        true,
+      );
       return;
     }
-    if (pageOneBased > listPageCount) {
-      navigateSearch((p) => {
-        if (listPageCount <= 1) p.delete('page');
-        else p.set('page', String(listPageCount));
-      }, true);
+
+    if (openTodayParam && openFiltered.length === 0 && pageOneBased > 1) {
+      navigateSearch((p) => p.delete('page'), true);
     }
-  }, [isLoading, error, openFiltered.length, listPageCount, pageOneBased, navigateSearch]);
+  }, [
+    isLoading,
+    error,
+    openTodayParam,
+    listPageCount,
+    pageOneBased,
+    openFiltered.length,
+    navigateSearch,
+  ]);
 
   const isResetMode = hasUrlFilters && draftMatchesAppliedUrl;
 

@@ -11,7 +11,7 @@ function authHeaders() {
 }
 
 export const businessService = {
-  async getAll(filters: BusinessFilters): Promise<PaginatedResponse<Business>> {
+  async getAll(filters: BusinessFilters, signal?: AbortSignal): Promise<PaginatedResponse<Business>> {
     const params: Record<string, unknown> = {
       page: filters.page,
       size: filters.size,
@@ -27,9 +27,10 @@ export const businessService = {
     const response = await axios.get<PaginatedResponse<Business>>(REST_API_BASE_URL, {
       params,
       headers: authHeaders(),
+      signal,
     });
-    return response.data;
 
+    return response.data;
   },
 
   async getBySlug(slug: string): Promise<Business | null> {

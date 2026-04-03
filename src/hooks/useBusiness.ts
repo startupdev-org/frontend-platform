@@ -1,54 +1,165 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { businessService } from '../services/business.service';
-import { Business, BusinessFilters } from '../types/business';
+import { Business, BusinessFilters, PaginatedResponse, UseBusinessesReturn } from '../types/business';
 
-export const useBusinesses = (filters: BusinessFilters) => {
+type BusinessesCacheEntry = {
+  data: PaginatedResponse<Business>;
+  cachedAt: number;
+};
+
+type BusinessesInFlightEntry = {
+  controller: AbortController;
+  promise: Promise<PaginatedResponse<Business>>;
+  waiterCount: number;
+  settled: boolean;
+};
+
+// Simple in-memory cache to avoid repeating identical requests (navigation/filter toggles).
+const BUSINESSES_CACHE_TTL_MS = 60_000;
+const businessesCache = new Map<string, BusinessesCacheEntry>();
+const businessesInFlight = new Map<string, BusinessesInFlightEntry>();
+
+export const useBusinesses = (filters: BusinessFilters): UseBusinessesReturn => {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [totalElements, setTotalElements] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const filtersKey = useMemo(
+    () =>
+      JSON.stringify({
+        page: filters.page,
+        size: filters.size,
+        search: filters.search ?? null,
+        category: filters.category ?? null,
+        minPrice: filters.minPrice ?? null,
+        maxPrice: filters.maxPrice ?? null,
+        city: filters.city ?? null,
+        minRating: filters.minRating ?? null,
+      }),
+    [
+      filters.page,
+      filters.size,
+      filters.search,
+      filters.category,
+      filters.minPrice,
+      filters.maxPrice,
+      filters.city,
+      filters.minRating,
+    ],
+  );
+
   useEffect(() => {
-    const fetchBusinesses = async () => {
-      try {
-        setIsLoading(true);
-        const data = await businessService.getAll(filters);
-        setBusinesses(data.content);
-        setTotalElements(data.numberOfElemets);
-        setTotalPages(data.totalPages);
-      } catch (err) {
-        const anyErr = err as any;
-        const status = anyErr?.response?.status as number | undefined;
-        const backendMessage =
-          anyErr?.response?.data?.message ??
-          anyErr?.response?.data?.error ??
-          (typeof anyErr?.response?.data === 'string' ? anyErr.response.data : undefined);
+    let didCancel = false;
 
-        const prefix = status ? `Failed to load businesses (${status})` : 'Failed to load businesses';
-        const hint =
-          status === 403
-            ? ' (If the endpoint is protected, ensure your auth token is configured.)'
-            : '';
+    const cached = businessesCache.get(filtersKey);
+    if (cached && Date.now() - cached.cachedAt <= BUSINESSES_CACHE_TTL_MS) {
+      setBusinesses(cached.data.content);
+      setTotalElements(cached.data.totalElements ?? cached.data.numberOfElements);
+      setTotalPages(cached.data.totalPages);
+      setError(null);
+      setIsLoading(false);
+      return () => {
+        didCancel = true;
+      };
+    }
 
-        setError(backendMessage ? `${prefix}: ${backendMessage}${hint}` : `${prefix}${hint}`);
+    const entry = businessesInFlight.get(filtersKey);
+    if (entry) {
+      entry.waiterCount += 1;
+      setIsLoading(true);
+      setError(null);
 
-      } finally {
-        setIsLoading(false);
-      }
+      entry.promise
+        .then((data) => {
+          if (didCancel) return;
+          setBusinesses(data.content);
+          setTotalElements(data.totalElements ?? data.numberOfElements);
+          setTotalPages(data.totalPages);
+          setError(null);
+        })
+        .catch((err: unknown) => {
+          if (didCancel) return;
+          const anyErr = err as {
+            response?: { status?: number; data?: { message?: string; error?: string } };
+          };
+          const status = anyErr?.response?.status;
+          const backendMessage = anyErr?.response?.data?.message ?? anyErr?.response?.data?.error;
+
+          setError(
+            backendMessage
+              ? `Failed to load businesses (${status}): ${backendMessage}`
+              : 'Failed to load businesses',
+          );
+        })
+        .finally(() => {
+          if (didCancel) return;
+          setIsLoading(false);
+        });
+
+      return () => {
+        didCancel = true;
+        entry.waiterCount -= 1;
+        if (entry.waiterCount <= 0 && !entry.settled) {
+          entry.controller.abort();
+          businessesInFlight.delete(filtersKey);
+        }
+      };
+    }
+
+    const controller = new AbortController();
+    const promise = businessService.getAll(filters, controller.signal);
+    const newEntry: BusinessesInFlightEntry = {
+      controller,
+      promise,
+      waiterCount: 1,
+      settled: false,
     };
 
-    fetchBusinesses();
-  }, [
-    filters.page,
-    filters.size,
-    filters.search,
-    filters.category,
-    filters.minPrice,
-    filters.maxPrice,
-    filters.city,
-    filters.minRating,
-  ]);
+    businessesInFlight.set(filtersKey, newEntry);
+    setIsLoading(true);
+    setError(null);
+
+    promise
+      .then((data) => {
+        businessesCache.set(filtersKey, { data, cachedAt: Date.now() });
+        if (didCancel) return;
+        setBusinesses(data.content);
+        setTotalElements(data.totalElements ?? data.numberOfElements);
+        setTotalPages(data.totalPages);
+        setError(null);
+      })
+      .catch((err: unknown) => {
+        if (didCancel) return;
+        const anyErr = err as {
+          response?: { status?: number; data?: { message?: string; error?: string } };
+        };
+        const status = anyErr?.response?.status;
+        const backendMessage = anyErr?.response?.data?.message ?? anyErr?.response?.data?.error;
+
+        setError(
+          backendMessage
+            ? `Failed to load businesses (${status}): ${backendMessage}`
+            : 'Failed to load businesses',
+        );
+      })
+      .finally(() => {
+        newEntry.settled = true;
+        businessesInFlight.delete(filtersKey);
+        if (didCancel) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      didCancel = true;
+      newEntry.waiterCount -= 1;
+      if (newEntry.waiterCount <= 0 && !newEntry.settled) {
+        newEntry.controller.abort();
+        businessesInFlight.delete(filtersKey);
+      }
+    };
+  }, [filtersKey]);
 
   return { businesses, totalElements, totalPages, isLoading, error };
 };
@@ -68,8 +179,13 @@ export const useBusiness = (slug?: string) => {
       try {
         const data = await businessService.getBySlug(slug);
         setBusiness(data);
-      } catch (err) {
-        setError('Failed to load business');
+      } catch (err: unknown) {
+        const anyErr = err as { response?: { status?: number; data?: { message?: string; error?: string } } };
+        const status = anyErr?.response?.status;
+        const backendMessage = anyErr?.response?.data?.message ?? anyErr?.response?.data?.error;
+        setError(
+          backendMessage ? `Failed to load business (${status}): ${backendMessage}` : 'Failed to load business',
+        );
       } finally {
         setIsLoading(false);
       }
