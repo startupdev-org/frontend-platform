@@ -61,11 +61,19 @@ export interface BusinessFilters {
 }
 
 export interface PaginatedResponse<T> {
-  content: T[];
-  totalPages: number;
-  numberOfElemets: number;
-  number: number;
-  size: number;
-  first: boolean;
-  last: boolean;
+  content: T[];             // List of businesses
+  totalPages: number;       // Total number of pages
+  numberOfElements: number; // Number of elements on the current page
+  size: number;             // Page size
+  number: number;           // Current page number (0-based)
+  first: boolean;           // Whether it's the first page
+  last: boolean;            // Whether it's the last page
 }
+
+export interface UseBusinessesReturn {
+  businesses: Business[];
+  totalElements: number;
+  totalPages: number;
+  isLoading: boolean;
+  error: string | null;
+};

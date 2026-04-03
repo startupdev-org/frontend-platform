@@ -12,6 +12,7 @@ function authHeaders() {
 
 export const businessService = {
   async getAll(filters: BusinessFilters): Promise<PaginatedResponse<Business>> {
+    console.log('getting the businesses')
     const params: Record<string, unknown> = {
       page: filters.page,
       size: filters.size,
@@ -28,6 +29,8 @@ export const businessService = {
       params,
       headers: authHeaders(),
     });
+
+    console.log('response: ', response)
     return response.data;
 
   },

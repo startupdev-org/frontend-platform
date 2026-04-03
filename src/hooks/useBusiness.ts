@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { businessService } from '../services/business.service';
-import { Business, BusinessFilters } from '../types/business';
+import { Business, BusinessFilters, PaginatedResponse, UseBusinessesReturn } from '../types/business';
 
-export const useBusinesses = (filters: BusinessFilters) => {
+
+
+export const useBusinesses = (filters: BusinessFilters): UseBusinessesReturn => {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [totalElements, setTotalElements] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -13,26 +15,26 @@ export const useBusinesses = (filters: BusinessFilters) => {
     const fetchBusinesses = async () => {
       try {
         setIsLoading(true);
-        const data = await businessService.getAll(filters);
-        setBusinesses(data.content);
-        setTotalElements(data.numberOfElemets);
-        setTotalPages(data.totalPages);
-      } catch (err) {
-        const anyErr = err as any;
-        const status = anyErr?.response?.status as number | undefined;
+        setError(null);
+
+        // Fetch the paginated businesses data
+        const data: PaginatedResponse<Business> = await businessService.getAll(filters);
+
+        // Set the state from the paginated response
+        setBusinesses(data.content); // List of businesses
+        setTotalElements(data.numberOfElements); // Total number of businesses
+        setTotalPages(data.totalPages); // Total pages
+      } catch (err: any) {
+        const status = err?.response?.status;
         const backendMessage =
-          anyErr?.response?.data?.message ??
-          anyErr?.response?.data?.error ??
-          (typeof anyErr?.response?.data === 'string' ? anyErr.response.data : undefined);
+          err?.response?.data?.message ??
+          err?.response?.data?.error;
 
-        const prefix = status ? `Failed to load businesses (${status})` : 'Failed to load businesses';
-        const hint =
-          status === 403
-            ? ' (If the endpoint is protected, ensure your auth token is configured.)'
-            : '';
-
-        setError(backendMessage ? `${prefix}: ${backendMessage}${hint}` : `${prefix}${hint}`);
-
+        setError(
+          backendMessage
+            ? `Failed to load businesses (${status}): ${backendMessage}`
+            : 'Failed to load businesses'
+        );
       } finally {
         setIsLoading(false);
       }
@@ -40,9 +42,9 @@ export const useBusinesses = (filters: BusinessFilters) => {
 
     fetchBusinesses();
   }, [
-    filters.page,
-    filters.size,
-    filters.search,
+    filters.page,   // Trigger re-fetch when page changes
+    filters.size,   // Trigger re-fetch when page size changes
+    filters.search, // Trigger re-fetch when search term changes
     filters.category,
     filters.minPrice,
     filters.maxPrice,

@@ -12,7 +12,7 @@ import './MarketplacePage.css';
 
 const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 const PAGE_SIZE = 6;
-const FETCH_PAGE: Pick<BusinessFilters, 'page' | 'size'> = { page: 0, size: 500 };
+const FETCH_PAGE: Pick<BusinessFilters, 'page' | 'size'> = { page: 0, size: 6 };
 const FACET_FILTERS: BusinessFilters = { ...FETCH_PAGE };
 
 function resolveCategoryOrNameQuery(raw: string): { category: string | null; q: string | null } {
