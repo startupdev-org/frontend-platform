@@ -5,6 +5,7 @@ import { Business } from '../../types/business';
 import type { Service } from '../../types/service';
 import type { WorkingHours } from '../../types/business';
 import RatingStars from './RatingStars';
+import { businessCategoryRaw, resolveMarketplaceCategorySlug } from '../../data/marketingNiches';
 import './BusinessCard.css';
 
 const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
@@ -41,30 +42,32 @@ function getTodayClosingTime(workingHours: WorkingHours | undefined, date: Date)
 
 function formatPhoneNumber(phone: string | null): { formatted: string; callable: string } {
   if (!phone) return { formatted: 'Telefon indisponibil', callable: '' };
-  
-  // Remove all non-digit characters
+
   const digits = phone.replace(/\D/g, '');
-  
-  // Handle Moldova numbers (+373)
+
   if (digits.startsWith('373') && digits.length === 11) {
-    const number = digits.slice(3); // Remove 373
+    const number = digits.slice(3);
     return {
       formatted: `+373 (${number.slice(0, 2)}) ${number.slice(2, 5)} ${number.slice(5)}`,
-      callable: `+${digits}`
+      callable: `+${digits}`,
     };
   }
-  
-  // Handle local Moldova numbers (starting with 0)
+
   if (digits.startsWith('0') && digits.length === 9) {
-    const number = digits.slice(1); // Remove leading 0
+    const number = digits.slice(1);
     return {
       formatted: `+373 (${number.slice(0, 2)}) ${number.slice(2, 5)} ${number.slice(5)}`,
-      callable: `+373${number}`
+      callable: `+373${number}`,
     };
   }
-  
-  // Return original if format doesn't match
+
   return { formatted: phone, callable: phone };
+}
+
+function businessPublicPath(business: Business) {
+  const slug = resolveMarketplaceCategorySlug(businessCategoryRaw(business) || undefined);
+  const qs = slug ? `?category=${encodeURIComponent(slug)}` : '';
+  return `/${business.slug}${qs}`;
 }
 
 export default function BusinessCard({ business }: BusinessCardProps) {
@@ -86,9 +89,9 @@ export default function BusinessCard({ business }: BusinessCardProps) {
       className="card marketplace-equal-height-card"
       role="link"
       tabIndex={0}
-      onClick={() => navigate(`/${business.slug}`)}
+      onClick={() => navigate(businessPublicPath(business))}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') navigate(`/${business.slug}`);
+        if (e.key === 'Enter') navigate(businessPublicPath(business));
       }}
     >
       <div

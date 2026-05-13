@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { businessService } from '../services/business.service';
 import { Business, BusinessFilters, PaginatedResponse, UseBusinessesReturn } from '../types/business';
 
-
-
 export const useBusinesses = (filters: BusinessFilters): UseBusinessesReturn => {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -17,23 +15,19 @@ export const useBusinesses = (filters: BusinessFilters): UseBusinessesReturn => 
         setIsLoading(true);
         setError(null);
 
-        // Fetch the paginated businesses data
         const data: PaginatedResponse<Business> = await businessService.getAll(filters);
 
-        // Set the state from the paginated response
-        setBusinesses(data.content); // List of businesses
-        setTotalElements(data.numberOfElements); // Total number of businesses
-        setTotalPages(data.totalPages); // Total pages
+        setBusinesses(data.content);
+        setTotalElements(data.numberOfElements);
+        setTotalPages(data.totalPages);
       } catch (err: any) {
         const status = err?.response?.status;
-        const backendMessage =
-          err?.response?.data?.message ??
-          err?.response?.data?.error;
+        const backendMessage = err?.response?.data?.message ?? err?.response?.data?.error;
 
         setError(
           backendMessage
             ? `Failed to load businesses (${status}): ${backendMessage}`
-            : 'Failed to load businesses'
+            : 'Failed to load businesses',
         );
       } finally {
         setIsLoading(false);
@@ -42,9 +36,9 @@ export const useBusinesses = (filters: BusinessFilters): UseBusinessesReturn => 
 
     fetchBusinesses();
   }, [
-    filters.page,   // Trigger re-fetch when page changes
-    filters.size,   // Trigger re-fetch when page size changes
-    filters.search, // Trigger re-fetch when search term changes
+    filters.page,
+    filters.size,
+    filters.search,
     filters.category,
     filters.minPrice,
     filters.maxPrice,
@@ -82,4 +76,3 @@ export const useBusiness = (slug?: string) => {
 
   return { business, isLoading, error };
 };
-

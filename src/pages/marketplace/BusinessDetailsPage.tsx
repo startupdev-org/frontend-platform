@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
+  ArrowLeftIcon,
   BanknotesIcon,
   CalendarDaysIcon,
   ClipboardDocumentCheckIcon,
@@ -24,6 +25,11 @@ import { useBusiness } from '../../hooks/useBusiness';
 import { Service } from '../../types/service';
 import { Employee } from '../../types/employee';
 import { Review, RatingBreakdown } from '../../types/review';
+import {
+  breadcrumbCategoryDisplay,
+  businessCategoryRaw,
+  resolveMarketplaceCategorySlug,
+} from '../../data/marketingNiches';
 
 const DEFAULT_PHOTOS = [
   'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1600&q=80',
@@ -32,11 +38,119 @@ const DEFAULT_PHOTOS = [
   'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1600&q=80',
 ] as const;
 
+const DETAIL_SECTION_NAV = [
+  { id: 'services', label: 'Servicii' },
+  { id: 'team', label: 'Echipă' },
+  { id: 'reviews', label: 'Recenzii' },
+  { id: 'about', label: 'Despre' },
+  { id: 'photos', label: 'Fotografii' },
+] as const;
+
+const MOBILE_TOPBAR_SCROLL_THRESHOLD = 200;
+
 export default function BusinessTestPage() {
   const { slug } = useParams<{ slug: string }>();
+  const [searchParams] = useSearchParams();
   const { business, isLoading } = useBusiness(slug);
-  const services: Service[] = [];
-  const employees: Employee[] = [];
+  const services: Service[] = useMemo(() => {
+    if (!business) return [];
+    const rawServices = (
+      (business as unknown as { providedServices?: unknown[] }).providedServices ??
+      (business as unknown as { services?: unknown[] }).services ??
+      []
+    ) as Array<Record<string, unknown>>;
+
+    return rawServices.map((s) => ({
+      id: String(s.id ?? ''),
+      business_id: String(s.business_id ?? s.businessId ?? business.id ?? ''),
+      name: String(s.name ?? ''),
+      description: (s.description as string | null) ?? null,
+      price: Number(s.price ?? 0),
+      duration_minutes: Number(s.duration_minutes ?? s.durationMinutes ?? 0),
+      is_active: typeof s.is_active === 'boolean' ? s.is_active : s.active !== false,
+      created_at: String(s.created_at ?? s.createdAt ?? ''),
+    }));
+  }, [business]);
+
+  const employees: Employee[] = useMemo(() => {
+    if (!business) return [];
+    const rawEmployees = (
+      (business as unknown as { employeeList?: unknown[] }).employeeList ??
+      (business as unknown as { employees?: unknown[] }).employees ??
+      []
+    ) as Array<Record<string, unknown>>;
+
+    return rawEmployees.map((e) => ({
+      id: String(e.id ?? ''),
+      business_id: String(e.business_id ?? e.businessId ?? business.id ?? ''),
+      name: String(e.name ?? ''),
+      photoUrl: (e.photoUrl as string | null) ?? (e.photo_url as string | null) ?? null,
+      position: (e.position as string | null) ?? null,
+      bio: (e.bio as string | null) ?? null,
+      is_active: typeof e.is_active === 'boolean' ? e.is_active : e.active !== false,
+      created_at: String(e.created_at ?? e.createdAt ?? ''),
+    }));
+  }, [business]);
+
+  const ratingValue = useMemo(() => {
+    if (!business) return 0;
+    const fromSnake = (business as unknown as { average_rating?: number | null }).average_rating;
+    const fromCamel = (business as unknown as { ratingOverall?: number | null }).ratingOverall;
+    return Number(fromSnake ?? fromCamel ?? 0);
+  }, [business]);
+
+  const reviewCount = useMemo(() => {
+    if (!business) return 0;
+    const fromSnake = (business as unknown as { review_count?: number | null }).review_count;
+    const fromCamel = (business as unknown as { reviewCount?: number | null }).reviewCount;
+    return Number(fromSnake ?? fromCamel ?? 0);
+  }, [business]);
+
+  const businessLogo = useMemo(() => {
+    if (!business) return null;
+    const fromSnake = (business as unknown as { logo_url?: string | null }).logo_url;
+    const fromCamel = (business as unknown as { logoUrl?: string | null }).logoUrl;
+    return fromSnake ?? fromCamel ?? null;
+  }, [business]);
+  const businessEmail = useMemo(() => {
+    if (!business) return null;
+    return (business as unknown as { owner?: { email?: string | null } | null }).owner?.email ?? null;
+  }, [business]);
+
+  const breadcrumbCategoryLabel = useMemo(() => {
+    if (!business) return null;
+    const raw = businessCategoryRaw(business) || undefined;
+    const fromUrl = searchParams.get('category')?.trim() || undefined;
+    return breadcrumbCategoryDisplay(raw, fromUrl);
+  }, [business, searchParams]);
+
+  const mapEmbedSrc = useMemo(() => {
+    if (!business) return '';
+    const addr = (business.address ?? '').trim();
+    const city = (business.city ?? '').trim();
+    const line = [addr, city].filter(Boolean).join(', ');
+    if (line) {
+      return `https://www.google.com/maps?q=${encodeURIComponent(line)}&z=18&output=embed`;
+    }
+    const lat = business.latitude;
+    const lng = business.longitude;
+    if (lat != null && lng != null && Number.isFinite(Number(lat)) && Number.isFinite(Number(lng))) {
+      return `https://www.google.com/maps?q=${encodeURIComponent(`${lat},${lng}`)}&z=18&output=embed`;
+    }
+    return '';
+  }, [business]);
+
+  const homeBackWithCategoryHref = useMemo(() => {
+    const fromUrl = searchParams.get('category')?.trim();
+    if (fromUrl) return `/?category=${encodeURIComponent(fromUrl)}`;
+
+    if (!business) return '/';
+
+    const slug = resolveMarketplaceCategorySlug(businessCategoryRaw(business) || undefined);
+    if (slug) return `/?category=${encodeURIComponent(slug)}`;
+    return '/';
+  }, [searchParams, business]);
+
   const reviews: Review[] = [];
   const ratingBreakdown: RatingBreakdown = {
     overall: 0,
@@ -45,14 +159,12 @@ export default function BusinessTestPage() {
     price: 0,
   };
 
-  const [activeServiceCategory, setActiveServiceCategory] = useState<'featured' | 'brows' | 'facials' | 'hair'>(
-    'featured',
-  );
   const [selectedPhotoIdx, setSelectedPhotoIdx] = useState(0);
   const [transitionPhotoIdx, setTransitionPhotoIdx] = useState<number | null>(null);
   const [fadeIn, setFadeIn] = useState(false);
   const [copied, setCopied] = useState(false);
   const [activeNavSection, setActiveNavSection] = useState('services');
+  const [showMobileTopBar, setShowMobileTopBar] = useState(false);
 
   const photos = DEFAULT_PHOTOS;
 
@@ -106,6 +218,40 @@ export default function BusinessTestPage() {
     return () => window.clearInterval(interval);
   }, [photos.length, selectedPhotoIdx, transitionPhotoIdx]);
 
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1023px)');
+    const sectionIds = DETAIL_SECTION_NAV.map((s) => s.id);
+
+    const onScrollOrResize = () => {
+      if (mq.matches) {
+        setShowMobileTopBar(window.scrollY >= MOBILE_TOPBAR_SCROLL_THRESHOLD);
+      } else {
+        setShowMobileTopBar(false);
+      }
+
+      if (business?.slug) {
+        const markerY = Math.min(window.innerHeight * 0.32, 220);
+        let currentId = sectionIds[0];
+        for (const id of sectionIds) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          if (el.getBoundingClientRect().top <= markerY) currentId = id;
+        }
+        setActiveNavSection(currentId);
+      }
+    };
+
+    onScrollOrResize();
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+    mq.addEventListener('change', onScrollOrResize);
+    return () => {
+      window.removeEventListener('scroll', onScrollOrResize);
+      window.removeEventListener('resize', onScrollOrResize);
+      mq.removeEventListener('change', onScrollOrResize);
+    };
+  }, [business?.slug]);
+
   if (!slug) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -121,7 +267,7 @@ export default function BusinessTestPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 gap-4">
         <h1 className="text-xl font-semibold text-gray-900">Business negăsit</h1>
-        <Link to="/business" className="text-blue-600 hover:underline">
+        <Link to={homeBackWithCategoryHref} className="text-blue-600 hover:underline">
           Înapoi la piață
         </Link>
       </div>
@@ -136,11 +282,14 @@ export default function BusinessTestPage() {
     type DaySchedule = { open: string | null; close: string | null };
     type WorkingHoursShape = Record<Exclude<DayKey, never>, DaySchedule>;
 
-    type TimePart = { hour?: number | null; minute?: number | null } | null | undefined;
+    type TimePart = { hour?: number | null; minute?: number | null } | string | null | undefined;
     type RawWorkingHoursItem = {
       dayOfWeek?: string | null;
+      day_of_week?: string | null;
       openTime?: TimePart;
+      open_time?: TimePart;
       closeTime?: TimePart;
+      close_time?: TimePart;
     };
 
     const empty: WorkingHoursShape = {
@@ -168,6 +317,10 @@ export default function BusinessTestPage() {
 
     const formatTime = (t: TimePart): string | null => {
       if (!t) return null;
+      if (typeof t === 'string') {
+        const match = t.match(/^(\d{2}):(\d{2})/);
+        return match ? `${match[1]}:${match[2]}` : null;
+      }
       const hour = typeof t.hour === 'number' ? t.hour : Number(t.hour);
       const minute = typeof t.minute === 'number' ? t.minute : Number(t.minute);
       if (!Number.isFinite(hour) || !Number.isFinite(minute)) return null;
@@ -179,11 +332,11 @@ export default function BusinessTestPage() {
     }
 
     for (const item of raw) {
-      const key = dayMap[String(item?.dayOfWeek ?? '')];
+      const key = dayMap[String(item?.dayOfWeek ?? item?.day_of_week ?? '')];
       if (!key) continue;
       empty[key] = {
-        open: formatTime(item?.openTime),
-        close: formatTime(item?.closeTime),
+        open: formatTime(item?.openTime ?? item?.open_time),
+        close: formatTime(item?.closeTime ?? item?.close_time),
       };
     }
 
@@ -233,6 +386,10 @@ export default function BusinessTestPage() {
     }
   };
 
+  const sectionScrollClass = showMobileTopBar
+    ? 'scroll-mt-[calc(6.35rem+env(safe-area-inset-top,0px))] lg:scroll-mt-28'
+    : 'lg:scroll-mt-28';
+
   return (
     <>
       <Helmet>
@@ -241,7 +398,60 @@ export default function BusinessTestPage() {
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gray-50">
-        <main className="flex-1">
+        <header
+          className={[
+            'fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur-md transition-transform duration-200 ease-out will-change-transform lg:hidden',
+            showMobileTopBar ? 'translate-y-0' : '-translate-y-full pointer-events-none',
+          ].join(' ')}
+          style={{ paddingTop: 'max(0.35rem, env(safe-area-inset-top, 0px))' }}
+          aria-hidden={!showMobileTopBar}
+        >
+          <div className="flex items-center gap-2 px-3 py-2.5 sm:gap-3">
+            <Link
+              to={homeBackWithCategoryHref}
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-gray-700 hover:bg-gray-100"
+              aria-label="Înapoi la piață (marketplace)"
+            >
+              <ArrowLeftIcon className="h-5 w-5" />
+            </Link>
+            <p
+              className="min-w-0 flex-1 truncate text-left text-lg font-semibold leading-snug text-gray-900 sm:text-xl"
+              title={business.name}
+            >
+              {business.name}
+            </p>
+            <Link
+              to={`/book/${business.slug}`}
+              className="inline-flex flex-shrink-0 items-center gap-1 rounded-full bg-gray-900 px-2.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-gray-800 sm:gap-1.5 sm:px-3 sm:text-sm"
+              aria-label="Programează-te"
+            >
+              <CalendarDaysIcon className="h-4 w-4 shrink-0 sm:h-[1.125rem] sm:w-[1.125rem]" aria-hidden />
+              <span className="whitespace-nowrap">Programează-te</span>
+            </Link>
+          </div>
+          <nav
+            className="flex gap-1.5 overflow-x-auto px-3 pb-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label="Secțiuni pagină"
+          >
+            {DETAIL_SECTION_NAV.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => scrollToSection(t.id)}
+                className={[
+                  'flex-shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors',
+                  activeNavSection === t.id
+                    ? 'border-gray-900 bg-gray-900 text-white'
+                    : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50',
+                ].join(' ')}
+              >
+                {t.label}
+              </button>
+            ))}
+          </nav>
+        </header>
+
+        <main className="flex-1 lg:pt-0">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <section className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
               <div className="relative lg:hidden aspect-[4/3] w-full overflow-hidden bg-gray-100">
@@ -274,13 +484,22 @@ export default function BusinessTestPage() {
               <div className="px-5 sm:px-6 lg:px-8 pt-5 sm:pt-6">
                 <nav className="text-xs sm:text-sm text-gray-500 mb-4 overflow-x-auto" aria-label="Breadcrumb">
                   <div className="flex items-center min-w-0 whitespace-nowrap">
-                    <Link to="/business" className="hover:text-gray-700">Acasă</Link>
-                    <span className="mx-1.5">›</span>
-                    <span className="text-gray-400 truncate">{business.category}</span>
-                    <span className="mx-1.5 flex-shrink-0">›</span>
-                    <span className="text-gray-400 truncate">{business.city}</span>
-                    <span className="mx-1.5 flex-shrink-0">›</span>
-                    <span className="text-gray-900 font-medium truncate">{business.name}</span>
+                    {(() => {
+                      const crumbs = [
+                        <Link key="home" to={homeBackWithCategoryHref} className="hover:text-gray-700">Acasă</Link>,
+                        breadcrumbCategoryLabel ? (
+                          <span key="category" className="text-gray-400 truncate">{breadcrumbCategoryLabel}</span>
+                        ) : null,
+                        <span key="name" className="text-gray-900 font-medium truncate">{business.name}</span>,
+                      ].filter(Boolean);
+
+                      return crumbs.map((crumb, idx) => (
+                        <span key={idx} className="inline-flex items-center min-w-0">
+                          {idx > 0 && <span className="mx-1.5 flex-shrink-0">›</span>}
+                          {crumb}
+                        </span>
+                      ));
+                    })()}
                   </div>
                 </nav>
 
@@ -291,9 +510,9 @@ export default function BusinessTestPage() {
                     </h1>
                     <div className="flex flex-col gap-1.5 text-sm text-gray-600 lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-2 lg:gap-y-1">
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="font-semibold text-gray-900">{(business.average_rating ?? 0).toFixed(1)}</span>
-                        <RatingStars rating={business.average_rating ?? 0} size="sm" />
-                        <span className="text-gray-500">({business.review_count})</span>
+                        <span className="font-semibold text-gray-900">{ratingValue.toFixed(1)}</span>
+                        <RatingStars rating={ratingValue} size="sm" />
+                        <span className="text-gray-500">({reviewCount})</span>
                       </span>
                       <span className="hidden lg:inline text-gray-300">•</span>
                       <span className={openStatus.tone === 'good' ? 'text-emerald-600 font-medium' : 'text-gray-600'}>
@@ -434,7 +653,7 @@ export default function BusinessTestPage() {
 
             <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-8 space-y-6">
-                <section id="services" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <section id="services" className={`${sectionScrollClass} bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden`}>
                   <div className="p-5 sm:p-6">
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
                       <div>
@@ -451,45 +670,35 @@ export default function BusinessTestPage() {
                     {services.length === 0 ? (
                       <p className="mt-4 text-sm text-gray-500">Momentan nu sunt servicii configurate.</p>
                     ) : (
-                      <ul className="mt-4 divide-y divide-gray-100">
+                      <ul className="mt-4 space-y-3">
                         {services.map((s) => (
-                          <li key={s.id}>
-                            {s.name} | {s.description} | {s.price}
+                          <li
+                            key={s.id}
+                            className="rounded-xl border border-gray-200 bg-white px-4 py-3 sm:px-5 sm:py-4 transition-colors hover:border-gray-300"
+                          >
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="min-w-0">
+                                <h3 className="text-sm sm:text-base font-semibold text-gray-900">{s.name}</h3>
+                                {s.description && (
+                                  <p className="mt-1 text-sm text-gray-600 line-clamp-2">{s.description}</p>
+                                )}
+                              </div>
+                              <div className="flex-shrink-0 text-right">
+                                <p className="text-base sm:text-lg font-bold text-gray-900">{s.price} MDL</p>
+                                <p className="mt-1 text-xs text-gray-500">
+                                  {s.duration_minutes > 0 ? `${s.duration_minutes} min` : 'Durată flexibilă'}
+                                </p>
+                              </div>
+                            </div>
                           </li>
                         ))}
                       </ul>
                     )}
                   </div>
 
-                  <div className="mt-4 -mx-5 px-5 lg:mx-0 lg:mt-5 lg:px-0">
-                    <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-wrap lg:overflow-visible lg:pb-0">
-                      {(
-                        [
-                          { id: 'featured', label: 'Recomandate' },
-                          { id: 'brows', label: 'Sprâncene' },
-                          { id: 'facials', label: 'Tratamente faciale' },
-                          { id: 'hair', label: 'Păr' },
-                        ] as const
-                      ).map((c) => (
-                        <button
-                          key={c.id}
-                          type="button"
-                          onClick={() => setActiveServiceCategory(c.id)}
-                          className={[
-                            'flex-shrink-0 px-3 py-2 rounded-full text-sm font-semibold border',
-                            activeServiceCategory === c.id
-                              ? 'bg-gray-900 text-white border-gray-900'
-                              : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50',
-                          ].join(' ')}
-                        >
-                          {c.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </section>
 
-                <section id="team" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <section id="team" className={`${sectionScrollClass} bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden`}>
                   <div className="p-5 sm:p-6">
                     <div className="flex items-end justify-between gap-4">
                       <div>
@@ -541,32 +750,7 @@ export default function BusinessTestPage() {
                   </div>
                 </section>
 
-                <section id="photos" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-                  <div className="p-5 sm:p-6">
-                    <div className="flex items-end justify-between gap-4">
-                      <div>
-                        <h2 className="text-xl font-semibold text-gray-900">Fotografii</h2>
-                        <p className="mt-1 text-sm text-gray-600">O privire rapidă în studio.</p>
-                      </div>
-                      <span className="text-sm text-gray-600">{photos.length} fotografii</span>
-                    </div>
-                    <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-3">
-                      {photos.map((p, idx) => (
-                        <button
-                          key={p}
-                          type="button"
-                          onClick={() => startPhotoTransition(idx)}
-                          className="relative overflow-hidden rounded-xl border border-gray-200 hover:border-gray-300"
-                          aria-label={`Deschide fotografia ${idx + 1}`}
-                        >
-                          <img src={p} alt="" className="h-32 w-full object-cover" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-
-                <section id="reviews" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <section id="reviews" className={`${sectionScrollClass} bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden`}>
                   <div className="p-5 sm:p-6">
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                       <div>
@@ -576,7 +760,7 @@ export default function BusinessTestPage() {
                       <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-sm">
                         <RatingStars rating={ratingBreakdown.overall} size="sm" />
                         <span className="font-semibold text-gray-900">{ratingBreakdown.overall.toFixed(1)}</span>
-                        <span className="text-gray-600">({business.review_count})</span>
+                        <span className="text-gray-600">({reviewCount})</span>
                       </div>
                     </div>
 
@@ -584,13 +768,13 @@ export default function BusinessTestPage() {
                       <ReviewList
                         reviews={reviews}
                         businessName={business.name}
-                        businessAvatar={business.logo_url}
+                        businessAvatar={businessLogo}
                       />
                     </div>
                   </div>
                 </section>
 
-                <section id="about" className="scroll-mt-28 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                <section id="about" className={`${sectionScrollClass} bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden`}>
                   <div className="p-5 sm:p-6">
                     <h2 className="text-xl font-semibold text-gray-900">Despre</h2>
                     <p className="mt-3 text-gray-700 leading-relaxed max-w-2xl">
@@ -662,6 +846,31 @@ export default function BusinessTestPage() {
                     </div>
                   </div>
                 </section>
+
+                <section id="photos" className={`${sectionScrollClass} bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden`}>
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-end justify-between gap-4">
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-900">Fotografii</h2>
+                        <p className="mt-1 text-sm text-gray-600">O privire rapidă în studio.</p>
+                      </div>
+                      <span className="text-sm text-gray-600">{photos.length} fotografii</span>
+                    </div>
+                    <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {photos.map((p, idx) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => startPhotoTransition(idx)}
+                          className="relative overflow-hidden rounded-xl border border-gray-200 hover:border-gray-300"
+                          aria-label={`Deschide fotografia ${idx + 1}`}
+                        >
+                          <img src={p} alt="" className="h-32 w-full object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </section>
               </div>
 
               <aside className="lg:col-span-4 space-y-6">
@@ -670,12 +879,7 @@ export default function BusinessTestPage() {
                     className="hidden lg:flex flex-wrap gap-2 rounded-2xl bg-white border border-gray-200 shadow-sm p-2"
                     aria-label="Secțiuni pagină"
                   >
-                    {[
-                      { id: 'services', label: 'Servicii' },
-                      { id: 'team', label: 'Echipă' },
-                      { id: 'reviews', label: 'Recenzii' },
-                      { id: 'about', label: 'Despre' },
-                    ].map((t) => (
+                    {DETAIL_SECTION_NAV.map((t) => (
                       <button
                         key={t.id}
                         type="button"
@@ -749,14 +953,21 @@ export default function BusinessTestPage() {
                         </div>
                       </a>
                       <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-                        <iframe
-                          title="Locația salonului"
-                          src={`https://www.google.com/maps?q=${business.latitude},${business.longitude}&z=15&output=embed`}
-                          width="100%"
-                          height="200"
-                          style={{ border: 0 }}
-                          loading="lazy"
-                        />
+                        {mapEmbedSrc ? (
+                          <iframe
+                            title="Locația salonului"
+                            src={mapEmbedSrc}
+                            width="100%"
+                            height="200"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                          />
+                        ) : (
+                          <div className="flex h-[200px] items-center justify-center px-4 text-center text-sm text-gray-500">
+                            Adresa nu este suficientă pentru a afișa harta.
+                          </div>
+                        )}
                       </div>
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -777,7 +988,7 @@ export default function BusinessTestPage() {
                   <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                     <div className="p-5">
                       <h3 className="text-sm font-semibold text-gray-900">Contact</h3>
-                      <p className="mt-1 text-xs text-gray-500">Sună, scrie sau partajează pagina.</p>
+                      <p className="mt-1 text-xs text-gray-500">Sună, scrie sau distribuie pagina.</p>
                     </div>
                     <div className="px-5 pb-5 space-y-2">
                       <a
@@ -789,15 +1000,17 @@ export default function BusinessTestPage() {
                         </span>
                         {business.phone}
                       </a>
-                      <a
-                        href={`mailto:${business.email}`}
-                        className="flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 transition-colors"
-                      >
-                        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white border border-gray-200">
-                          <EnvelopeIcon className="h-4 w-4 text-gray-600" />
-                        </span>
-                        <span className="truncate">{business.email}</span>
-                      </a>
+                      {businessEmail && (
+                        <a
+                          href={`mailto:${businessEmail}`}
+                          className="flex items-center gap-3 rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 transition-colors"
+                        >
+                          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white border border-gray-200">
+                            <EnvelopeIcon className="h-4 w-4 text-gray-600" />
+                          </span>
+                          <span className="truncate">{businessEmail}</span>
+                        </a>
+                      )}
                       <button
                         type="button"
                         onClick={copyLink}
